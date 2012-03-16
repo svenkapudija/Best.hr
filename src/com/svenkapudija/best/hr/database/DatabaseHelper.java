@@ -24,11 +24,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         		"id INTEGER PRIMARY KEY," +
         		"board_members_json VARCHAR)");
     	
+        
         db.execSQL("CREATE TABLE IF NOT EXISTS best_annual_reports (year INTEGER PRIMARY KEY, thumbnailLink VARCHAR, link VARCHAR)");
         
         db.execSQL("CREATE TABLE IF NOT EXISTS best_events (" +
-        		"id VARCHAR PRIMARY KEY," +
-        		"events_json VARCHAR)");
+        		"id VARCHAR PRIMARY KEY, url VARCHAR, name VARCHAR, type VARCHAR, location VARCHAR, startDate VARCHAR, endDate VARCHAR, lat DOUBLE, lng DOUBLE)");
+        
+        db.execSQL("CREATE TABLE IF NOT EXISTS best_events_categories (id INTEGER PRIMARY KEY, name VARCHAR)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS best_events_categories_mapping (event_id VARCHAR PRIMARY KEY, category_id INTEGER)");
     }
     
     @Override

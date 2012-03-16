@@ -1,5 +1,8 @@
 package com.svenkapudija.best.hr.models;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import org.json.JSONException;
@@ -48,8 +51,12 @@ public class AnnualReport implements ModelDatabaseInterface {
 		if (result.getCount() > 0) {
 			result.moveToFirst();
 			
-			this.setThumbnailLink(result.getString(0));
-			this.setLink(result.getString(1));
+			try {
+				this.setThumbnailLink(URLDecoder.decode(result.getString(0), "utf-8"));
+				this.setLink(URLDecoder.decode(result.getString(1), "utf-8"));
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 			
 			result.close();
 			return true;
@@ -58,17 +65,15 @@ public class AnnualReport implements ModelDatabaseInterface {
 		}
 	}
 	
-	public ArrayList<AnnualReport> readAll() {
+	public static ArrayList<AnnualReport> readAll(SQLiteDatabase database) {
 		ArrayList<AnnualReport> reports = new ArrayList<AnnualReport>();
 		
-		Cursor result = this.database.rawQuery("SELECT year, thumbnailLink, link FROM best_annual_reports", null);
+		Cursor result = database.rawQuery("SELECT year, thumbnailLink, link FROM best_annual_reports", null);
 		while(result.moveToNext()) {
-			result.moveToFirst();
-			
 			AnnualReport report = new AnnualReport();
 			report.setYear(result.getInt(0));
-			report.setThumbnailLink(result.getString(1));
-			report.setLink(result.getString(2));
+			report.setDatabase(database);
+			report.read();
 			reports.add(report);
 		}
 		result.close();
@@ -78,7 +83,17 @@ public class AnnualReport implements ModelDatabaseInterface {
 	
 	public boolean insertOrUpdate() {
 		try {
-			this.database.execSQL("INSERT OR REPLACE INTO best_annual_reports (year, thumbnailLink, link) VALUES (" + this.getYear() + ",'" + this.getThumbnailLink() + "','" + this.getLink() + "')");
+			try {
+				this.database.execSQL("INSERT OR REPLACE INTO best_annual_reports (year, thumbnailLink, link) VALUES" +
+						"(" +
+						this.getYear() + ",'" +
+						URLEncoder.encode(this.getThumbnailLink(), "utf-8") + "','" +
+						URLEncoder.encode(this.getLink(), "utf-8") +
+						"')"
+					);
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 			
 			return true;
 		} catch (SQLException e) {

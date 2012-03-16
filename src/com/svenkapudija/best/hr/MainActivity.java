@@ -69,21 +69,22 @@ public class MainActivity extends RootActivity {
         
         BestHrApi api = new BestHrApi(this);
         
+        /*
+        ArrayList<Event> seminars = Event.readAll(this.dbWriteable);
+        for (Event event : seminars) {
+			Log.d(Preferences.DEBUG_TAG, "Events: " + event.toString());
+		}
+        */
+        
+        /*
         ArrayList<Event> seminars = api.getSeminars();
         if(!seminars.isEmpty()) {
 			for (Event event : seminars) {
 				Log.d(Preferences.DEBUG_TAG, "Events: " + event.toString());
 				event.setDatabase(this.dbWriteable);
-				event.insertOrUpdate();
+				if(!event.exists())
+					event.insertOrUpdate();
 			}
-		}
-        
-        /*
-        AnnualReport report = new AnnualReport();
-        report.setDatabase(dbWriteable);
-        ArrayList<AnnualReport> reports = report.readAll();
-        for (AnnualReport report1 : reports) {
-			Log.d(Preferences.DEBUG_TAG, "Report: " + report1.toString());
 		}
         */
         
@@ -97,6 +98,11 @@ public class MainActivity extends RootActivity {
 			}
 		}
         */
+        
+        ArrayList<AnnualReport> reports = AnnualReport.readAll(this.dbWriteable);
+        for (AnnualReport report1 : reports) {
+			Log.d(Preferences.DEBUG_TAG, "Report: " + report1.toString());
+		}
         
         /*
         News news = api.getLastNews();

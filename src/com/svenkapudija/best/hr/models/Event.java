@@ -1,5 +1,8 @@
 package com.svenkapudija.best.hr.models;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -10,7 +13,11 @@ import org.json.JSONObject;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.format.DateFormat;
+import android.util.Log;
 
+import com.svenkapudija.best.hr.utils.Array;
+import com.svenkapudija.best.hr.utils.Preferences;
 import com.svenkapudija.best.hr.utils.TypeCaster;
 
 public class Event implements ModelDatabaseInterface {
@@ -24,6 +31,7 @@ public class Event implements ModelDatabaseInterface {
 	private static final String LOCATION = "location";
 	private static final String START_DATE = "start_date";
 	private static final String END_DATE = "end_date";
+	private static final String DATE_FORMAT = "yyyy-MM-dd";
 	private static final String LATITUDE = "lat";
 	private static final String LONGITUDE = "lng";
 		
@@ -46,7 +54,7 @@ public class Event implements ModelDatabaseInterface {
 	}
 	
 	public boolean exists() {
-		Cursor result = this.database.rawQuery("SELECT events_json FROM best_events WHERE id = '" + this.getId() + "'", null);
+		Cursor result = this.database.rawQuery("SELECT COUNT(*) FROM best_events WHERE id = '" + this.getId() + "'", null);
 		if (result.getCount() > 0) {
 			result.close();
 			return true;
@@ -56,13 +64,32 @@ public class Event implements ModelDatabaseInterface {
 	}
 	
 	public boolean read() {
-		Cursor result = this.database.rawQuery("SELECT events_json FROM best_events WHERE id = '" + this.getId() + "'", null);
+		// Add categories
+		Cursor categoryIdCursor = this.database.rawQuery("SELECT category_id FROM best_events_categories_mapping WHERE event_id = '" + this.getId() + "'", null);
+		while(categoryIdCursor.moveToNext()) {
+			Cursor categoryNameCursor = this.database.rawQuery("SELECT name FROM best_events_categories WHERE id = " + categoryIdCursor.getInt(0), null);
+			while(categoryNameCursor.moveToNext()) {
+				this.addCategory(categoryNameCursor.getString(0));
+			}
+			categoryNameCursor.close();
+		}
+		categoryIdCursor.close();
+		
+		Cursor result = this.database.rawQuery("SELECT url, name, type, location, startDate, endDate, lat, lng FROM best_events WHERE id = '" + this.getId() + "'", null);
 		if (result.getCount() > 0) {
 			result.moveToFirst();
 			
-			if(!this.deserialize(result.getString(0))) {
-				result.close();
-				return false;
+			try {
+				this.setUrl(URLDecoder.decode(result.getString(0), "utf-8"));
+				this.setName(URLDecoder.decode(result.getString(1), "utf-8"));
+				this.setType(URLDecoder.decode(result.getString(2), "utf-8"));
+				this.setLocation(URLDecoder.decode(result.getString(3), "utf-8"));
+				this.setStartDate(TypeCaster.toDate(result.getString(4), Event.DATE_FORMAT));
+				this.setEndDate(TypeCaster.toDate(result.getString(5), Event.DATE_FORMAT));
+				this.setLat(result.getDouble(6));
+				this.setLng(result.getDouble(7));
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
 			}
 			
 			result.close();
@@ -72,9 +99,66 @@ public class Event implements ModelDatabaseInterface {
 		}
 	}
 	
+	public static ArrayList<Event> readAll(SQLiteDatabase database) {
+		ArrayList<Event> events = new ArrayList<Event>();
+		
+		Cursor result = database.rawQuery("SELECT id, url, name, type, location, startDate, endDate, lat, lng FROM best_events", null);
+		while(result.moveToNext()) {
+			Event event = new Event();
+			event.setId(result.getString(0));
+			event.setDatabase(database);
+			event.read();
+			events.add(event);
+		}
+		result.close();
+		
+		return events;
+	}
+	
+	
 	public boolean insertOrUpdate() {
 		try {
-			this.database.execSQL("INSERT OR REPLACE INTO best_events (id, events_json) VALUES ('" + this.getId() + "','" + this.serialize() + "')");
+			Log.d(Preferences.DEBUG_TAG, "Inserting category with id " + this.getId());
+			
+			// Insert or ignore all categories
+			for(String category : this.getCategories()) {
+				this.database.execSQL("INSERT OR IGNORE INTO best_events_categories (name) VALUES ('" + category + "')");
+			}
+			
+			// Receive category ids
+			ArrayList<Integer> categoryIds = new ArrayList<Integer>();
+			for(String category : this.getCategories()) {
+				Cursor result = database.rawQuery("SELECT id FROM best_events_categories WHERE name = '" + category + "'", null);
+				while(result.moveToNext()) {
+					categoryIds.add(result.getInt(0));
+				}
+				result.close();
+			}
+			
+			// Map categories to events
+			this.database.execSQL("DELETE FROM best_events_categories_mapping WHERE event_id = '" + this.getId() + "'");
+			for(int categoryId : categoryIds) {
+				this.database.execSQL("INSERT OR IGNORE INTO best_events_categories_mapping (event_id, category_id) VALUES ('" + this.getId() + "'," + categoryId + ")");
+			}
+			
+			try {
+				this.database.execSQL("INSERT OR REPLACE INTO best_events (id, url, name, type, location, startDate, endDate, lat, lng) VALUES" +
+						"('" +
+						this.getId() + "','" +
+						URLEncoder.encode(this.getUrl(), "utf-8") + "','" +
+						URLEncoder.encode(this.getName(), "utf-8") + "','" +
+						URLEncoder.encode(this.getType(), "utf-8") + "','" +
+						URLEncoder.encode(this.getLocation(), "utf-8") + "','" +
+						DateFormat.format(Event.DATE_FORMAT, this.getStartDate()) + "','" +
+						DateFormat.format(Event.DATE_FORMAT, this.getEndDate()) + "'," +
+						this.getLat() + "," +
+						this.getLng() +
+						")"
+					);
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			return true;
 		} catch (SQLException e) {
@@ -105,8 +189,8 @@ public class Event implements ModelDatabaseInterface {
 			}
 			
 			this.setLocation(TypeCaster.toString(object.optString(Event.LOCATION)));
-			this.setStartDate(TypeCaster.toDate(object.optString(Event.START_DATE), "yyyy-MM-dd"));
-			this.setEndDate(TypeCaster.toDate(object.optString(Event.END_DATE), "yyyy-MM-dd"));
+			this.setStartDate(TypeCaster.toDate(object.optString(Event.START_DATE), Event.DATE_FORMAT));
+			this.setEndDate(TypeCaster.toDate(object.optString(Event.END_DATE), Event.DATE_FORMAT));
 			this.setLat(TypeCaster.toDouble(object.optString(Event.LATITUDE)));
 			this.setLng(TypeCaster.toDouble(object.optString(Event.LONGITUDE)));
 			return true;
@@ -131,8 +215,8 @@ public class Event implements ModelDatabaseInterface {
 			object.put(Event.CATEGORIES, categories);
 			
 			object.put(Event.LOCATION, this.getLocation());
-			object.put(Event.START_DATE, this.getStartDate().toString());
-			object.put(Event.END_DATE, this.getEndDate().toString());
+			object.put(Event.START_DATE, DateFormat.format(Event.DATE_FORMAT, this.getStartDate()));
+			object.put(Event.END_DATE, DateFormat.format(Event.DATE_FORMAT, this.getEndDate()));
 			object.put(Event.LATITUDE, this.getLat());
 			object.put(Event.LONGITUDE, this.getLng());
 			
