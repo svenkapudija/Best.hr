@@ -17,6 +17,7 @@ import com.markupartist.android.widget.ActionBar.Action;
 import com.svenkapudija.best.hr.internet.BestHrApi;
 import com.svenkapudija.best.hr.models.AnnualReport;
 import com.svenkapudija.best.hr.models.Event;
+import com.svenkapudija.best.hr.models.News;
 import com.svenkapudija.best.hr.utils.Preferences;
 
 public class MainActivity extends RootActivity {
@@ -99,21 +100,28 @@ public class MainActivity extends RootActivity {
 		}
         */
         
+        /*
         ArrayList<AnnualReport> reports = AnnualReport.readAll(this.dbWriteable);
         for (AnnualReport report1 : reports) {
 			Log.d(Preferences.DEBUG_TAG, "Report: " + report1.toString());
 		}
+        */
         
         /*
         News news = api.getLastNews();
         Log.d(Preferences.DEBUG_TAG, "Last news is: " + news.toString());
         */
         
+        
+        
         /*
         ArrayList<News> allNews = api.getNews();
 		if(!allNews.isEmpty()) {
 			for (News news : allNews) {
 				Log.d(Preferences.DEBUG_TAG, "News: " + news.toString());
+				news = api.getNews(news.getId());
+				news.setDatabase(dbWriteable);
+				news.insertOrUpdate();
 			}
 		}
 		*/

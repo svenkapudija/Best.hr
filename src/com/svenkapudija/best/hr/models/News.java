@@ -1,5 +1,9 @@
 package com.svenkapudija.best.hr.models;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.json.JSONException;
@@ -9,10 +13,11 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.text.format.DateFormat;
 
 import com.svenkapudija.best.hr.utils.TypeCaster;
 
-public class News implements ModelDatabaseInterface {
+public class News implements DatabaseInterface {
 	
 	// Used for serializing/deserializing
 	private static final String ID = "news_id";
@@ -20,6 +25,7 @@ public class News implements ModelDatabaseInterface {
 	private static final String AUTHOR = "author";
 	private static final String IMAGE_LINK = "image";
 	private static final String PUBLISHED = "published_at";
+	private static final String DATE_FORMAT = "dd.MM.yyyy.";
 	private static final String LINK = "link";
 	private static final String INTRO = "intro";
 	private static final String BODY = "body";
@@ -44,38 +50,87 @@ public class News implements ModelDatabaseInterface {
 	}
 	
 	public boolean exists() {
-		Cursor result = this.database.rawQuery("SELECT news_json FROM best_news WHERE id = " + this.getId(), null);
-		if (result.getCount() > 0) {
-			result.close();
-			return true;
-		} else {
+		try {
+			Cursor result = this.database.rawQuery("SELECT COUNT(*) FROM best_news WHERE id = " + this.getId(), null);
+			if (result.getCount() > 0) {
+				result.close();
+				return true;
+			} else {
+				return false;
+			}
+		} catch (NullPointerException e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
 	
 	public boolean read() {
-		Cursor result = this.database.rawQuery("SELECT news_json FROM best_news WHERE id = " + this.getId(), null);
-		if (result.getCount() > 0) {
-			result.moveToFirst();
-			
-			if(!this.deserialize(result.getString(0))) {
+		try {
+			Cursor result = this.database.rawQuery("SELECT title, author, imageLink, published, link, intro, body FROM best_news WHERE id = " + this.getId(), null);
+			if (result.getCount() > 0) {
+				result.moveToFirst();
+				
+				this.setTitle(URLDecoder.decode(result.getString(0), "utf-8"));
+				this.setAuthor(URLDecoder.decode(result.getString(1), "utf-8"));
+				this.setImageLink(URLDecoder.decode(result.getString(2), "utf-8"));
+				this.setPublished(TypeCaster.toDate(result.getString(3), News.DATE_FORMAT));
+				this.setLink(URLDecoder.decode(result.getString(4), "utf-8"));
+				this.setIntro(URLDecoder.decode(result.getString(5), "utf-8"));
+				this.setBody(URLDecoder.decode(result.getString(6), "utf-8"));
+				
 				result.close();
+				return true;
+			} else {
 				return false;
 			}
-			
-			result.close();
-			return true;
-		} else {
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return false;
+		} catch (NullPointerException e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
 	
+	public static ArrayList<News> readAll(SQLiteDatabase database) {
+		ArrayList<News> newsList = new ArrayList<News>();
+		
+		Cursor result = database.rawQuery("SELECT id FROM best_news", null);
+		while(result.moveToNext()) {
+			News news = new News(database);
+			news.setId(result.getInt(0));
+			news.read();
+			newsList.add(news);
+		}
+		result.close();
+		
+		return newsList;
+	}
+	
 	public boolean insertOrUpdate() {
 		try {
-			this.database.execSQL("INSERT OR REPLACE INTO best_news (id, news_json) VALUES (" + this.getId() + ",'" + this.serialize() + "')");
+			this.database.execSQL("INSERT OR REPLACE INTO best_news (id, title, author, imageLink, published, link, intro, body) VALUES" +
+					"('" +
+					this.getId() + "','" +
+					URLEncoder.encode(this.getTitle(), "utf-8") + "','" +
+					URLEncoder.encode(this.getAuthor(), "utf-8") + "','" +
+					URLEncoder.encode(this.getImageLink(), "utf-8") + "','" +
+					DateFormat.format(News.DATE_FORMAT, this.getPublished()) + "','" +
+					URLEncoder.encode(this.getLink(), "utf-8") + "','" +
+					URLEncoder.encode(this.getIntro(), "utf-8") + "','" +
+					URLEncoder.encode(this.getBody(), "utf-8") + 
+					"')"
+				);
 			
 			return true;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return false;
 		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		} catch (NullPointerException e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -85,6 +140,10 @@ public class News implements ModelDatabaseInterface {
 			this.database.execSQL("DELETE FROM best_news WHERE id = " + this.getId());
 			return true;
 		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		} catch (NullPointerException e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -97,7 +156,7 @@ public class News implements ModelDatabaseInterface {
 			this.setTitle(TypeCaster.toString(object.getString(News.TITLE)));
 			this.setAuthor(TypeCaster.toString(object.optString(News.AUTHOR)));
 			this.setImageLink(TypeCaster.toString(object.optString(News.IMAGE_LINK)));
-			this.setPublished(TypeCaster.toDate(object.optString(News.PUBLISHED)));
+			this.setPublished(TypeCaster.toDate(object.optString(News.PUBLISHED), News.DATE_FORMAT));
 			this.setLink(TypeCaster.toString(object.optString(News.LINK)));
 			this.setIntro(TypeCaster.toString(object.optString(News.INTRO)));
 			this.setBody(TypeCaster.toString(object.optString(News.BODY)));
@@ -115,7 +174,7 @@ public class News implements ModelDatabaseInterface {
 			object.put(News.TITLE, this.getTitle());
 			object.put(News.AUTHOR, this.getAuthor());
 			object.put(News.IMAGE_LINK, this.getImageLink());
-			object.put(News.PUBLISHED, this.getPublished());
+			object.put(News.PUBLISHED, DateFormat.format(News.DATE_FORMAT, this.getPublished()));
 			object.put(News.LINK, this.getLink());
 			object.put(News.INTRO, this.getIntro());
 			object.put(News.BODY, this.getBody());

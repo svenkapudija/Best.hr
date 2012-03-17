@@ -43,25 +43,22 @@ public class BestHrApi {
 		client.performRequest();
 		String result = client.getResultAsString();
 
-		News news = null;
 		if (result != null) {
 			try {
 				JSONArray allNews = new JSONArray(result);
 				if(allNews.length() > 0) {
-					try {
-						JSONObject newsJson = allNews.getJSONObject(0);
-						news = new News();
-						news.deserialize(newsJson.toString());
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
+					JSONObject newsJson = allNews.getJSONObject(0);
+					News news = new News();
+					news.deserialize(newsJson.toString());
+					return news;
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
+				return null;
 			}
 		}
 		
-		return news;
+		return null;
 	}
 	
 	
@@ -80,13 +77,9 @@ public class BestHrApi {
 			try {
 				JSONArray allNews = new JSONArray(result);
 				if(allNews.length() > 0) {
-					try {
-						JSONObject newsJson = allNews.getJSONObject(0);
-						news = new News();
-						news.deserialize(newsJson.toString());
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
+					JSONObject newsJson = allNews.getJSONObject(0);
+					news = new News();
+					news.deserialize(newsJson.toString());
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -111,14 +104,10 @@ public class BestHrApi {
 			try {
 				JSONArray allNews = new JSONArray(result);
 				for(int i = 0; i < allNews.length(); i++) {
-					try {
-						JSONObject newsJson = allNews.getJSONObject(i);
-						News news = new News();
-						news.deserialize(newsJson.toString());
-						newsList.add(news);
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
+					JSONObject newsJson = allNews.getJSONObject(i);
+					News news = new News();
+					news.deserialize(newsJson.toString());
+					newsList.add(news);
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -145,14 +134,10 @@ public class BestHrApi {
 				JSONArray reports = jsonObject.getJSONArray("data");
 				
 				for(int i = 0; i < reports.length(); i++) {
-					try {
-						JSONObject reportJson = reports.getJSONObject(i);
-						AnnualReport report = new AnnualReport();
-						report.deserialize(reportJson.toString());
-						annualReports.add(report);
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
+					JSONObject reportJson = reports.getJSONObject(i);
+					AnnualReport report = new AnnualReport();
+					report.deserialize(reportJson.toString());
+					annualReports.add(report);
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -183,14 +168,10 @@ public class BestHrApi {
 					JSONArray eventsArray = eventCategory.getJSONArray("events");
 					
 					for(int j = 0; j < eventsArray.length(); j++) {
-						try {
-							JSONObject eventJson = eventsArray.getJSONObject(j);
-							Event event = new Event();
-							event.deserialize(eventJson.toString());
-							events.add(event);
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
+						JSONObject eventJson = eventsArray.getJSONObject(j);
+						Event event = new Event();
+						event.deserialize(eventJson.toString());
+						events.add(event);
 					}
 				}
 			} catch (JSONException e) {

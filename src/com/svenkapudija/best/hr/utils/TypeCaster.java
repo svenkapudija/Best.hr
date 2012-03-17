@@ -75,6 +75,9 @@ public class TypeCaster {
     }
 
     public static Date toDate(String dateString, String dateFormat) {
+    	if(dateString == null || dateString.length() == 0)
+    		return null;
+    	
         SimpleDateFormat formater = new SimpleDateFormat(dateFormat);
         Date parsedDate = null;
         try {

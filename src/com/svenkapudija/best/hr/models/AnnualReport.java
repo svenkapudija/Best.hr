@@ -15,7 +15,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 
-public class AnnualReport implements ModelDatabaseInterface {
+public class AnnualReport implements DatabaseInterface {
 	
 	// Used for serializing/deserializing
 	private static final String YEAR = "year";
@@ -68,11 +68,10 @@ public class AnnualReport implements ModelDatabaseInterface {
 	public static ArrayList<AnnualReport> readAll(SQLiteDatabase database) {
 		ArrayList<AnnualReport> reports = new ArrayList<AnnualReport>();
 		
-		Cursor result = database.rawQuery("SELECT year, thumbnailLink, link FROM best_annual_reports", null);
+		Cursor result = database.rawQuery("SELECT year FROM best_annual_reports", null);
 		while(result.moveToNext()) {
-			AnnualReport report = new AnnualReport();
+			AnnualReport report = new AnnualReport(database);
 			report.setYear(result.getInt(0));
-			report.setDatabase(database);
 			report.read();
 			reports.add(report);
 		}
@@ -83,19 +82,18 @@ public class AnnualReport implements ModelDatabaseInterface {
 	
 	public boolean insertOrUpdate() {
 		try {
-			try {
-				this.database.execSQL("INSERT OR REPLACE INTO best_annual_reports (year, thumbnailLink, link) VALUES" +
-						"(" +
-						this.getYear() + ",'" +
-						URLEncoder.encode(this.getThumbnailLink(), "utf-8") + "','" +
-						URLEncoder.encode(this.getLink(), "utf-8") +
-						"')"
-					);
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
+			this.database.execSQL("INSERT OR REPLACE INTO best_annual_reports (year, thumbnailLink, link) VALUES" +
+					"(" +
+					this.getYear() + ",'" +
+					URLEncoder.encode(this.getThumbnailLink(), "utf-8") + "','" +
+					URLEncoder.encode(this.getLink(), "utf-8") +
+					"')"
+				);
 			
 			return true;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return false;
 		} catch (SQLException e) {
 			return false;
 		}

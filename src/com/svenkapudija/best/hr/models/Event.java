@@ -20,7 +20,7 @@ import com.svenkapudija.best.hr.utils.Array;
 import com.svenkapudija.best.hr.utils.Preferences;
 import com.svenkapudija.best.hr.utils.TypeCaster;
 
-public class Event implements ModelDatabaseInterface {
+public class Event implements DatabaseInterface {
 	
 	// Used for serializing/deserializing
 	private static final String ID = "id";
@@ -84,13 +84,14 @@ public class Event implements ModelDatabaseInterface {
 				this.setName(URLDecoder.decode(result.getString(1), "utf-8"));
 				this.setType(URLDecoder.decode(result.getString(2), "utf-8"));
 				this.setLocation(URLDecoder.decode(result.getString(3), "utf-8"));
-				this.setStartDate(TypeCaster.toDate(result.getString(4), Event.DATE_FORMAT));
-				this.setEndDate(TypeCaster.toDate(result.getString(5), Event.DATE_FORMAT));
-				this.setLat(result.getDouble(6));
-				this.setLng(result.getDouble(7));
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
+			
+			this.setStartDate(TypeCaster.toDate(result.getString(4), Event.DATE_FORMAT));
+			this.setEndDate(TypeCaster.toDate(result.getString(5), Event.DATE_FORMAT));
+			this.setLat(result.getDouble(6));
+			this.setLng(result.getDouble(7));
 			
 			result.close();
 			return true;
@@ -102,11 +103,10 @@ public class Event implements ModelDatabaseInterface {
 	public static ArrayList<Event> readAll(SQLiteDatabase database) {
 		ArrayList<Event> events = new ArrayList<Event>();
 		
-		Cursor result = database.rawQuery("SELECT id, url, name, type, location, startDate, endDate, lat, lng FROM best_events", null);
+		Cursor result = database.rawQuery("SELECT id FROM best_events", null);
 		while(result.moveToNext()) {
-			Event event = new Event();
+			Event event = new Event(database);
 			event.setId(result.getString(0));
-			event.setDatabase(database);
 			event.read();
 			events.add(event);
 		}
@@ -117,51 +117,49 @@ public class Event implements ModelDatabaseInterface {
 	
 	
 	public boolean insertOrUpdate() {
+		Log.d(Preferences.DEBUG_TAG, "Inserting category with id " + this.getId());
+			
+		// Insert or ignore all categories
+		for(String category : this.getCategories()) {
+			this.database.execSQL("INSERT OR IGNORE INTO best_events_categories (name) VALUES ('" + category + "')");
+		}
+		
+		// Receive category ids
+		ArrayList<Integer> categoryIds = new ArrayList<Integer>();
+		for(String category : this.getCategories()) {
+			Cursor result = database.rawQuery("SELECT id FROM best_events_categories WHERE name = '" + category + "'", null);
+			while(result.moveToNext()) {
+				categoryIds.add(result.getInt(0));
+			}
+			result.close();
+		}
+			
+		// Map categories to events
+		this.database.execSQL("DELETE FROM best_events_categories_mapping WHERE event_id = '" + this.getId() + "'");
+		for(int categoryId : categoryIds) {
+			this.database.execSQL("INSERT OR IGNORE INTO best_events_categories_mapping (event_id, category_id) VALUES ('" + this.getId() + "'," + categoryId + ")");
+		}
+		
 		try {
-			Log.d(Preferences.DEBUG_TAG, "Inserting category with id " + this.getId());
-			
-			// Insert or ignore all categories
-			for(String category : this.getCategories()) {
-				this.database.execSQL("INSERT OR IGNORE INTO best_events_categories (name) VALUES ('" + category + "')");
-			}
-			
-			// Receive category ids
-			ArrayList<Integer> categoryIds = new ArrayList<Integer>();
-			for(String category : this.getCategories()) {
-				Cursor result = database.rawQuery("SELECT id FROM best_events_categories WHERE name = '" + category + "'", null);
-				while(result.moveToNext()) {
-					categoryIds.add(result.getInt(0));
-				}
-				result.close();
-			}
-			
-			// Map categories to events
-			this.database.execSQL("DELETE FROM best_events_categories_mapping WHERE event_id = '" + this.getId() + "'");
-			for(int categoryId : categoryIds) {
-				this.database.execSQL("INSERT OR IGNORE INTO best_events_categories_mapping (event_id, category_id) VALUES ('" + this.getId() + "'," + categoryId + ")");
-			}
-			
-			try {
-				this.database.execSQL("INSERT OR REPLACE INTO best_events (id, url, name, type, location, startDate, endDate, lat, lng) VALUES" +
-						"('" +
-						this.getId() + "','" +
-						URLEncoder.encode(this.getUrl(), "utf-8") + "','" +
-						URLEncoder.encode(this.getName(), "utf-8") + "','" +
-						URLEncoder.encode(this.getType(), "utf-8") + "','" +
-						URLEncoder.encode(this.getLocation(), "utf-8") + "','" +
-						DateFormat.format(Event.DATE_FORMAT, this.getStartDate()) + "','" +
-						DateFormat.format(Event.DATE_FORMAT, this.getEndDate()) + "'," +
-						this.getLat() + "," +
-						this.getLng() +
-						")"
-					);
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
+			this.database.execSQL("INSERT OR REPLACE INTO best_events (id, url, name, type, location, startDate, endDate, lat, lng) VALUES" +
+					"('" +
+					this.getId() + "','" +
+					URLEncoder.encode(this.getUrl(), "utf-8") + "','" +
+					URLEncoder.encode(this.getName(), "utf-8") + "','" +
+					URLEncoder.encode(this.getType(), "utf-8") + "','" +
+					URLEncoder.encode(this.getLocation(), "utf-8") + "','" +
+					DateFormat.format(Event.DATE_FORMAT, this.getStartDate()) + "','" +
+					DateFormat.format(Event.DATE_FORMAT, this.getEndDate()) + "'," +
+					this.getLat() + "," +
+					this.getLng() +
+					")"
+				);
 			return true;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return false;
 		} catch (SQLException e) {
+			e.printStackTrace();
 			return false;
 		}
 	}

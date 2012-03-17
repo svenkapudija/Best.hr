@@ -1,6 +1,6 @@
 package com.svenkapudija.best.hr.models;
 
-public interface ModelDatabaseInterface {
+public interface DatabaseInterface {
 	
 	/**
 	 * Checks if object with current ID already exists in database, if it does, pull all the parameters from database into object.

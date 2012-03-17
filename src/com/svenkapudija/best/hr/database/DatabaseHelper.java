@@ -16,20 +16,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     	db.execSQL("CREATE TABLE IF NOT EXISTS android_metadata (locale TEXT DEFAULT 'en_US')");
     	db.execSQL("INSERT INTO android_metadata VALUES ('en_US')");
     	
-        db.execSQL("CREATE TABLE IF NOT EXISTS best_news (" +
-        		"id INTEGER PRIMARY KEY," +
-        		"news_json VARCHAR)");
-        
+    	// News
+        db.execSQL("CREATE TABLE IF NOT EXISTS best_news (id INTEGER PRIMARY KEY, title VARCHAR, author VARCHAR," +
+        		"imageLink VARCHAR, published VARCHAR, link VARCHAR, intro VARCHAR, body VARCHAR)");
+
+        // Board members
         db.execSQL("CREATE TABLE IF NOT EXISTS best_board_members (" +
         		"id INTEGER PRIMARY KEY," +
         		"board_members_json VARCHAR)");
     	
-        
+        // Annual reports
         db.execSQL("CREATE TABLE IF NOT EXISTS best_annual_reports (year INTEGER PRIMARY KEY, thumbnailLink VARCHAR, link VARCHAR)");
         
+        // Events/seminars
         db.execSQL("CREATE TABLE IF NOT EXISTS best_events (" +
         		"id VARCHAR PRIMARY KEY, url VARCHAR, name VARCHAR, type VARCHAR, location VARCHAR, startDate VARCHAR, endDate VARCHAR, lat DOUBLE, lng DOUBLE)");
         
+        // Events mapping to different categories
         db.execSQL("CREATE TABLE IF NOT EXISTS best_events_categories (id INTEGER PRIMARY KEY, name VARCHAR)");
         db.execSQL("CREATE TABLE IF NOT EXISTS best_events_categories_mapping (event_id VARCHAR PRIMARY KEY, category_id INTEGER)");
     }
