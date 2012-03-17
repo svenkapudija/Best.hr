@@ -18,6 +18,7 @@ import com.svenkapudija.best.hr.internet.BestHrApi;
 import com.svenkapudija.best.hr.models.AnnualReport;
 import com.svenkapudija.best.hr.models.Event;
 import com.svenkapudija.best.hr.models.News;
+import com.svenkapudija.best.hr.models.Person;
 import com.svenkapudija.best.hr.utils.Preferences;
 
 public class MainActivity extends RootActivity {
@@ -112,7 +113,21 @@ public class MainActivity extends RootActivity {
         Log.d(Preferences.DEBUG_TAG, "Last news is: " + news.toString());
         */
         
+        /*
+        ArrayList<Person> members = api.getBoardMembers();
+		if(!members.isEmpty()) {
+			for (Person member : members) {
+				Log.d(Preferences.DEBUG_TAG, "Member: " + member.toString());
+				member.setDatabase(dbWriteable);
+				member.insertOrUpdate();
+			}
+		}
+		*/
         
+        ArrayList<Person> members = Person.readAll(this.dbWriteable);
+        for (Person person : members) {
+			Log.d(Preferences.DEBUG_TAG, "Person: " + person.toString());
+		}
         
         /*
         ArrayList<News> allNews = api.getNews();

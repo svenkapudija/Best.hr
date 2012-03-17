@@ -110,8 +110,8 @@ public class News implements DatabaseInterface {
 	public boolean insertOrUpdate() {
 		try {
 			this.database.execSQL("INSERT OR REPLACE INTO best_news (id, title, author, imageLink, published, link, intro, body) VALUES" +
-					"('" +
-					this.getId() + "','" +
+					"(" +
+					this.getId() + ",'" +
 					URLEncoder.encode(this.getTitle(), "utf-8") + "','" +
 					URLEncoder.encode(this.getAuthor(), "utf-8") + "','" +
 					URLEncoder.encode(this.getImageLink(), "utf-8") + "','" +

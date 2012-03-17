@@ -20,10 +20,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE IF NOT EXISTS best_news (id INTEGER PRIMARY KEY, title VARCHAR, author VARCHAR," +
         		"imageLink VARCHAR, published VARCHAR, link VARCHAR, intro VARCHAR, body VARCHAR)");
 
-        // Board members
-        db.execSQL("CREATE TABLE IF NOT EXISTS best_board_members (" +
-        		"id INTEGER PRIMARY KEY," +
-        		"board_members_json VARCHAR)");
+        // Members/board members
+        db.execSQL("CREATE TABLE IF NOT EXISTS best_members (name VARCHAR PRIMARY KEY, role VARCHAR, type VARCHAR, email VARCHAR, phone VARCHAR)");
     	
         // Annual reports
         db.execSQL("CREATE TABLE IF NOT EXISTS best_annual_reports (year INTEGER PRIMARY KEY, thumbnailLink VARCHAR, link VARCHAR)");
