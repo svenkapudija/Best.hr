@@ -1,15 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- ACTION BAR -->
 	<color name="actionbar_separator">#2f2f3a</color>
     <color name="actionbar_title">#FFFFFF</color>
-    <color name="actionbar_background_start">#383838</color>
-    <color name="actionbar_background_end">#000000</color>
+    
+    <color name="actionbar_background_start">#d6d6d6</color>
+    <color name="actionbar_background_end">#f3f3f3</color>
     <color name="actionbar_background_item_pressed_start">#FF7F00</color>
     <color name="actionbar_background_item_pressed_end">#d56a00</color>
-    <color name="actionbar_line_below">#414141</color>
-    <color name="actionbar_line_above">#757591</color>
+    
+    <!-- COLORS -->
+    <color name="best_blue">#066db8</color>
+    <color name="best_orange">#faa816</color>
+    <color name="best_green">#77bf20</color>
     
     <color name="light_grey">#44000000</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    
+    <!-- SEPARATORS (between icons) -->
+    <color name="separator_darker">#bebebe</color>
+    <color name="separator_lighter">@color/white</color>
+    
+    <!-- *** SINGLE ROW *** -->
+    <!-- HEADER -->
+    <color name="header_text">@color/white</color>
+    <color name="header_background">@color/best_blue</color>
+     
+    <!-- ROW -->
+    <color name="row_background_start">#f1f1f1</color>
+    <color name="row_background_end">#fefefe</color>
+    <color name="row_text">@color/best_blue</color>
+    <color name="row_text_small">#919191</color>
+    
 </resources>

@@ -35,36 +35,22 @@ public class MainActivity extends RootActivity {
 			}
 
 			public int getDrawable() {
-				return 0;
+				return R.drawable.action_bar_news;
 			}
 
 			public CharSequence getText() {
-				return "Kontakt";
+				return "";
 			}
 		});
 		
-		actionBar.setHomeAction(new Action() {
-			public void performAction(View view) {
-				
-				setResult(RESULT_OK);
-				finish();
-			}
-
-			public int getDrawable() {
-				return R.drawable.icon;
-			}
-
-			public CharSequence getText() {
-				return null;
-			}
-		});
+		actionBar.setHome(R.drawable.action_bar_logotype);
 	}
 	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.activity_main);
         
         getUIElements();
         setupActionBar();
@@ -124,10 +110,12 @@ public class MainActivity extends RootActivity {
 		}
 		*/
         
+        /*
         ArrayList<Person> members = Person.readAll(this.dbWriteable);
         for (Person person : members) {
 			Log.d(Preferences.DEBUG_TAG, "Person: " + person.toString());
 		}
+        */
         
         /*
         ArrayList<News> allNews = api.getNews();

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:background="@drawable/background_pattern_repeat">
+<com.markupartist.android.widget.ActionBar
+		android:id="@+id/actionbar" android:layout_width="fill_parent"
+		android:layout_height="@dimen/actionbar_height" android:background="@drawable/gradient_actionbar">
+	</com.markupartist.android.widget.ActionBar>
+
+<RelativeLayout
+    android:id="@+id/relativeLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="7dp" android:layout_below="@+id/actionbar" android:background="@drawable/stripe">
+</RelativeLayout>
+
+</RelativeLayout>

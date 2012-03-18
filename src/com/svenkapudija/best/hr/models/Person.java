@@ -137,7 +137,7 @@ public class Person implements DatabaseInterface {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return false;
-		} 
+		}
 	}
 	
 	public boolean deserialize(String jsonString) {
@@ -145,7 +145,7 @@ public class Person implements DatabaseInterface {
 			JSONObject object = new JSONObject(jsonString);
 			
 			this.setName(TypeCaster.toString(object.getString(Person.NAME)));
-			this.setRole(TypeCaster.toString(object.getString(Person.ROLE)));
+			this.setRole(TypeCaster.toString(object.optString(Person.ROLE)));
 			this.setEmail(TypeCaster.toString(object.optString(Person.EMAIL)));
 			this.setPhone(TypeCaster.toString(object.optString(Person.PHONE)));
 			
