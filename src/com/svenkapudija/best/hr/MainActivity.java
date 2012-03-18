@@ -6,18 +6,32 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
 import com.svenkapudija.best.hr.internet.BestHrApi;
+import com.svenkapudija.best.hr.models.AnnualReport;
 import com.svenkapudija.best.hr.models.Event;
-import com.svenkapudija.best.hr.models.News;
+import com.svenkapudija.best.hr.models.Person;
 import com.svenkapudija.best.hr.utils.Preferences;
 
 public class MainActivity extends RootActivity {
 	
+	private ImageButton news;
+	private ImageButton events;
+	private ImageButton reports;
+	private ImageButton members;
+	private ImageButton boardMembers;
+	private ImageButton contact;
+	
 	private void getUIElements() {
-		
+		news = (ImageButton) findViewById(R.id.news);
+		events = (ImageButton) findViewById(R.id.events);
+		reports = (ImageButton) findViewById(R.id.reports);
+		members = (ImageButton) findViewById(R.id.members);
+		boardMembers = (ImageButton) findViewById(R.id.boardMembers);
+		contact = (ImageButton) findViewById(R.id.contact);
 	}
 
 	public void setupActionBar() {
@@ -49,6 +63,53 @@ public class MainActivity extends RootActivity {
         getUIElements();
         setupActionBar();
         
+        news.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(MainActivity.this, NewsActivity.class);
+				startActivityForResult(i, 200);
+			}
+		});
+        
+        events.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(MainActivity.this, EventsActivity.class);
+				startActivityForResult(i, 200);
+			}
+		});
+        
+        reports.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(MainActivity.this, AnnualReportsActivity.class);
+				startActivityForResult(i, 200);
+			}
+		});
+        
+        members.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				
+			}
+		});
+        
+        boardMembers.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(MainActivity.this, BoardMembersActivity.class);
+				startActivityForResult(i, 200);
+			}
+		});
+        
+        contact.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(MainActivity.this, ContactActivity.class);
+				startActivityForResult(i, 200);
+			}
+		});
+        
         BestHrApi api = new BestHrApi(this);
         
         /*
@@ -65,7 +126,6 @@ public class MainActivity extends RootActivity {
 				Log.d(Preferences.DEBUG_TAG, "Events: " + event.toString());
 				event.setDatabase(this.dbWriteable);
 				if(!event.exists()) {
-					Log.d(Preferences.DEBUG_TAG, "Event does not exist!");
 					event.insertOrUpdate();
 				}
 			}

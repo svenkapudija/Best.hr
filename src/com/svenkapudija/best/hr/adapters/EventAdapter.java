@@ -19,6 +19,7 @@ public class EventAdapter extends ArrayAdapter<EventRow> {
 	private Context context;
 	private List<EventRow> items;
 	private Date currentTime;
+	private LayoutInflater inflater;
 	
 	public EventAdapter(Context context, List<EventRow> items, Date currentTime) {
 		super(context, 0, items);
@@ -26,6 +27,8 @@ public class EventAdapter extends ArrayAdapter<EventRow> {
 		this.context = context;
 		this.items = items;
 		this.currentTime = currentTime;
+		
+		this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -35,7 +38,6 @@ public class EventAdapter extends ArrayAdapter<EventRow> {
         
         if(item.isHeader()) {
         	if (row == null || row.getTag() != "header") {
-        		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             	row = inflater.inflate(R.layout.header, null);
             	row.setTag("header");
         	}
@@ -44,7 +46,6 @@ public class EventAdapter extends ArrayAdapter<EventRow> {
         	title.setText(item.getHeaderTitle());
         } else {
         	if (row == null || row.getTag() != "event") {
-        		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             	row = inflater.inflate(R.layout.event_row, null);
             	row.setTag("event");
         	}

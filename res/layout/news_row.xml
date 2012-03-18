@@ -7,7 +7,7 @@
       android:id="@+id/body"
       android:layout_width="fill_parent"
       android:layout_height="85dp"
-      android:layout_toRightOf="@+id/thumb" android:padding="10dp" android:background="@drawable/row_btn">
+      android:layout_toRightOf="@+id/thumb" android:padding="10dp" android:background="@drawable/row_button">
       
     <ImageView
         android:id="@+id/thumb"

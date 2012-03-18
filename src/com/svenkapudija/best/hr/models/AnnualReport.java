@@ -8,12 +8,15 @@ import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.svenkapudija.best.hr.utils.TypeCaster;
-
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.util.Log;
+
+import com.svenkapudija.best.hr.files.ImageHelper;
+import com.svenkapudija.best.hr.utils.Preferences;
+import com.svenkapudija.best.hr.utils.TypeCaster;
 
 public class AnnualReport implements DatabaseInterface {
 	
@@ -58,6 +61,9 @@ public class AnnualReport implements DatabaseInterface {
 				e.printStackTrace();
 			}
 			
+			String imageName = ImageHelper.getImageNameFromUrl(this.getThumbnailLink());
+			this.setThumbnail(ImageHelper.getImageFromFile("besthrAnnualReports", imageName));
+			
 			result.close();
 			return true;
 		} else {
@@ -68,11 +74,21 @@ public class AnnualReport implements DatabaseInterface {
 	public static ArrayList<AnnualReport> readAll(SQLiteDatabase database) {
 		ArrayList<AnnualReport> reports = new ArrayList<AnnualReport>();
 		
-		Cursor result = database.rawQuery("SELECT year FROM best_annual_reports", null);
+		Cursor result = database.rawQuery("SELECT year, thumbnailLink, link FROM best_annual_reports ORDER by YEAR desc", null);
 		while(result.moveToNext()) {
 			AnnualReport report = new AnnualReport(database);
 			report.setYear(result.getInt(0));
-			report.read();
+			
+			try {
+				report.setThumbnailLink(URLDecoder.decode(result.getString(1), "utf-8"));
+				report.setLink(URLDecoder.decode(result.getString(2), "utf-8"));
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			
+			String imageName = ImageHelper.getImageNameFromUrl(report.getThumbnailLink());
+			report.setThumbnail(ImageHelper.getImageFromFile("besthrAnnualReports", imageName));
+			
 			reports.add(report);
 		}
 		result.close();

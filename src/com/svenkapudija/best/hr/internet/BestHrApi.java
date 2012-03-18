@@ -180,6 +180,8 @@ public class BestHrApi {
 					JSONObject reportJson = reports.getJSONObject(i);
 					AnnualReport report = new AnnualReport();
 					report.deserialize(reportJson.toString());
+					if(report.getThumbnailLink() != null)
+						ImageHelper.getImageFromInternet(context, "besthrAnnualReports", report.getThumbnailLink());
 					annualReports.add(report);
 				}
 			} catch (JSONException e) {

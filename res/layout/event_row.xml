@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:background="@drawable/row_btn" android:layout_height="wrap_content">
+    android:background="@drawable/row_button" android:layout_height="wrap_content">
 
     <RelativeLayout
         android:id="@+id/text"

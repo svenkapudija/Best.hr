@@ -1,16 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" android:background="@drawable/background_pattern_repeat">
+<RelativeLayout android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:background="@drawable/background_pattern_repeat" xmlns:android="http://schemas.android.com/apk/res/android">
 <com.markupartist.android.widget.ActionBar
 		android:id="@+id/actionbar" android:layout_width="fill_parent"
 		android:layout_height="@dimen/actionbar_height" android:background="@drawable/gradient_actionbar">
 	</com.markupartist.android.widget.ActionBar>
-
+
+<ImageView
+    android:id="@+id/stripe"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/stripe" android:layout_below="@+id/actionbar"/>
+
 <RelativeLayout
-    android:id="@+id/relativeLayout1"
+    android:id="@+id/icons"
     android:layout_width="fill_parent"
-    android:layout_height="7dp" android:layout_below="@+id/actionbar" android:background="@drawable/stripe">
+    android:layout_height="fill_parent" android:layout_below="@+id/stripe" android:padding="35dp">
+
+    <RelativeLayout
+        android:id="@+id/first_row"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <ImageButton
+            android:id="@+id/news"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/row_button" />
+
+        <ImageButton
+            android:id="@+id/events"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/row_button" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/second_row"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/first_row"
+        android:layout_marginTop="20dp" >
+
+        <ImageButton
+            android:id="@+id/reports"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/row_button" />
+
+        <ImageButton
+            android:id="@+id/members"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/row_button" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout02"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp" android:layout_below="@+id/second_row">
+
+        <ImageButton
+            android:id="@+id/boardMembers"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/row_button" />
+
+        <ImageButton
+            android:id="@+id/contact"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/row_button" />
+
+    </RelativeLayout>
+
 </RelativeLayout>
 
 </RelativeLayout>

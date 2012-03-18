@@ -55,7 +55,7 @@ public class NewsActivity extends RootActivity {
         getUIElements();
         setupActionBar();
         
-		ArrayList<News> newsList = News.readAll(dbWriteable);
+		ArrayList<News> newsList = News.readAll(dbWriteable, 10);
 		if(!newsList.isEmpty()) {
 			for (News news : newsList) {
 				rows.add(news);
