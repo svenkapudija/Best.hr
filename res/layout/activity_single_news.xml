@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:background="@drawable/background_pattern_repeat">
+<com.markupartist.android.widget.ActionBar
+		android:id="@+id/actionbar" android:layout_width="fill_parent"
+		android:layout_height="@dimen/actionbar_height" android:background="@drawable/gradient_actionbar">
+	</com.markupartist.android.widget.ActionBar>
+
+<RelativeLayout
+    android:id="@+id/stripe"
+    android:layout_width="fill_parent"
+    android:layout_height="7dp"
+    android:layout_below="@+id/actionbar"
+    android:background="@drawable/stripe" >
+
+</RelativeLayout>
+
+<ScrollView
+    android:id="@+id/scrollView1"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent" android:layout_below="@+id/stripe">
+
+   
+
+<RelativeLayout
+    android:id="@+id/data"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" android:layout_below="@+id/stripe" android:background="@drawable/gradient_row" android:paddingLeft="15dp" android:paddingRight="15dp" android:paddingTop="15dp">
+
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView" android:textColor="@color/best_blue" android:textSize="17dp" android:textStyle="bold"/>
+
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView" android:textColor="@color/best_orange" android:layout_below="@+id/title" android:layout_alignParentLeft="true"/>
+
+
+    <TextView
+        android:id="@+id/author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView" android:textColor="@color/best_green" android:layout_below="@+id/title" android:layout_alignParentRight="true"/>
+
+
+    <TextView
+        android:id="@+id/intro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="@color/best_blue" android:layout_below="@+id/date" android:layout_marginTop="7dp"/>
+
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/action_bar_logotype" android:layout_below="@+id/intro" android:layout_centerHorizontal="true" android:paddingBottom="10dp"/>
+
+
+    <TextView
+        android:id="@+id/body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:text="TextView"
+        android:textColor="@color/best_blue" android:layout_below="@+id/image"/>
+
+    <ImageView
+        android:id="@+id/divider"
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/body"
+        android:src="@drawable/list_divider" />
+
+</RelativeLayout>
+</ScrollView>
+
+
+</RelativeLayout>

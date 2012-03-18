@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.svenkapudija.best.hr.files.ImageHelper;
 import com.svenkapudija.best.hr.models.AnnualReport;
 import com.svenkapudija.best.hr.models.Event;
 import com.svenkapudija.best.hr.models.News;
@@ -19,6 +20,7 @@ public class BestHrApi {
 	
 	private static final String API_KEY = "api_key"; // None for now
 	private static final String BASE_API_URL = "http://www.best.hr/api";
+	private static final String BASE_URL = "http://www.best.hr";
 		
 	private static final String NEWS = "/index.php?path=/novosti";
 	private static final String NEWS_AT_ID = "/index.php?path=/novosti/get&news_id=";
@@ -51,6 +53,8 @@ public class BestHrApi {
 					JSONObject newsJson = allNews.getJSONObject(0);
 					News news = new News();
 					news.deserialize(newsJson.toString());
+					if(news.getImageLink() != null)
+						ImageHelper.getImageFromInternet(context, "besthrNews", BASE_URL + news.getImageLink());
 					return news;
 				}
 			} catch (JSONException e) {

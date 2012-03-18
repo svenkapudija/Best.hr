@@ -5,8 +5,8 @@
     
     <color name="actionbar_background_start">#d6d6d6</color>
     <color name="actionbar_background_end">#f3f3f3</color>
-    <color name="actionbar_background_item_pressed_start">#FF7F00</color>
-    <color name="actionbar_background_item_pressed_end">#d56a00</color>
+    <color name="actionbar_background_item_pressed_start">@color/button_blue_bottom</color>
+    <color name="actionbar_background_item_pressed_end">@color/button_blue_top</color>
     
     <!-- COLORS -->
     <color name="best_blue">#066db8</color>
@@ -19,6 +19,9 @@
     
     <color name="separator_light_left">#bebebe</color>
     <color name="separator_light_right">@drawable/gradient_transparent_to_white</color>
+    
+    <color name="button_blue_top">#399fea</color>
+    <color name="button_blue_bottom">#066db8</color>
     
     <!-- SEPARATORS (between icons) -->
     <color name="separator_darker">#bebebe</color>

@@ -54,7 +54,7 @@ public class Event implements DatabaseInterface {
 	}
 	
 	public boolean exists() {
-		Cursor result = this.database.rawQuery("SELECT COUNT(*) FROM best_events WHERE id = '" + this.getId() + "'", null);
+		Cursor result = this.database.rawQuery("SELECT id FROM best_events WHERE id = '" + this.getId() + "'", null);
 		if (result.getCount() > 0) {
 			result.close();
 			return true;
@@ -103,7 +103,7 @@ public class Event implements DatabaseInterface {
 	public static ArrayList<Event> readAll(SQLiteDatabase database) {
 		ArrayList<Event> events = new ArrayList<Event>();
 		
-		Cursor result = database.rawQuery("SELECT id FROM best_events", null);
+		Cursor result = database.rawQuery("SELECT id FROM best_events ORDER by DATE asc", null);
 		while(result.moveToNext()) {
 			Event event = new Event(database);
 			event.setId(result.getString(0));
@@ -141,7 +141,7 @@ public class Event implements DatabaseInterface {
 		}
 		
 		try {
-			this.database.execSQL("INSERT OR REPLACE INTO best_events (id, url, name, type, location, startDate, endDate, lat, lng) VALUES" +
+			this.database.execSQL("INSERT OR REPLACE INTO best_events (id, url, name, type, location, startDate, endDate, date, lat, lng) VALUES" +
 					"('" +
 					this.getId() + "','" +
 					URLEncoder.encode(this.getUrl(), "utf-8") + "','" +
@@ -150,6 +150,7 @@ public class Event implements DatabaseInterface {
 					URLEncoder.encode(this.getLocation(), "utf-8") + "','" +
 					DateFormat.format(Event.DATE_FORMAT, this.getStartDate()) + "','" +
 					DateFormat.format(Event.DATE_FORMAT, this.getEndDate()) + "'," +
+					this.getStartDate().getTime() + "," +
 					this.getLat() + "," +
 					this.getLng() +
 					")"
@@ -280,6 +281,10 @@ public class Event implements DatabaseInterface {
 	public Date getStartDate() {
 		return startDate;
 	}
+	
+	public String getStartDateFormatted() {
+		return (String) DateFormat.format("dd.MM.yyyy.", this.startDate);
+	}
 
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
@@ -287,6 +292,10 @@ public class Event implements DatabaseInterface {
 
 	public Date getEndDate() {
 		return endDate;
+	}
+	
+	public String getEndDateFormatted() {
+		return (String) DateFormat.format("dd.MM.yyyy.", this.endDate);
 	}
 
 	public void setEndDate(Date endDate) {

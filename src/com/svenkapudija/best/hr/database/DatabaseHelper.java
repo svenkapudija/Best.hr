@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     	
     	// News
         db.execSQL("CREATE TABLE IF NOT EXISTS best_news (id INTEGER PRIMARY KEY, title VARCHAR, author VARCHAR," +
-        		"imageLink VARCHAR, published VARCHAR, link VARCHAR, intro VARCHAR, body VARCHAR)");
+        		"imageLink VARCHAR, published VARCHAR, date LONG, link VARCHAR, intro VARCHAR, body VARCHAR)");
 
         // Members/board members
         db.execSQL("CREATE TABLE IF NOT EXISTS best_members (name VARCHAR PRIMARY KEY, role VARCHAR, type VARCHAR, email VARCHAR, phone VARCHAR)");
@@ -28,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         
         // Events/seminars
         db.execSQL("CREATE TABLE IF NOT EXISTS best_events (" +
-        		"id VARCHAR PRIMARY KEY, url VARCHAR, name VARCHAR, type VARCHAR, location VARCHAR, startDate VARCHAR, endDate VARCHAR, lat DOUBLE, lng DOUBLE)");
+        		"id VARCHAR PRIMARY KEY, url VARCHAR, name VARCHAR, type VARCHAR, location VARCHAR, startDate VARCHAR, endDate VARCHAR, date LONG, lat DOUBLE, lng DOUBLE)");
         
         // Events mapping to different categories
         db.execSQL("CREATE TABLE IF NOT EXISTS best_events_categories (id INTEGER PRIMARY KEY, name VARCHAR)");

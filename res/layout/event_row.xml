@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="50dp"
-    android:background="@drawable/gradient_row" >
+    android:background="@drawable/row_btn" android:layout_height="wrap_content">
 
     <RelativeLayout
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="15dp" >
-
+        android:layout_marginLeft="15dp" android:paddingTop="7dp" android:paddingBottom="7dp" android:layout_marginRight="15dp">
+
         <TextView
             android:id="@+id/name"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="NERD: New age Engineer of Robot..."
-            android:textColor="@color/row_text" android:textSize="16dp"/>
-
+            android:textColor="@drawable/text_blue_white_focused"
+            android:textSize="16dp" android:ellipsize="end" android:lines="1" android:scrollHorizontally="true"/>
+
         <TextView
-            android:id="@+id/type"
+            android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/name"
             android:text="10.03.2012. - 15.03.2012."
-            android:textColor="@color/best_orange" android:layout_below="@+id/name" android:textSize="10.5dp"/>
+            android:textColor="@drawable/text_orange_white_focused"
+            android:textSize="10.5dp" />
 
     </RelativeLayout>
 
@@ -31,14 +33,14 @@
         android:id="@+id/right_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true" android:layout_alignBottom="@+id/text" android:layout_marginRight="15dp">
-
+        android:layout_alignParentRight="true" android:layout_alignBottom="@+id/text" android:layout_marginRight="15dp" android:paddingBottom="7dp">
+
         <TextView
-            android:id="@+id/TextView01"
+            android:id="@+id/location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Paris, France"
-            android:textColor="@color/best_green"
+            android:textColor="@drawable/text_green_white_focused"
             android:textSize="10.5dp" />
 
     </RelativeLayout>

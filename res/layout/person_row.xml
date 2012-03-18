@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="50dp"
-    android:background="@drawable/gradient_row" >
-
+    android:layout_height="wrap_content">
+
     <RelativeLayout
+        android:id="@+id/body"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp" android:background="@drawable/gradient_row">
+
+         <RelativeLayout
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="15dp" >
+        android:layout_marginLeft="15dp">
 
         <TextView
             android:id="@+id/name"
@@ -23,23 +27,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="type/role"
-            android:textColor="@color/row_text_small" android:layout_below="@+id/name" android:textSize="12dp"/>
+            android:textColor="@color/row_text_small" android:layout_below="@+id/name" android:textSize="11.5dp"/>
 
     </RelativeLayout>
-
+
     <RelativeLayout
-        android:id="@+id/icons"
+        android:id="@+id/email_icon"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true" >
+        android:layout_height="fill_parent" android:layout_alignParentRight="true">
 
         <ImageButton
             android:id="@+id/email_button"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_toRightOf="@+id/separator_right"
-            android:background="@drawable/contact_row_btn"
+            android:background="@drawable/row_btn"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:src="@drawable/contact_row_email" />
@@ -55,30 +57,39 @@
             android:id="@+id/separator_left"
             android:layout_width="1px"
             android:layout_height="fill_parent"
-            android:layout_toRightOf="@+id/phone_button"
             android:src="@color/separator_light_left" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/phone_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent" android:layout_toLeftOf="@+id/email_icon">
 
         <ImageButton
             android:id="@+id/phone_button"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:background="@drawable/contact_row_btn"
+            android:layout_toRightOf="@+id/separator2_right"
+            android:background="@drawable/row_btn"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:src="@drawable/contact_row_phone" android:layout_toRightOf="@+id/separator2_right"/>
-
+            android:src="@drawable/contact_row_phone" />
+
         <ImageView
             android:id="@+id/separator2_right"
             android:layout_width="1px"
             android:layout_height="fill_parent"
-            android:src="@color/separator_light_right" android:layout_toRightOf="@+id/separator2_left"/>
-
+            android:layout_toRightOf="@+id/separator2_left"
+            android:src="@color/separator_light_right" />
+
         <ImageView
             android:id="@+id/separator2_left"
             android:layout_width="1px"
             android:layout_height="fill_parent"
             android:src="@color/separator_light_left" />
 
+    </RelativeLayout>
     </RelativeLayout>
 
 </RelativeLayout>

@@ -1,24 +1,17 @@
 package com.svenkapudija.best.hr;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
 import com.svenkapudija.best.hr.internet.BestHrApi;
-import com.svenkapudija.best.hr.models.AnnualReport;
 import com.svenkapudija.best.hr.models.Event;
 import com.svenkapudija.best.hr.models.News;
-import com.svenkapudija.best.hr.models.Person;
 import com.svenkapudija.best.hr.utils.Preferences;
 
 public class MainActivity extends RootActivity {
@@ -31,7 +24,8 @@ public class MainActivity extends RootActivity {
 		actionBar = (ActionBar) findViewById(R.id.actionbar);
 		actionBar.addAction(new Action() {
 			public void performAction(View view) {
-				
+				Intent i = new Intent(MainActivity.this, NewsActivity.class);
+				startActivityForResult(i, 200);
 			}
 
 			public int getDrawable() {
@@ -70,8 +64,10 @@ public class MainActivity extends RootActivity {
 			for (Event event : seminars) {
 				Log.d(Preferences.DEBUG_TAG, "Events: " + event.toString());
 				event.setDatabase(this.dbWriteable);
-				if(!event.exists())
+				if(!event.exists()) {
+					Log.d(Preferences.DEBUG_TAG, "Event does not exist!");
 					event.insertOrUpdate();
+				}
 			}
 		}
         */
@@ -123,8 +119,9 @@ public class MainActivity extends RootActivity {
 			for (News news : allNews) {
 				Log.d(Preferences.DEBUG_TAG, "News: " + news.toString());
 				news = api.getNews(news.getId());
+				
 				news.setDatabase(dbWriteable);
-				news.insertOrUpdate();
+				//if(!news.exists()) news.insertOrUpdate();
 			}
 		}
 		*/

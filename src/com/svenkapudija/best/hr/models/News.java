@@ -15,6 +15,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.text.format.DateFormat;
 
+import com.svenkapudija.best.hr.files.ImageHelper;
 import com.svenkapudija.best.hr.utils.TypeCaster;
 
 public class News implements DatabaseInterface {
@@ -51,7 +52,7 @@ public class News implements DatabaseInterface {
 	
 	public boolean exists() {
 		try {
-			Cursor result = this.database.rawQuery("SELECT COUNT(*) FROM best_news WHERE id = " + this.getId(), null);
+			Cursor result = this.database.rawQuery("SELECT id FROM best_news WHERE id = " + this.getId(), null);
 			if (result.getCount() > 0) {
 				result.close();
 				return true;
@@ -78,6 +79,9 @@ public class News implements DatabaseInterface {
 				this.setIntro(URLDecoder.decode(result.getString(5), "utf-8"));
 				this.setBody(URLDecoder.decode(result.getString(6), "utf-8"));
 				
+				String imageName = ImageHelper.getImageNameFromUrl(this.getImageLink());
+				this.setImage(ImageHelper.getImageFromFile("besthrNews", imageName));
+				
 				result.close();
 				return true;
 			} else {
@@ -95,11 +99,56 @@ public class News implements DatabaseInterface {
 	public static ArrayList<News> readAll(SQLiteDatabase database) {
 		ArrayList<News> newsList = new ArrayList<News>();
 		
-		Cursor result = database.rawQuery("SELECT id FROM best_news", null);
+		Cursor result = database.rawQuery("SELECT id, title, author, imageLink, published, link, intro, body FROM best_news ORDER by DATE desc", null);
 		while(result.moveToNext()) {
 			News news = new News(database);
 			news.setId(result.getInt(0));
-			news.read();
+			
+			try {
+				news.setTitle(URLDecoder.decode(result.getString(1), "utf-8"));
+				news.setAuthor(URLDecoder.decode(result.getString(2), "utf-8"));
+				news.setImageLink(URLDecoder.decode(result.getString(3), "utf-8"));
+				news.setPublished(TypeCaster.toDate(result.getString(4), News.DATE_FORMAT));
+				news.setLink(URLDecoder.decode(result.getString(5), "utf-8"));
+				news.setIntro(URLDecoder.decode(result.getString(6), "utf-8"));
+				news.setBody(URLDecoder.decode(result.getString(7), "utf-8"));
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			
+			String imageName = ImageHelper.getImageNameFromUrl(news.getImageLink());
+			news.setImage(ImageHelper.getImageFromFile("besthrNews", imageName));
+			
+			newsList.add(news);
+		}
+		result.close();
+		
+		return newsList;
+	}
+	
+	public static ArrayList<News> readAll(SQLiteDatabase database, int limit) {
+		ArrayList<News> newsList = new ArrayList<News>();
+		
+		Cursor result = database.rawQuery("SELECT id, title, author, imageLink, published, link, intro, body FROM best_news ORDER by DATE desc LIMIT " + limit, null);
+		while(result.moveToNext()) {
+			News news = new News(database);
+			news.setId(result.getInt(0));
+			
+			try {
+				news.setTitle(URLDecoder.decode(result.getString(1), "utf-8"));
+				news.setAuthor(URLDecoder.decode(result.getString(2), "utf-8"));
+				news.setImageLink(URLDecoder.decode(result.getString(3), "utf-8"));
+				news.setPublished(TypeCaster.toDate(result.getString(4), News.DATE_FORMAT));
+				news.setLink(URLDecoder.decode(result.getString(5), "utf-8"));
+				news.setIntro(URLDecoder.decode(result.getString(6), "utf-8"));
+				news.setBody(URLDecoder.decode(result.getString(7), "utf-8"));
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			
+			String imageName = ImageHelper.getImageNameFromUrl(news.getImageLink());
+			news.setImage(ImageHelper.getImageFromFile("besthrNews", imageName));
+			
 			newsList.add(news);
 		}
 		result.close();
@@ -109,13 +158,14 @@ public class News implements DatabaseInterface {
 	
 	public boolean insertOrUpdate() {
 		try {
-			this.database.execSQL("INSERT OR REPLACE INTO best_news (id, title, author, imageLink, published, link, intro, body) VALUES" +
+			this.database.execSQL("INSERT OR REPLACE INTO best_news (id, title, author, imageLink, published, date, link, intro, body) VALUES" +
 					"(" +
 					this.getId() + ",'" +
 					URLEncoder.encode(this.getTitle(), "utf-8") + "','" +
 					URLEncoder.encode(this.getAuthor(), "utf-8") + "','" +
 					URLEncoder.encode(this.getImageLink(), "utf-8") + "','" +
-					DateFormat.format(News.DATE_FORMAT, this.getPublished()) + "','" +
+					DateFormat.format(News.DATE_FORMAT, this.getPublished()) + "'," +
+					this.getPublished().getTime() + ",'" + 
 					URLEncoder.encode(this.getLink(), "utf-8") + "','" +
 					URLEncoder.encode(this.getIntro(), "utf-8") + "','" +
 					URLEncoder.encode(this.getBody(), "utf-8") + 
@@ -185,6 +235,8 @@ public class News implements DatabaseInterface {
 			return null;
 		}
 	}
+	
+	
 
 	public int getId() {
 		return id;

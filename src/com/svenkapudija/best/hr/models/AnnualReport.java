@@ -37,7 +37,7 @@ public class AnnualReport implements DatabaseInterface {
 	}
 	
 	public boolean exists() {
-		Cursor result = this.database.rawQuery("SELECT COUNT(*) FROM best_annual_reports WHERE year = " + this.getYear(), null);
+		Cursor result = this.database.rawQuery("SELECT year FROM best_annual_reports WHERE year = " + this.getYear(), null);
 		if (result.getCount() > 0) {
 			result.close();
 			return true;

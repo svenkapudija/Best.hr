@@ -39,7 +39,7 @@ public class Person implements DatabaseInterface {
 	
 	public boolean exists() {
 		try {
-			Cursor result = this.database.rawQuery("SELECT COUNT(*) FROM best_members WHERE name = '" + URLEncoder.encode(this.getName(), "utf-8") + "'", null);
+			Cursor result = this.database.rawQuery("SELECT name FROM best_members WHERE name = '" + URLEncoder.encode(this.getName(), "utf-8") + "'", null);
 			if (result.getCount() > 0) {
 				result.close();
 				return true;
@@ -85,6 +85,25 @@ public class Person implements DatabaseInterface {
 		
 		try {
 			Cursor result = database.rawQuery("SELECT name FROM best_members", null);
+			while(result.moveToNext()) {
+				Person person = new Person(database);
+				person.setName(URLDecoder.decode(result.getString(0), "utf-8"));
+				person.read();
+				personList.add(person);
+			}
+			result.close();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
+		return personList;
+	}
+	
+	public static ArrayList<Person> readAll(SQLiteDatabase database, String type) {
+		ArrayList<Person> personList = new ArrayList<Person>();
+		
+		try {
+			Cursor result = database.rawQuery("SELECT name FROM best_members WHERE type = '" + type + "'", null);
 			while(result.moveToNext()) {
 				Person person = new Person(database);
 				person.setName(URLDecoder.decode(result.getString(0), "utf-8"));
