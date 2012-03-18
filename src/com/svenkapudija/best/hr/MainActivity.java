@@ -13,6 +13,7 @@ import com.markupartist.android.widget.ActionBar.Action;
 import com.svenkapudija.best.hr.internet.BestHrApi;
 import com.svenkapudija.best.hr.models.AnnualReport;
 import com.svenkapudija.best.hr.models.Event;
+import com.svenkapudija.best.hr.models.News;
 import com.svenkapudija.best.hr.models.Person;
 import com.svenkapudija.best.hr.utils.Preferences;
 
@@ -22,7 +23,6 @@ public class MainActivity extends RootActivity {
 	private ImageButton events;
 	private ImageButton reports;
 	private ImageButton members;
-	private ImageButton boardMembers;
 	private ImageButton contact;
 	
 	private void getUIElements() {
@@ -30,7 +30,6 @@ public class MainActivity extends RootActivity {
 		events = (ImageButton) findViewById(R.id.events);
 		reports = (ImageButton) findViewById(R.id.reports);
 		members = (ImageButton) findViewById(R.id.members);
-		boardMembers = (ImageButton) findViewById(R.id.boardMembers);
 		contact = (ImageButton) findViewById(R.id.contact);
 	}
 
@@ -38,7 +37,7 @@ public class MainActivity extends RootActivity {
 		actionBar = (ActionBar) findViewById(R.id.actionbar);
 		actionBar.addAction(new Action() {
 			public void performAction(View view) {
-				Intent i = new Intent(MainActivity.this, NewsActivity.class);
+				Intent i = new Intent(MainActivity.this, ContactActivity.class);
 				startActivityForResult(i, 200);
 			}
 
@@ -94,14 +93,6 @@ public class MainActivity extends RootActivity {
 			}
 		});
         
-        boardMembers.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent i = new Intent(MainActivity.this, BoardMembersActivity.class);
-				startActivityForResult(i, 200);
-			}
-		});
-        
         contact.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -111,13 +102,6 @@ public class MainActivity extends RootActivity {
 		});
         
         BestHrApi api = new BestHrApi(this);
-        
-        /*
-        ArrayList<Event> seminars = Event.readAll(this.dbWriteable);
-        for (Event event : seminars) {
-			Log.d(Preferences.DEBUG_TAG, "Events: " + event.toString());
-		}
-        */
         
         /*
         ArrayList<Event> seminars = api.getSeminars();

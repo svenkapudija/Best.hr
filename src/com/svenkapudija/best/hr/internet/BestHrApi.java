@@ -1,5 +1,6 @@
 package com.svenkapudija.best.hr.internet;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -53,7 +54,7 @@ public class BestHrApi {
 					JSONObject newsJson = allNews.getJSONObject(0);
 					News news = new News();
 					news.deserialize(newsJson.toString());
-					if(news.getImageLink() != null)
+					if(!news.getImageLink().equals("null"))
 						ImageHelper.getImageFromInternet(context, "besthrNews", BASE_URL + news.getImageLink());
 					return news;
 				}
@@ -64,6 +65,30 @@ public class BestHrApi {
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * Retrieves news at specific <code>id</code>.
+	 * 
+	 * @return news News object if everything went ok, <code>null</code> otherwise.
+	 */
+	public int getNewsCount() {
+		SimpleHttpClient client = new SimpleHttpClient(this.getContext(), BASE_API_URL + NEWS, this.getType());
+		client.performRequest();
+		String result = client.getResultAsString();
+
+		int counter = 0;
+		if (result != null) {
+			JSONArray allNews;
+			try {
+				allNews = new JSONArray(result);
+				counter = allNews.length();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return counter;
 	}
 	
 	
@@ -180,7 +205,7 @@ public class BestHrApi {
 					JSONObject reportJson = reports.getJSONObject(i);
 					AnnualReport report = new AnnualReport();
 					report.deserialize(reportJson.toString());
-					if(report.getThumbnailLink() != null)
+					if(!report.getThumbnailLink().equals("null"))
 						ImageHelper.getImageFromInternet(context, "besthrAnnualReports", report.getThumbnailLink());
 					annualReports.add(report);
 				}

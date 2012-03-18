@@ -36,7 +36,7 @@
 	android:layout_height="fill_parent"
 	android:layout_width="fill_parent"
 	android:listSelector="@color/transparent"
-	android:horizontalSpacing="10dp" android:verticalSpacing="25dp" android:layout_below="@+id/header_text" android:paddingBottom="15dp" android:paddingLeft="10dp">
+	android:horizontalSpacing="10dp" android:verticalSpacing="25dp" android:layout_below="@+id/header_text" android:paddingBottom="15dp" android:paddingLeft="10dp" android:paddingTop="10dp">
 </GridView>
 
 </RelativeLayout>

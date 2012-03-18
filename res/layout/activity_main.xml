@@ -11,14 +11,16 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:src="@drawable/stripe" android:layout_below="@+id/actionbar"/>
-
+
 <RelativeLayout
     android:id="@+id/icons"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" android:layout_below="@+id/stripe" android:padding="35dp">
+    android:layout_height="fill_parent"
+    android:layout_below="@+id/stripe"
+    android:padding="35dp" >
 
     <RelativeLayout
-        android:id="@+id/first_row"
+        android:id="@+id/left_column"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
@@ -27,59 +29,93 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:background="@drawable/row_button" />
-
-        <ImageButton
-            android:id="@+id/events"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/row_button" />
 
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/second_row"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/first_row"
-        android:layout_marginTop="20dp" >
-
+        <TextView
+            android:id="@+id/newsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/news"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="Novosti"
+            android:textColor="@drawable/text_blue_white_focused" />
+
         <ImageButton
             android:id="@+id/reports"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/row_button" />
-
-        <ImageButton
-            android:id="@+id/members"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignParentRight="true"
+            android:layout_below="@+id/newsText"
+            android:layout_marginTop="10dp"
             android:background="@drawable/row_button" />
 
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/RelativeLayout02"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp" android:layout_below="@+id/second_row">
-
-        <ImageButton
-            android:id="@+id/boardMembers"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:background="@drawable/row_button" />
+        <TextView
+            android:id="@+id/reportsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/reports"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="Godišnji izvještaji"
+            android:textColor="@drawable/text_blue_white_focused" />
 
         <ImageButton
             android:id="@+id/contact"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/row_button" />
+            android:layout_marginTop="10dp"
+            android:background="@drawable/row_button" android:layout_below="@+id/reportsText"/>
+
+        <TextView
+            android:id="@+id/contactText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Kontakt"
+            android:textColor="@drawable/text_blue_white_focused" android:layout_below="@+id/contact" android:layout_centerHorizontal="true"/>
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/right_column"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/first_row" >
+
+        <ImageButton
+            android:id="@+id/events"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/row_button" />
+
+        <TextView
+            android:id="@+id/eventsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/events"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="Seminari"
+            android:textColor="@drawable/text_blue_white_focused" />
+
+        <ImageButton
+            android:id="@+id/members"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@+id/eventsText"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/row_button" />
+
+        <TextView
+            android:id="@+id/membersText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/members"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="Članovi"
+            android:textColor="@drawable/text_blue_white_focused" />
+    </RelativeLayout>
 </RelativeLayout>
 
 </RelativeLayout>

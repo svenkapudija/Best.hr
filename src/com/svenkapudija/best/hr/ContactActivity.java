@@ -3,6 +3,7 @@ package com.svenkapudija.best.hr;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -100,7 +101,6 @@ public class ContactActivity extends RootActivity {
         
         rows.add(new PersonRow("BEST Zagreb", "ured", "berst@asd.com", "1231132"));
 		rows.add(new PersonRow("Unska 3, 10000 Zagreb", "adresa"));
-		//rows.add(new PersonRow("www.best.hr", "web-stranica"));
 		rows.add(new PersonRow("85079637865", "OIB"));
 		rows.add(new PersonRow("1458841", "matièni broj"));
 		rows.add(new PersonRow("2360000-1101434925", "žiro raèun"));
@@ -111,7 +111,12 @@ public class ContactActivity extends RootActivity {
 		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+				/*
+				ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE); 
+				clipboard.setText(rows.get(position).getTitle());
 				
+				showToast(rows.get(position).getSubtitle() + " je kopiran u clipboard");
+				*/
 			}
 		});
     }
