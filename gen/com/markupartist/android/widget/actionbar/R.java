@@ -25,38 +25,39 @@ containing a value of this type.
         public static final int actionbar_background_start=0x7f040005;
         public static final int actionbar_line_above=0x7f04000a;
         public static final int actionbar_line_below=0x7f040009;
-        /**  ACTION BAR 
-         */
-        public static final int actionbar_separator=0x7f04000c;
         public static final int actionbar_separator_dark_left=0x7f040000;
         public static final int actionbar_separator_dark_right=0x7f040001;
         public static final int actionbar_separator_light_left=0x7f040002;
         public static final int actionbar_separator_light_right=0x7f040003;
+        /**  ACTION BAR 
+         */
         public static final int actionbar_title=0x7f040004;
         /**  COLORS 
          */
-        public static final int best_blue=0x7f04000d;
-        public static final int best_green=0x7f04000f;
-        public static final int best_orange=0x7f04000e;
-        public static final int black=0x7f040011;
-        public static final int header_background=0x7f040016;
+        public static final int best_blue=0x7f04000c;
+        public static final int best_green=0x7f04000e;
+        public static final int best_orange=0x7f04000d;
+        public static final int black=0x7f040010;
+        public static final int header_background=0x7f040017;
         /**  *** SINGLE ROW *** 
  HEADER 
          */
-        public static final int header_text=0x7f040015;
-        public static final int light_grey=0x7f040010;
-        public static final int row_background_end=0x7f040018;
+        public static final int header_text=0x7f040016;
+        public static final int light_grey=0x7f04000f;
+        public static final int row_background_end=0x7f040019;
         /**  ROW 
          */
-        public static final int row_background_start=0x7f040017;
-        public static final int row_text=0x7f040019;
-        public static final int row_text_small=0x7f04001a;
+        public static final int row_background_start=0x7f040018;
+        public static final int row_text=0x7f04001a;
+        public static final int row_text_small=0x7f04001b;
         /**  SEPARATORS (between icons) 
          */
-        public static final int separator_darker=0x7f040013;
-        public static final int separator_lighter=0x7f040014;
+        public static final int separator_darker=0x7f040014;
+        public static final int separator_light_left=0x7f040012;
+        public static final int separator_light_right=0x7f040013;
+        public static final int separator_lighter=0x7f040015;
         public static final int transparent=0x7f04000b;
-        public static final int white=0x7f040012;
+        public static final int white=0x7f040011;
     }
     public static final class dimen {
         public static final int actionbar_height=0x7f050000;
@@ -75,13 +76,18 @@ containing a value of this type.
         public static final int actionbar_btn_pressed=0x7f020006;
         public static final int background_pattern=0x7f020007;
         public static final int background_pattern_repeat=0x7f020008;
-        public static final int gradient_actionbar=0x7f020009;
-        public static final int gradient_transparent_to_white=0x7f02000a;
-        public static final int ic_launcher=0x7f02000b;
-        public static final int icon=0x7f02000c;
-        public static final int stripe=0x7f02000d;
+        public static final int contact_row_btn=0x7f020009;
+        public static final int contact_row_email=0x7f02000a;
+        public static final int contact_row_phone=0x7f02000b;
+        public static final int gradient_actionbar=0x7f02000c;
+        public static final int gradient_row=0x7f02000d;
+        public static final int gradient_transparent_to_white=0x7f02000e;
+        public static final int ic_launcher=0x7f02000f;
+        public static final int icon=0x7f020010;
+        public static final int stripe=0x7f020011;
     }
     public static final class id {
+        public static final int TextView01=0x7f08001d;
         public static final int actionbar=0x7f080010;
         public static final int actionbar_actions=0x7f080009;
         public static final int actionbar_btn_layout=0x7f08000c;
@@ -95,16 +101,34 @@ containing a value of this type.
         public static final int actionbar_progress=0x7f08000a;
         public static final int actionbar_text=0x7f08000f;
         public static final int actionbar_title=0x7f08000b;
+        public static final int email_button=0x7f080016;
+        public static final int icons=0x7f080015;
+        public static final int name=0x7f080013;
+        public static final int phone_button=0x7f080019;
         public static final int relativeLayout1=0x7f080011;
+        public static final int right_text=0x7f08001c;
         public static final int screen=0x7f080000;
         public static final int separator=0x7f080006;
+        public static final int separator2_left=0x7f08001b;
+        public static final int separator2_right=0x7f08001a;
         public static final int separator_2=0x7f08000d;
         public static final int separator_helper=0x7f080007;
+        public static final int separator_left=0x7f080018;
+        public static final int separator_right=0x7f080017;
+        public static final int text=0x7f080012;
+        public static final int title=0x7f08001e;
+        public static final int type=0x7f080014;
     }
     public static final class layout {
         public static final int actionbar=0x7f030000;
         public static final int actionbar_item=0x7f030001;
         public static final int activity_main=0x7f030002;
+        public static final int ds=0x7f030003;
+        public static final int event_row=0x7f030004;
+        public static final int header=0x7f030005;
+        public static final int person_row=0x7f030006;
+        public static final int separator=0x7f030007;
+        public static final int simple_row=0x7f030008;
     }
     public static final class string {
         public static final int actionbar_activity_not_found=0x7f060002;

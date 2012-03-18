@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/actionbar_btn_layout"
+    android:layout_height="@dimen/actionbar_height"
+    android:layout_width="wrap_content"
+    android:clickable="true" android:background="@drawable/actionbar_btn">
+    <ImageView
+        android:layout_width="1px"
+        android:visibility="visible"
+        android:layout_height="fill_parent"
+        android:id="@+id/separator"
+        android:background="@color/actionbar_separator_light_left"></ImageView>
+    <ImageView
+        android:id="@+id/separator_2"
+        android:layout_width="1px"
+        android:layout_height="fill_parent"
+        android:background="@color/actionbar_separator_light_right"
+        android:visibility="visible" android:layout_toRightOf="@+id/separator"/>
+</RelativeLayout>
