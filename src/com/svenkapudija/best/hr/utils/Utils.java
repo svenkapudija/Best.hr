@@ -1,5 +1,7 @@
 package com.svenkapudija.best.hr.utils;
 
+import com.google.android.maps.GeoPoint;
+
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -42,5 +44,9 @@ public class Utils {
 	 */
 	public static String removeHtmlTags(String text) {
 		return text.replaceAll("(?i)<(?!(/?(li|p)))[^>]*>", "");
+	}
+	
+	public static GeoPoint getGeoPoint(double lat, double lng) {
+		return new GeoPoint((int) (lat*1E6), (int) (lng*1E6));
 	}
 }

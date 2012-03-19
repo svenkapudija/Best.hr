@@ -5,7 +5,6 @@ import java.util.Calendar;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -81,8 +80,10 @@ public class EventsActivity extends RootActivity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 				EventRow eventRow = listData.get(position);
 				if(!eventRow.isHeader()) {
-					Intent browse = new Intent(Intent.ACTION_VIEW , Uri.parse(eventRow.getEvent().getUrl()));
-				    startActivity(browse);
+					Intent i = new Intent(EventsActivity.this, SingleEventActivity.class);
+					Log.d(Preferences.DEBUG_TAG, "event: " + eventRow.getEvent().toString());
+					i.putExtra("event_id", eventRow.getEvent().getId());
+				    startActivity(i);
 				}
 			}
 		});

@@ -19,4 +19,5 @@ public class Preferences {
 	public static final String BEST_HR_OIB = "85079637865";
 	public static final String BEST_HR_MB = "1458841";
 	public static final String BEST_HR_ZR = "2360000-1101434925";
+	public static final String BEST_HR_WEBSITE = "http://www.best.hr";
 }
