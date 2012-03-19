@@ -2,11 +2,7 @@ package com.svenkapudija.best.hr.adapters;
 
 import java.util.List;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.svenkapudija.best.hr.R;
-import com.svenkapudija.best.hr.utils.Preferences;
+import com.svenkapudija.best.hr.utils.Utils;
 
 public class PersonAdapter extends ArrayAdapter<PersonRow> {
 
@@ -35,13 +30,6 @@ public class PersonAdapter extends ArrayAdapter<PersonRow> {
         View row = convertView;
         
         final PersonRow item = items.get(position);
-        
-        /*
-        if (row == null) {
-    		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        	row = inflater.inflate(R.layout.person_row, null);
-    	}
-        */
         
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     	if(item.isHeader()) {
@@ -66,14 +54,7 @@ public class PersonAdapter extends ArrayAdapter<PersonRow> {
             	phoneButton.setOnClickListener(new View.OnClickListener() {
     				@Override
     				public void onClick(View v) {
-    					Intent callIntent = new Intent(Intent.ACTION_CALL);
-    			        callIntent.setData(Uri.parse("tel:" + item.getPhone()));
-    			        try {
-    			        	context.startActivity(callIntent);
-    			        } catch (ActivityNotFoundException e) {
-    			        	e.printStackTrace();
-    			        	Toast.makeText(context, "Greška pri pokretanju aplikacije za poziv.", Toast.LENGTH_LONG).show();
-    			        }
+    					Utils.call(context, item.getPhone());
     				}
     			});
             }
@@ -90,17 +71,7 @@ public class PersonAdapter extends ArrayAdapter<PersonRow> {
             	emailButton.setOnClickListener(new View.OnClickListener() {
     				@Override
     				public void onClick(View v) {
-    					Intent i = new Intent(Intent.ACTION_SEND);
-    					i.setType("text/plain");
-    					i.putExtra(Intent.EXTRA_EMAIL  , new String[]{item.getEmail()});
-    					i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
-    					i.putExtra(Intent.EXTRA_TEXT   , "body of email");
-    					try {
-    						context.startActivity(Intent.createChooser(i, "Send mail..."));
-    			        } catch (ActivityNotFoundException e) {
-    			        	e.printStackTrace();
-    			        	Toast.makeText(context, "Greška pri pokretanju aplikacije za email.", Toast.LENGTH_LONG).show();
-    			        }
+    					Utils.sendEmail(context, item.getEmail());
     				}
     			});
             }

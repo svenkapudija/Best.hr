@@ -12,7 +12,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import com.svenkapudija.best.hr.files.ImageHelper;
 import com.svenkapudija.best.hr.utils.Preferences;
@@ -62,7 +61,7 @@ public class AnnualReport implements DatabaseInterface {
 			}
 			
 			String imageName = ImageHelper.getImageNameFromUrl(this.getThumbnailLink());
-			this.setThumbnail(ImageHelper.getImageFromFile("besthrAnnualReports", imageName));
+			this.setThumbnail(ImageHelper.getImageFromFile(Preferences.ANNUAL_REPORTS_DIRECTORY, imageName));
 			
 			result.close();
 			return true;
@@ -87,7 +86,7 @@ public class AnnualReport implements DatabaseInterface {
 			}
 			
 			String imageName = ImageHelper.getImageNameFromUrl(report.getThumbnailLink());
-			report.setThumbnail(ImageHelper.getImageFromFile("besthrAnnualReports", imageName));
+			report.setThumbnail(ImageHelper.getImageFromFile(Preferences.ANNUAL_REPORTS_DIRECTORY, imageName));
 			
 			reports.add(report);
 		}

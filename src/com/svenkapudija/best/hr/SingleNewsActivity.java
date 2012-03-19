@@ -2,6 +2,7 @@ package com.svenkapudija.best.hr;
 
 import java.util.Date;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Html;
@@ -13,7 +14,10 @@ import android.widget.TextView;
 
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
+import com.svenkapudija.best.hr.api.BestHrApi;
 import com.svenkapudija.best.hr.models.News;
+import com.svenkapudija.best.hr.utils.Preferences;
+import com.svenkapudija.best.hr.utils.Utils;
 
 public class SingleNewsActivity extends RootActivity {
 	
@@ -23,6 +27,7 @@ public class SingleNewsActivity extends RootActivity {
 	private TextView introTextView;
 	private TextView bodyTextView;
 	private ImageView imageImageView;
+	private News news;
 	
 	private void getUIElements() {
 		titleTextView = (TextView) findViewById(R.id.title);
@@ -35,9 +40,15 @@ public class SingleNewsActivity extends RootActivity {
 
 	public void setupActionBar() {
 		actionBar = (ActionBar) findViewById(R.id.actionbar);
+		
+		// Sharing
 		actionBar.addAction(new Action() {
 			public void performAction(View view) {
-				
+				Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+				intent.setType("text/plain");
+	            intent.putExtra(android.content.Intent.EXTRA_SUBJECT, news.getTitle() + " - " + BestHrApi.BASE_URL + news.getLink());
+	            intent.putExtra(android.content.Intent.EXTRA_TEXT, Utils.removeHtmlTags(news.getIntro()) + "\n" + Utils.removeHtmlTags(news.getBody()));
+	            startActivity(intent);
 			}
 
 			public int getDrawable() {
@@ -58,7 +69,7 @@ public class SingleNewsActivity extends RootActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_news);
         
-        News news = new News(dbWriteable);
+        news = new News(dbWriteable);
         
         Bundle extras = getIntent().getExtras(); 
         if(extras != null) {

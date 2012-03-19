@@ -20,13 +20,13 @@
     android:id="@+id/header_text"
     android:layout_width="fill_parent"
     android:layout_height="23dp"
-    android:background="@color/header_background" android:layout_below="@+id/stripe" android:layout_marginTop="7dp">
+    android:background="@color/header_background" android:layout_below="@+id/stripe">
 
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Klikni za preuzimanje (.PDF)"
+        android:text="Odaberi PDF za preuzimanje"
         android:textColor="@color/header_text" android:textStyle="bold" android:layout_centerVertical="true" android:layout_marginLeft="14dp"/>
 
 </RelativeLayout>
@@ -36,7 +36,7 @@
 	android:layout_height="fill_parent"
 	android:layout_width="fill_parent"
 	android:listSelector="@color/transparent"
-	android:horizontalSpacing="10dp" android:verticalSpacing="25dp" android:layout_below="@+id/header_text" android:paddingBottom="15dp" android:paddingLeft="10dp" android:paddingTop="10dp">
+	android:horizontalSpacing="15dp" android:verticalSpacing="25dp" android:layout_below="@+id/header_text" android:paddingBottom="15dp" android:paddingTop="10dp">
 </GridView>
 
 </RelativeLayout>

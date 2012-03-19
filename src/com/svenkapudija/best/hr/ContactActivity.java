@@ -3,7 +3,6 @@ package com.svenkapudija.best.hr;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.ClipboardManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,7 +19,7 @@ import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
 import com.svenkapudija.best.hr.adapters.PersonAdapter;
 import com.svenkapudija.best.hr.adapters.PersonRow;
-import com.svenkapudija.best.hr.internet.BestHrApi;
+import com.svenkapudija.best.hr.utils.Preferences;
 
 public class ContactActivity extends RootActivity {
 	
@@ -50,20 +49,6 @@ public class ContactActivity extends RootActivity {
 
 	public void setupActionBar() {
 		actionBar = (ActionBar) findViewById(R.id.actionbar);
-		actionBar.addAction(new Action() {
-			public void performAction(View view) {
-				
-			}
-
-			public int getDrawable() {
-				return R.drawable.action_bar_news;
-			}
-
-			public CharSequence getText() {
-				return "";
-			}
-		});
-		
 		actionBar.setHome(R.drawable.action_bar_logotype);
 	}
 	
@@ -76,20 +61,6 @@ public class ContactActivity extends RootActivity {
         getUIElements();
         setupActionBar();
         
-        BestHrApi api = new BestHrApi(this);
-        
-        /*
-        ArrayList<Person> members = api.getBoardMembers();
-		if(!members.isEmpty()) {
-			for (Person member : members) {
-				Log.d(Preferences.DEBUG_TAG, "Member: " + member.toString());
-				member.setDatabase(dbWriteable);
-				if(!member.exists())
-					member.insertOrUpdate();
-			}
-		}
-		*/
-		
         googleMapsThumb.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -99,11 +70,11 @@ public class ContactActivity extends RootActivity {
 			}
 		});
         
-        rows.add(new PersonRow("BEST Zagreb", "ured", "berst@asd.com", "1231132"));
-		rows.add(new PersonRow("Unska 3, 10000 Zagreb", "adresa"));
-		rows.add(new PersonRow("85079637865", "OIB"));
-		rows.add(new PersonRow("1458841", "matièni broj"));
-		rows.add(new PersonRow("2360000-1101434925", "žiro raèun"));
+        rows.add(new PersonRow("BEST Zagreb", "ured", Preferences.BEST_HR_EMAIL, Preferences.BEST_HR_PHONE));
+		rows.add(new PersonRow(Preferences.BEST_HR_ADDRESS, "adresa"));
+		rows.add(new PersonRow(Preferences.BEST_HR_OIB, "OIB"));
+		rows.add(new PersonRow(Preferences.BEST_HR_MB, "matièni broj"));
+		rows.add(new PersonRow(Preferences.BEST_HR_ZR, "žiro raèun"));
 		
 		listviewAdapter = new PersonAdapter(this, rows);
 		listview.setAdapter(listviewAdapter);
@@ -111,7 +82,8 @@ public class ContactActivity extends RootActivity {
 		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-				/*
+				/* Better pop-up some dialog so user can realize what the "clipboard" is
+				
 				ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE); 
 				clipboard.setText(rows.get(position).getTitle());
 				

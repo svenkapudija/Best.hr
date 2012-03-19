@@ -7,7 +7,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.security.KeyManagementException;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableEntryException;
+import java.security.cert.CertificateException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,8 +39,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.SingleClientConnManager;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.svenkapudija.best.hr.R;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -61,6 +64,7 @@ public class SimpleHttpClient {
 	public static final int HTTP_POST = 2;
 	private static final String EXPIRES_FORMAT = "EEE, dd MMM yyyy HH:mm:ss";
 	private static final String SSL_KEYSTORE_PASSWORD = "your_password";
+	private static final int SSL_CERTIFICATE_PATH = 0; // R.raw.mystore
 	
 	private Context context;
 	
@@ -213,7 +217,7 @@ public class SimpleHttpClient {
 			if ((type == HTTP_POST) && (httpNameValuePairs.size() > 0))
 				((HttpPost) request).setEntity(new UrlEncodedFormEntity(httpNameValuePairs, "UTF-8"));
 			
-			if (enableSSL) {
+			if (enableSSL && SSL_CERTIFICATE_PATH != 0) {
 				response = new SSLClient().execute(request);
 			} else {
 				response = getHttpClient().execute(request);
@@ -310,7 +314,7 @@ public class SimpleHttpClient {
 	class SSLClient extends DefaultHttpClient {
 		 
 	    public SSLClient() {
-	    	// Constructor
+	    	
 	    }
 	 
 	    @Override
@@ -328,7 +332,7 @@ public class SimpleHttpClient {
 	            KeyStore trusted = KeyStore.getInstance("BKS");
 	            // Get the raw resource, which contains the keystore with
 	            // your trusted certificates (root and any intermediate certs)
-	            InputStream in = context.getResources().openRawResource(0);
+	            InputStream in = context.getResources().openRawResource(SSL_CERTIFICATE_PATH);
 	            try {
 	                // Initialize the keystore with the provided trusted certificates
 	                // Also provide the password of the keystore
@@ -343,7 +347,17 @@ public class SimpleHttpClient {
 	            // http://hc.apache.org/httpcomponents-client-ga/tutorial/html/connmgmt.html#d4e506
 	            sf.setHostnameVerifier(SSLSocketFactory.STRICT_HOSTNAME_VERIFIER);
 	            return sf;
-	        } catch (Exception e) {
+	        } catch (CertificateException e) {
+	            throw new AssertionError(e);
+	        } catch (NoSuchAlgorithmException e) {
+	            throw new AssertionError(e);
+	        } catch (UnrecoverableEntryException e) {
+	            throw new AssertionError(e);
+	        } catch (KeyStoreException e) {
+	            throw new AssertionError(e);
+	        } catch (KeyManagementException e) {
+	            throw new AssertionError(e);
+	        } catch (IOException e) {
 	            throw new AssertionError(e);
 	        }
 	    }

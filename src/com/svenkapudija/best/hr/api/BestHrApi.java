@@ -1,27 +1,25 @@
-package com.svenkapudija.best.hr.internet;
+package com.svenkapudija.best.hr.api;
 
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
+
 import com.svenkapudija.best.hr.files.ImageHelper;
+import com.svenkapudija.best.hr.internet.SimpleHttpClient;
 import com.svenkapudija.best.hr.models.AnnualReport;
 import com.svenkapudija.best.hr.models.Event;
 import com.svenkapudija.best.hr.models.News;
 import com.svenkapudija.best.hr.models.Person;
 import com.svenkapudija.best.hr.utils.Preferences;
 
-import android.content.Context;
-import android.util.Log;
-
 public class BestHrApi {
 	
-	private static final String API_KEY = "api_key"; // None for now
-	private static final String BASE_API_URL = "http://www.best.hr/api";
-	private static final String BASE_URL = "http://www.best.hr";
+	public static final String BASE_API_URL = "http://www.best.hr/api";
+	public static final String BASE_URL = "http://www.best.hr";
 		
 	private static final String NEWS = "/index.php?path=/novosti";
 	private static final String NEWS_AT_ID = "/index.php?path=/novosti/get&news_id=";
@@ -40,7 +38,7 @@ public class BestHrApi {
 	/**
 	 * Retrieves news at specific <code>id</code>.
 	 * 
-	 * @return news News object if everything went ok, <code>null</code> otherwise.
+	 * @return News object if everything went ok, <code>null</code> otherwise.
 	 */
 	public News getNews(int newsId) {
 		SimpleHttpClient client = new SimpleHttpClient(this.getContext(), BASE_API_URL + NEWS_AT_ID + newsId, this.getType());
@@ -55,7 +53,7 @@ public class BestHrApi {
 					News news = new News();
 					news.deserialize(newsJson.toString());
 					if(!news.getImageLink().equals("null"))
-						ImageHelper.getImageFromInternet(context, "besthrNews", BASE_URL + news.getImageLink());
+						news.setImage(ImageHelper.getImageFromInternet(context, Preferences.NEWS_DIRECTORY, BASE_URL + news.getImageLink()));
 					return news;
 				}
 			} catch (JSONException e) {
@@ -205,8 +203,9 @@ public class BestHrApi {
 					JSONObject reportJson = reports.getJSONObject(i);
 					AnnualReport report = new AnnualReport();
 					report.deserialize(reportJson.toString());
-					if(!report.getThumbnailLink().equals("null"))
-						ImageHelper.getImageFromInternet(context, "besthrAnnualReports", report.getThumbnailLink());
+					if(!report.getThumbnailLink().equals("null")) {
+						report.setThumbnail(ImageHelper.getImageFromInternet(context, Preferences.ANNUAL_REPORTS_DIRECTORY, report.getThumbnailLink()));
+					}
 					annualReports.add(report);
 				}
 			} catch (JSONException e) {
@@ -222,7 +221,7 @@ public class BestHrApi {
 	 * 
 	 * @return ArrayList populated with Event objects.
 	 */
-	public ArrayList<Event> getSeminars() {
+	public ArrayList<Event> getEvents() {
 		SimpleHttpClient client = new SimpleHttpClient(this.getContext(), BASE_API_URL + SEMINAR_LIST, this.getType());
 		client.performRequest();
 		String result = client.getResultAsString();

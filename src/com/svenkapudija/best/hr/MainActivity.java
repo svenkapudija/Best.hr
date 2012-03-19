@@ -10,7 +10,7 @@ import android.widget.ImageButton;
 
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
-import com.svenkapudija.best.hr.internet.BestHrApi;
+import com.svenkapudija.best.hr.api.BestHrApi;
 import com.svenkapudija.best.hr.models.AnnualReport;
 import com.svenkapudija.best.hr.models.Event;
 import com.svenkapudija.best.hr.models.News;
@@ -89,7 +89,8 @@ public class MainActivity extends RootActivity {
         members.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
+				Intent i = new Intent(MainActivity.this, BoardMembersActivity.class);
+				startActivityForResult(i, 200);
 			}
 		});
         
@@ -100,74 +101,5 @@ public class MainActivity extends RootActivity {
 				startActivityForResult(i, 200);
 			}
 		});
-        
-        BestHrApi api = new BestHrApi(this);
-        
-        /*
-        ArrayList<Event> seminars = api.getSeminars();
-        if(!seminars.isEmpty()) {
-			for (Event event : seminars) {
-				Log.d(Preferences.DEBUG_TAG, "Events: " + event.toString());
-				event.setDatabase(this.dbWriteable);
-				if(!event.exists()) {
-					event.insertOrUpdate();
-				}
-			}
-		}
-        */
-        
-        /*
-        ArrayList<AnnualReport> reports = api.getAnnualReports();
-        if(!reports.isEmpty()) {
-			for (AnnualReport report : reports) {
-				Log.d(Preferences.DEBUG_TAG, "Report: " + report.toString());
-				report.setDatabase(dbWriteable);
-				report.insertOrUpdate();
-			}
-		}
-        */
-        
-        /*
-        ArrayList<AnnualReport> reports = AnnualReport.readAll(this.dbWriteable);
-        for (AnnualReport report1 : reports) {
-			Log.d(Preferences.DEBUG_TAG, "Report: " + report1.toString());
-		}
-        */
-        
-        /*
-        News news = api.getLastNews();
-        Log.d(Preferences.DEBUG_TAG, "Last news is: " + news.toString());
-        */
-        
-        /*
-        ArrayList<Person> members = api.getBoardMembers();
-		if(!members.isEmpty()) {
-			for (Person member : members) {
-				Log.d(Preferences.DEBUG_TAG, "Member: " + member.toString());
-				member.setDatabase(dbWriteable);
-				member.insertOrUpdate();
-			}
-		}
-		*/
-        
-        /*
-        ArrayList<Person> members = Person.readAll(this.dbWriteable);
-        for (Person person : members) {
-			Log.d(Preferences.DEBUG_TAG, "Person: " + person.toString());
-		}
-        */
-        
-        /*
-        ArrayList<News> allNews = api.getNews();
-		if(!allNews.isEmpty()) {
-			for (News news : allNews) {
-				Log.d(Preferences.DEBUG_TAG, "News: " + news.toString());
-				news = api.getNews(news.getId());
-				
-				news.setDatabase(dbWriteable);
-				//if(!news.exists()) news.insertOrUpdate();
-			}
-		}
-		*/
     }
 }

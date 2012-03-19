@@ -38,6 +38,9 @@ public class Person implements DatabaseInterface {
 	}
 	
 	public boolean exists() {
+		if(this.database == null)
+			return false;
+		
 		try {
 			Cursor result = this.database.rawQuery("SELECT name FROM best_members WHERE name = '" + URLEncoder.encode(this.getName(), "utf-8") + "'", null);
 			if (result.getCount() > 0) {
@@ -46,9 +49,6 @@ public class Person implements DatabaseInterface {
 			} else {
 				return false;
 			}
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-			return false;
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return false;
@@ -56,6 +56,9 @@ public class Person implements DatabaseInterface {
 	}
 	
 	public boolean read() {
+		if(this.database == null)
+			return false;
+		
 		try {
 			Cursor result = this.database.rawQuery("SELECT role, type, email, phone FROM best_members WHERE name = '" + URLEncoder.encode(this.getName(), "utf-8") + "'", null);
 			if (result.getCount() > 0) {
@@ -72,9 +75,6 @@ public class Person implements DatabaseInterface {
 				return false;
 			}
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-			return false;
-		} catch (NullPointerException e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -119,6 +119,9 @@ public class Person implements DatabaseInterface {
 	}
 	
 	public boolean insertOrUpdate() {
+		if(this.database == null)
+			return false;
+		
 		try {
 			this.database.execSQL("INSERT OR REPLACE INTO best_members (name, role, type, email, phone) VALUES" +
 					"('" +
@@ -137,20 +140,17 @@ public class Person implements DatabaseInterface {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-			return false;
 		}
 	}
 	
 	public boolean delete() {
+		if(this.database == null)
+			return false;
+
 		try {
 			this.database.execSQL("DELETE FROM best_members WHERE name = '" + URLEncoder.encode(this.getName(), "utf-8") + "'");
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		} catch (NullPointerException e) {
 			e.printStackTrace();
 			return false;
 		} catch (UnsupportedEncodingException e) {

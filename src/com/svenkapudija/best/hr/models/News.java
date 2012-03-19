@@ -48,26 +48,44 @@ public class News implements DatabaseInterface {
 		
 	}
 	
+	/**
+	 * Required if using <code>exists</code>, <code>read</code>, <code>insertOrUpdate</code> or <code>delete</code>
+	 * 
+	 * @param database {@link SQLiteDatabase}
+	 */
 	public News(SQLiteDatabase database) {
 		this.database = database; 
 	}
 	
+	/**
+	 * Checks if news with it's ID is present in database.
+	 * Database must not be null.
+	 * 
+	 * @return <code>TRUE</code> if news is found, <code>FALSE</code> otherwise
+	 */
 	public boolean exists() {
-		try {
-			Cursor result = this.database.rawQuery("SELECT id FROM best_news WHERE id = " + this.getId(), null);
-			if (result.getCount() > 0) {
-				result.close();
-				return true;
-			} else {
-				return false;
-			}
-		} catch (NullPointerException e) {
-			e.printStackTrace();
+		if(this.database == null)
+			return false;
+		
+		Cursor result = this.database.rawQuery("SELECT id FROM best_news WHERE id = " + this.getId(), null);
+		if (result.getCount() > 0) {
+			result.close();
+			return true;
+		} else {
 			return false;
 		}
 	}
 	
+	/**
+	 * Retrieves object parameters from database if exists.
+	 * Database must not be null.
+	 * 
+	 * @return <code>TRUE</code> if news is found and retrieved, <code>FALSE</code> otherwise
+	 */
 	public boolean read() {
+		if(this.database == null)
+			return false;
+		
 		try {
 			Cursor result = this.database.rawQuery("SELECT title, author, imageLink, published, link, intro, body FROM best_news WHERE id = " + this.getId(), null);
 			if (result.getCount() > 0) {
@@ -82,7 +100,7 @@ public class News implements DatabaseInterface {
 				this.setBody(URLDecoder.decode(result.getString(6), "utf-8"));
 				
 				String imageName = ImageHelper.getImageNameFromUrl(this.getImageLink());
-				this.setImage(ImageHelper.getImageFromFile("besthrNews", imageName));
+				this.setImage(ImageHelper.getImageFromFile(Preferences.NEWS_DIRECTORY, imageName));
 				
 				result.close();
 				return true;
@@ -92,12 +110,15 @@ public class News implements DatabaseInterface {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return false;
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-			return false;
 		}
 	}
 	
+	/**
+	 * Retrieves object parameters from database if exists.
+	 * 
+	 * @param database {@link SQLiteDatabase}
+	 * @return News object if news is found and retrieved, <code>FALSE</code> otherwise
+	 */
 	public static News getLastNews(SQLiteDatabase database) {
 		try {
 			Cursor result = database.rawQuery("SELECT id, title, author, imageLink, published, link, intro, body FROM best_news ORDER by DATE desc LIMIT 1", null);
@@ -116,7 +137,7 @@ public class News implements DatabaseInterface {
 				news.setBody(URLDecoder.decode(result.getString(7), "utf-8"));
 				
 				String imageName = ImageHelper.getImageNameFromUrl(news.getImageLink());
-				news.setImage(ImageHelper.getImageFromFile("besthrNews", imageName));
+				news.setImage(ImageHelper.getImageFromFile(Preferences.NEWS_DIRECTORY, imageName));
 				
 				result.close();
 				return news;
@@ -126,12 +147,15 @@ public class News implements DatabaseInterface {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return null;
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-			return null;
 		}
 	}
 	
+	/**
+	 * Retrieves all news objects from database.
+	 * 
+	 * @param database {@link SQLiteDatabase}
+	 * @return ArrayList<News> of all news in database (empty if there was an error).
+	 */
 	public static ArrayList<News> readAll(SQLiteDatabase database) {
 		ArrayList<News> newsList = new ArrayList<News>();
 		
@@ -153,7 +177,7 @@ public class News implements DatabaseInterface {
 			}
 			
 			String imageName = ImageHelper.getImageNameFromUrl(news.getImageLink());
-			news.setImage(ImageHelper.getImageFromFile("besthrNews", imageName));
+			news.setImage(ImageHelper.getImageFromFile(Preferences.NEWS_DIRECTORY, imageName));
 			
 			newsList.add(news);
 		}
@@ -162,10 +186,18 @@ public class News implements DatabaseInterface {
 		return newsList;
 	}
 	
-	public static ArrayList<News> readAll(SQLiteDatabase database, int limitStart, int limitEnd) {
+	/**
+	 * Retrieves all news objects from database from specific position and at specific range.
+	 * 
+	 * @param database {@link SQLiteDatabase}
+	 * @param startingPosition Start retrieving objects from this position.
+	 * @param n How many objects do you want?
+	 * @return ArrayList<News> of all news in database from <code>startingPosition</code> to <code>startingPosition+counter</code> (empty if there was an error).
+	 */
+	public static ArrayList<News> readAll(SQLiteDatabase database, int startingPosition, int n) {
 		ArrayList<News> newsList = new ArrayList<News>();
 		
-		Cursor result = database.rawQuery("SELECT id, title, author, imageLink, published, link, intro, body FROM best_news ORDER by DATE desc LIMIT " + limitStart + "," + limitEnd, null);
+		Cursor result = database.rawQuery("SELECT id, title, author, imageLink, published, link, intro, body FROM best_news ORDER by DATE desc LIMIT " + startingPosition + "," + n, null);
 		while(result.moveToNext()) {
 			News news = new News(database);
 			news.setId(result.getInt(0));
@@ -183,7 +215,7 @@ public class News implements DatabaseInterface {
 			}
 			
 			String imageName = ImageHelper.getImageNameFromUrl(news.getImageLink());
-			news.setImage(ImageHelper.getImageFromFile("besthrNews", imageName));
+			news.setImage(ImageHelper.getImageFromFile(Preferences.NEWS_DIRECTORY, imageName));
 			
 			newsList.add(news);
 		}
@@ -192,14 +224,18 @@ public class News implements DatabaseInterface {
 		return newsList;
 	}
 	
+	/**
+	 * Return number of news objects in database.
+	 * 
+	 * @param database {@link SQLiteDatabase}
+	 * @return number of news objects
+	 */
 	public static int getCount(SQLiteDatabase database) {
 		int count = 0;
 		
 		Cursor result = database.rawQuery("SELECT COUNT(*) FROM best_news", null);
 		if (result.getCount() > 0) {
 			result.moveToFirst();
-			
-			Log.d(Preferences.DEBUG_TAG, "result " + result.toString());
 			count = result.getInt(0);
 		}
 		result.close();
@@ -207,7 +243,13 @@ public class News implements DatabaseInterface {
 		return count;
 	}
 	
+	/**
+	 * Insert object in database if does not exists (based on ID), else update the values.
+	 */
 	public boolean insertOrUpdate() {
+		if(this.database == null)
+			return false;
+		
 		try {
 			Log.d(Preferences.DEBUG_TAG, "database " + this.database);
 			this.database.execSQL("INSERT OR REPLACE INTO best_news (id, title, author, imageLink, published, date, link, intro, body) VALUES" +
@@ -231,25 +273,30 @@ public class News implements DatabaseInterface {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-			return false;
 		}
 	}
 	
+	/**
+	 * Delete news from database by it's <code>id</code>.
+	 */
 	public boolean delete() {
+		if(this.database == null)
+			return false;
+		
 		try {
 			this.database.execSQL("DELETE FROM best_news WHERE id = " + this.getId());
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-			return false;
 		}
 	}
 	
+	/**
+	 * Deserializes JSON to actual {@link News} object.
+	 * 
+	 * @param jsonString Valid JSON String (from BEST API).
+	 */
 	public boolean deserialize(String jsonString) {
 		try {
 			JSONObject object = new JSONObject(jsonString);
@@ -288,8 +335,6 @@ public class News implements DatabaseInterface {
 		}
 	}
 	
-	
-
 	public int getId() {
 		return id;
 	}

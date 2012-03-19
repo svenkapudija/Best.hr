@@ -16,7 +16,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.format.DateFormat;
 import android.util.Log;
 
-import com.svenkapudija.best.hr.utils.Array;
 import com.svenkapudija.best.hr.utils.Preferences;
 import com.svenkapudija.best.hr.utils.TypeCaster;
 

@@ -5,7 +5,6 @@ import java.util.List;
 import android.content.Context;
 import android.text.Html;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,7 @@ import android.widget.TextView;
 
 import com.svenkapudija.best.hr.R;
 import com.svenkapudija.best.hr.models.News;
-import com.svenkapudija.best.hr.utils.Preferences;
+import com.svenkapudija.best.hr.utils.Utils;
 
 public class NewsAdapter extends ArrayAdapter<News> {
 
@@ -46,11 +45,7 @@ public class NewsAdapter extends ArrayAdapter<News> {
         
     	title.setText(item.getAuthor());
     	date.setText(DateFormat.format("dd.MM.yyyy.", item.getPublished()));
-    	if(item.getIntro().contains("http://www.youtube.com")) {
-			intro.setText("Klikni za pokretanje YouTube videa.");
-		} else {
-			intro.setText(Html.fromHtml(item.getIntro().replaceAll("(?i)<(?!(/?(li|p)))[^>]*>", "")));
-		}
+    	intro.setText(Html.fromHtml(Utils.removeHtmlTags(item.getIntro())));
     	if(item.getImage() != null) {
     		thumb.setVisibility(View.VISIBLE);
     		thumb.setImageBitmap(item.getImage());

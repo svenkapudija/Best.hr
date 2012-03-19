@@ -1,11 +1,15 @@
 package com.svenkapudija.best.hr;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
@@ -17,16 +21,21 @@ import com.google.android.maps.Overlay;
 import com.google.android.maps.Projection;
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
+import com.svenkapudija.best.hr.adapters.EventRow;
 import com.svenkapudija.best.hr.adapters.PersonAdapter;
 import com.svenkapudija.best.hr.adapters.PersonRow;
-import com.svenkapudija.best.hr.internet.BestHrApi;
+import com.svenkapudija.best.hr.api.BestHrApi;
+import com.svenkapudija.best.hr.models.Event;
 import com.svenkapudija.best.hr.models.Person;
+import com.svenkapudija.best.hr.utils.DateUtils;
+import com.svenkapudija.best.hr.utils.Preferences;
 
 public class BoardMembersActivity extends RootActivity {
 	
 	private PersonAdapter listviewAdapter;
 	private ArrayList<PersonRow> rows = new ArrayList<PersonRow>();
 	private ListView listview;
+	private ArrayList<Person> members = new ArrayList<Person>();
 	
 	private void getUIElements() {
 		listview = (ListView) findViewById(R.id.listview);
@@ -51,6 +60,59 @@ public class BoardMembersActivity extends RootActivity {
 		actionBar.setHome(R.drawable.action_bar_logotype);
 	}
 	
+	private class DownloadMembers extends AsyncTask<String, Integer, Integer> {
+		private ProgressDialog progressDialog;
+		
+		public DownloadMembers() {
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		
+			progressDialog = ProgressDialog.show(BoardMembersActivity.this, null, "Preuzimam...");
+		}
+	
+		@Override
+		protected Integer doInBackground(String... params) {
+			BestHrApi api = new BestHrApi(BoardMembersActivity.this);
+			members = api.getBoardMembers();
+				if(!members.isEmpty()) {
+					for (Person member : members) {
+						member.setDatabase(dbWriteable);
+						if(!member.exists())
+							member.insertOrUpdate();
+					}
+				}
+			
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Integer result) {
+			super.onPostExecute(result);
+			
+			iterateThroughMembers();
+			progressDialog.cancel();
+		}
+	}
+	
+	private void iterateThroughMembers() {
+		rows.add(new PersonRow("BEST seminari"));
+		for (Person member : members) {
+			if(member.getType().equals("vivaldi"))
+				rows.add(new PersonRow(member.getName(), member.getRole(), member.getEmail(),member.getPhone()));
+		}
+		
+		rows.add(new PersonRow("Èlanovi uprave"));
+		for (Person member : members) {
+			if(member.getType().equals("board"))
+				rows.add(new PersonRow(member.getName(), member.getRole(), member.getEmail(),member.getPhone()));
+		}
+		
+		listviewAdapter.notifyDataSetChanged();
+	}
+	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,27 +121,16 @@ public class BoardMembersActivity extends RootActivity {
         
         getUIElements();
         setupActionBar();
-        
-        BestHrApi api = new BestHrApi(this);
-        
-        ArrayList<Person> members = Person.readAll(dbWriteable, "vivaldi");
-		if(!members.isEmpty()) {
-			rows.add(new PersonRow("BEST seminari"));
-			for (Person member : members) {
-				rows.add(new PersonRow(member.getName(), member.getRole(), member.getEmail(),member.getPhone()));
-			}
-		}
-		
-		ArrayList<Person> members2 = Person.readAll(dbWriteable, "board");
-		if(!members2.isEmpty()) {
-			rows.add(new PersonRow("Èlanovi uprave"));
-			for (Person member : members2) {
-				rows.add(new PersonRow(member.getName(), member.getRole(), member.getEmail(),member.getPhone()));
-			}
-		}
-		
+
 		listviewAdapter = new PersonAdapter(this, rows);
 		listview.setAdapter(listviewAdapter);
+		
+        members = Person.readAll(dbWriteable);
+		if(!members.isEmpty()) {
+			iterateThroughMembers();
+		} else {
+			new DownloadMembers().execute();
+		}
 		
 		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override

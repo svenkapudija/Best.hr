@@ -56,6 +56,7 @@ public class EventAdapter extends ArrayAdapter<EventRow> {
         	TextView date = (TextView) row.findViewById(R.id.date);
         	TextView location = (TextView) row.findViewById(R.id.location);
         	
+        	// Strike-through if event is in the past
         	if(event.getEndDate().getTime() < this.currentTime.getTime()) {
         		name.setPaintFlags(name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         		date.setPaintFlags(name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
