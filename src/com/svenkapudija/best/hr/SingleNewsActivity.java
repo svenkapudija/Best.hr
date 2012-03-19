@@ -16,7 +16,6 @@ import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
 import com.svenkapudija.best.hr.api.BestHrApi;
 import com.svenkapudija.best.hr.models.News;
-import com.svenkapudija.best.hr.utils.Preferences;
 import com.svenkapudija.best.hr.utils.Utils;
 
 public class SingleNewsActivity extends RootActivity {
@@ -89,6 +88,15 @@ public class SingleNewsActivity extends RootActivity {
         setBody(news.getBody());
         setImage(news.getImage());
     }
+    
+    @Override
+	protected void onDestroy() {
+		super.onDestroy();
+		
+		// Release bitmap from memory
+		if(news.getImage() != null)
+			news.getImage().recycle();
+	}
     
     public void setTitle(String title) {
     	this.titleTextView.setText(title);

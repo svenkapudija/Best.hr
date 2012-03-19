@@ -14,7 +14,7 @@ import com.svenkapudija.best.hr.api.BestHrApi;
 import com.svenkapudija.best.hr.models.AnnualReport;
 import com.svenkapudija.best.hr.models.Event;
 import com.svenkapudija.best.hr.models.News;
-import com.svenkapudija.best.hr.models.Person;
+import com.svenkapudija.best.hr.models.Member;
 import com.svenkapudija.best.hr.utils.Preferences;
 
 public class MainActivity extends RootActivity {
@@ -37,7 +37,7 @@ public class MainActivity extends RootActivity {
 		actionBar = (ActionBar) findViewById(R.id.actionbar);
 		actionBar.addAction(new Action() {
 			public void performAction(View view) {
-				Intent i = new Intent(MainActivity.this, ContactActivity.class);
+				Intent i = new Intent(MainActivity.this, PreferencesActivity.class);
 				startActivityForResult(i, 200);
 			}
 

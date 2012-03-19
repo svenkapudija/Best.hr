@@ -13,7 +13,7 @@ import com.svenkapudija.best.hr.internet.SimpleHttpClient;
 import com.svenkapudija.best.hr.models.AnnualReport;
 import com.svenkapudija.best.hr.models.Event;
 import com.svenkapudija.best.hr.models.News;
-import com.svenkapudija.best.hr.models.Person;
+import com.svenkapudija.best.hr.models.Member;
 import com.svenkapudija.best.hr.utils.Preferences;
 
 public class BestHrApi {
@@ -150,19 +150,19 @@ public class BestHrApi {
 	 * 
 	 * @return ArrayList populated with Person objects (vivaldi + board members).
 	 */
-	public ArrayList<Person> getBoardMembers() {
+	public ArrayList<Member> getBoardMembers() {
 		SimpleHttpClient client = new SimpleHttpClient(this.getContext(), BASE_API_URL + CONTACT, this.getType());
 		client.performRequest();
 		String result = client.getResultAsString();
 
-		ArrayList<Person> boardMembers = new ArrayList<Person>();
+		ArrayList<Member> boardMembers = new ArrayList<Member>();
 		if (result != null) {
 			try {
 				JSONObject jsonObject = new JSONObject(result);
 				JSONObject data = jsonObject.getJSONObject("data");
 				
 				JSONObject vivaldiJson = data.getJSONObject("vivaldi");
-				Person vivaldiMember = new Person();
+				Member vivaldiMember = new Member();
 				vivaldiMember.deserialize(vivaldiJson.toString());
 				vivaldiMember.setType("vivaldi");
 				boardMembers.add(vivaldiMember);
@@ -170,7 +170,7 @@ public class BestHrApi {
 				JSONArray board = data.getJSONArray("board");
 				for(int i = 0; i < board.length(); i++) {
 					JSONObject memberJson = board.getJSONObject(i);
-					Person boardMember = new Person();
+					Member boardMember = new Member();
 					boardMember.deserialize(memberJson.toString());
 					boardMember.setType("board");
 					boardMembers.add(boardMember);

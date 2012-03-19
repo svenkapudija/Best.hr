@@ -16,6 +16,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.format.DateFormat;
 import android.util.Log;
 
+import com.svenkapudija.best.hr.database.DatabaseHelper;
 import com.svenkapudija.best.hr.utils.Preferences;
 import com.svenkapudija.best.hr.utils.TypeCaster;
 
@@ -53,7 +54,7 @@ public class Event implements DatabaseInterface {
 	}
 	
 	public boolean exists() {
-		Cursor result = this.database.rawQuery("SELECT id FROM best_events WHERE id = '" + this.getId() + "'", null);
+		Cursor result = this.database.rawQuery("SELECT id FROM " + DatabaseHelper.EVENTS_TABLE_NAME + " WHERE id = '" + this.getId() + "'", null);
 		if (result.getCount() > 0) {
 			result.close();
 			return true;
@@ -64,9 +65,9 @@ public class Event implements DatabaseInterface {
 	
 	public boolean read() {
 		// Add categories
-		Cursor categoryIdCursor = this.database.rawQuery("SELECT category_id FROM best_events_categories_mapping WHERE event_id = '" + this.getId() + "'", null);
+		Cursor categoryIdCursor = this.database.rawQuery("SELECT category_id FROM " + DatabaseHelper.EVENTS_CATEGORIES_MAPPING_TABLE_NAME + " WHERE event_id = '" + this.getId() + "'", null);
 		while(categoryIdCursor.moveToNext()) {
-			Cursor categoryNameCursor = this.database.rawQuery("SELECT name FROM best_events_categories WHERE id = " + categoryIdCursor.getInt(0), null);
+			Cursor categoryNameCursor = this.database.rawQuery("SELECT name FROM " + DatabaseHelper.EVENTS_CATEGORIES_TABLE_NAME + " WHERE id = " + categoryIdCursor.getInt(0), null);
 			while(categoryNameCursor.moveToNext()) {
 				this.addCategory(categoryNameCursor.getString(0));
 			}
@@ -74,7 +75,7 @@ public class Event implements DatabaseInterface {
 		}
 		categoryIdCursor.close();
 		
-		Cursor result = this.database.rawQuery("SELECT url, name, type, location, startDate, endDate, lat, lng FROM best_events WHERE id = '" + this.getId() + "'", null);
+		Cursor result = this.database.rawQuery("SELECT url, name, type, location, startDate, endDate, lat, lng FROM " + DatabaseHelper.EVENTS_TABLE_NAME + " WHERE id = '" + this.getId() + "'", null);
 		if (result.getCount() > 0) {
 			result.moveToFirst();
 			
@@ -102,7 +103,7 @@ public class Event implements DatabaseInterface {
 	public static ArrayList<Event> readAll(SQLiteDatabase database) {
 		ArrayList<Event> events = new ArrayList<Event>();
 		
-		Cursor result = database.rawQuery("SELECT id FROM best_events ORDER by DATE asc", null);
+		Cursor result = database.rawQuery("SELECT id FROM " + DatabaseHelper.EVENTS_TABLE_NAME + " ORDER by DATE asc", null);
 		while(result.moveToNext()) {
 			Event event = new Event(database);
 			event.setId(result.getString(0));
@@ -120,13 +121,13 @@ public class Event implements DatabaseInterface {
 			
 		// Insert or ignore all categories
 		for(String category : this.getCategories()) {
-			this.database.execSQL("INSERT OR IGNORE INTO best_events_categories (name) VALUES ('" + category + "')");
+			this.database.execSQL("INSERT OR IGNORE INTO " + DatabaseHelper.EVENTS_CATEGORIES_TABLE_NAME + " (name) VALUES ('" + category + "')");
 		}
 		
 		// Receive category ids
 		ArrayList<Integer> categoryIds = new ArrayList<Integer>();
 		for(String category : this.getCategories()) {
-			Cursor result = database.rawQuery("SELECT id FROM best_events_categories WHERE name = '" + category + "'", null);
+			Cursor result = database.rawQuery("SELECT id FROM " + DatabaseHelper.EVENTS_CATEGORIES_TABLE_NAME + " WHERE name = '" + category + "'", null);
 			while(result.moveToNext()) {
 				categoryIds.add(result.getInt(0));
 			}
@@ -134,13 +135,13 @@ public class Event implements DatabaseInterface {
 		}
 			
 		// Map categories to events
-		this.database.execSQL("DELETE FROM best_events_categories_mapping WHERE event_id = '" + this.getId() + "'");
+		this.database.execSQL("DELETE FROM " + DatabaseHelper.EVENTS_CATEGORIES_MAPPING_TABLE_NAME + " WHERE event_id = '" + this.getId() + "'");
 		for(int categoryId : categoryIds) {
-			this.database.execSQL("INSERT OR IGNORE INTO best_events_categories_mapping (event_id, category_id) VALUES ('" + this.getId() + "'," + categoryId + ")");
+			this.database.execSQL("INSERT OR IGNORE INTO " + DatabaseHelper.EVENTS_CATEGORIES_MAPPING_TABLE_NAME + " (event_id, category_id) VALUES ('" + this.getId() + "'," + categoryId + ")");
 		}
 		
 		try {
-			this.database.execSQL("INSERT OR REPLACE INTO best_events (id, url, name, type, location, startDate, endDate, date, lat, lng) VALUES" +
+			this.database.execSQL("INSERT OR REPLACE INTO " + DatabaseHelper.EVENTS_TABLE_NAME + " (id, url, name, type, location, startDate, endDate, date, lat, lng) VALUES" +
 					"('" +
 					this.getId() + "','" +
 					URLEncoder.encode(this.getUrl(), "utf-8") + "','" +
@@ -166,7 +167,7 @@ public class Event implements DatabaseInterface {
 	
 	public boolean delete() {
 		try {
-			this.database.execSQL("DELETE FROM best_events WHERE id = '" + this.getId() + "'");
+			this.database.execSQL("DELETE FROM " + DatabaseHelper.EVENTS_TABLE_NAME + " WHERE id = '" + this.getId() + "'");
 			return true;
 		} catch (SQLException e) {
 			return false;

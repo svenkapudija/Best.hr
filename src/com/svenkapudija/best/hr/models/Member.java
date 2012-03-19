@@ -12,9 +12,10 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.svenkapudija.best.hr.database.DatabaseHelper;
 import com.svenkapudija.best.hr.utils.TypeCaster;
 
-public class Person implements DatabaseInterface {
+public class Member implements DatabaseInterface {
 	
 	// Used for serializing/deserializing
 	private static final String NAME = "name";
@@ -29,11 +30,11 @@ public class Person implements DatabaseInterface {
 	private String phone;
 	private SQLiteDatabase database;
 	
-	public Person() {
+	public Member() {
 		
 	}
 	
-	public Person(SQLiteDatabase database) {
+	public Member(SQLiteDatabase database) {
 		this.database = database;
 	}
 	
@@ -42,7 +43,7 @@ public class Person implements DatabaseInterface {
 			return false;
 		
 		try {
-			Cursor result = this.database.rawQuery("SELECT name FROM best_members WHERE name = '" + URLEncoder.encode(this.getName(), "utf-8") + "'", null);
+			Cursor result = this.database.rawQuery("SELECT name FROM " + DatabaseHelper.MEMBERS_TABLE_NAME + " WHERE name = '" + URLEncoder.encode(this.getName(), "utf-8") + "'", null);
 			if (result.getCount() > 0) {
 				result.close();
 				return true;
@@ -60,7 +61,7 @@ public class Person implements DatabaseInterface {
 			return false;
 		
 		try {
-			Cursor result = this.database.rawQuery("SELECT role, type, email, phone FROM best_members WHERE name = '" + URLEncoder.encode(this.getName(), "utf-8") + "'", null);
+			Cursor result = this.database.rawQuery("SELECT role, type, email, phone FROM " + DatabaseHelper.MEMBERS_TABLE_NAME + " WHERE name = '" + URLEncoder.encode(this.getName(), "utf-8") + "'", null);
 			if (result.getCount() > 0) {
 				result.moveToFirst();
 				
@@ -80,13 +81,13 @@ public class Person implements DatabaseInterface {
 		}
 	}
 	
-	public static ArrayList<Person> readAll(SQLiteDatabase database) {
-		ArrayList<Person> personList = new ArrayList<Person>();
+	public static ArrayList<Member> readAll(SQLiteDatabase database) {
+		ArrayList<Member> personList = new ArrayList<Member>();
 		
 		try {
-			Cursor result = database.rawQuery("SELECT name FROM best_members", null);
+			Cursor result = database.rawQuery("SELECT name FROM " + DatabaseHelper.MEMBERS_TABLE_NAME + "", null);
 			while(result.moveToNext()) {
-				Person person = new Person(database);
+				Member person = new Member(database);
 				person.setName(URLDecoder.decode(result.getString(0), "utf-8"));
 				person.read();
 				personList.add(person);
@@ -99,13 +100,13 @@ public class Person implements DatabaseInterface {
 		return personList;
 	}
 	
-	public static ArrayList<Person> readAll(SQLiteDatabase database, String type) {
-		ArrayList<Person> personList = new ArrayList<Person>();
+	public static ArrayList<Member> readAll(SQLiteDatabase database, String type) {
+		ArrayList<Member> personList = new ArrayList<Member>();
 		
 		try {
-			Cursor result = database.rawQuery("SELECT name FROM best_members WHERE type = '" + type + "'", null);
+			Cursor result = database.rawQuery("SELECT name FROM " + DatabaseHelper.MEMBERS_TABLE_NAME + " WHERE type = '" + type + "'", null);
 			while(result.moveToNext()) {
-				Person person = new Person(database);
+				Member person = new Member(database);
 				person.setName(URLDecoder.decode(result.getString(0), "utf-8"));
 				person.read();
 				personList.add(person);
@@ -123,7 +124,7 @@ public class Person implements DatabaseInterface {
 			return false;
 		
 		try {
-			this.database.execSQL("INSERT OR REPLACE INTO best_members (name, role, type, email, phone) VALUES" +
+			this.database.execSQL("INSERT OR REPLACE INTO " + DatabaseHelper.MEMBERS_TABLE_NAME + " (name, role, type, email, phone) VALUES" +
 					"('" +
 					URLEncoder.encode(this.getName(), "utf-8") + "','" +
 					URLEncoder.encode(this.getRole(), "utf-8") + "','" +
@@ -148,7 +149,7 @@ public class Person implements DatabaseInterface {
 			return false;
 
 		try {
-			this.database.execSQL("DELETE FROM best_members WHERE name = '" + URLEncoder.encode(this.getName(), "utf-8") + "'");
+			this.database.execSQL("DELETE FROM " + DatabaseHelper.MEMBERS_TABLE_NAME + " WHERE name = '" + URLEncoder.encode(this.getName(), "utf-8") + "'");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -163,10 +164,10 @@ public class Person implements DatabaseInterface {
 		try {
 			JSONObject object = new JSONObject(jsonString);
 			
-			this.setName(TypeCaster.toString(object.getString(Person.NAME)));
-			this.setRole(TypeCaster.toString(object.optString(Person.ROLE)));
-			this.setEmail(TypeCaster.toString(object.optString(Person.EMAIL)));
-			this.setPhone(TypeCaster.toString(object.optString(Person.PHONE)));
+			this.setName(TypeCaster.toString(object.getString(Member.NAME)));
+			this.setRole(TypeCaster.toString(object.optString(Member.ROLE)));
+			this.setEmail(TypeCaster.toString(object.optString(Member.EMAIL)));
+			this.setPhone(TypeCaster.toString(object.optString(Member.PHONE)));
 			
 			return true;
 		} catch (JSONException e) {
@@ -178,10 +179,10 @@ public class Person implements DatabaseInterface {
 	public String serialize() {
 		try {
 			JSONObject object = new JSONObject();
-			object.put(Person.NAME, this.getName());
-			object.put(Person.ROLE, this.getRole());
-			object.put(Person.EMAIL, this.getEmail());
-			object.put(Person.PHONE, this.getPhone());
+			object.put(Member.NAME, this.getName());
+			object.put(Member.ROLE, this.getRole());
+			object.put(Member.EMAIL, this.getEmail());
+			object.put(Member.PHONE, this.getPhone());
 			
 			return object.toString();
 		} catch (JSONException e) {

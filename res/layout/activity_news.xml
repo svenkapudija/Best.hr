@@ -19,7 +19,7 @@
     android:id="@+id/header_text"
     android:layout_width="fill_parent"
     android:layout_height="23dp"
-    android:background="@color/header_background" android:layout_below="@+id/stripe" android:layout_marginTop="7dp">
+    android:background="@color/header_background" android:layout_below="@+id/stripe">
 
     <TextView
         android:id="@+id/title"

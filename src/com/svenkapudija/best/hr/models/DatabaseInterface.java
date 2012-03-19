@@ -3,7 +3,8 @@ package com.svenkapudija.best.hr.models;
 public interface DatabaseInterface {
 	
 	/**
-	 * Checks if object with current ID already exists in database, if it does, pull all the parameters from database into object.
+	 * Checks if object with current ID already exists in database.
+	 * Database must not be null.
 	 * 
 	 * @return <code>TRUE</code> if object with that ID exists in database, <code>FALSE</code> if it doesn't
 	 */
@@ -11,6 +12,7 @@ public interface DatabaseInterface {
 	
 	/**
 	 * Retrieves the object from database if it exists and deserializes it.
+	 * Database must not be null.
 	 * 
 	 * @return <code>TRUE</code> if object with that ID exists in database, <code>FALSE</code> if it doesn't or there was a problem with deserializing
 	 */
@@ -18,6 +20,7 @@ public interface DatabaseInterface {
 	
 	/**
 	 * Insert object into database. If exists, replace it.
+	 * Database must not be null.
 	 * 
 	 * @return <code>TRUE</code> if operation succeeded, else <code>FALSE</code>
 	 */
@@ -25,6 +28,7 @@ public interface DatabaseInterface {
 	
 	/**
 	 * Deletes object from database based on object.id.
+	 * Database must not be null.
 	 * 
 	 * @return <code>TRUE</code> if operation succeeded, else <code>FALSE</code>
 	 */

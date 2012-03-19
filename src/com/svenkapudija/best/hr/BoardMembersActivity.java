@@ -26,7 +26,7 @@ import com.svenkapudija.best.hr.adapters.PersonAdapter;
 import com.svenkapudija.best.hr.adapters.PersonRow;
 import com.svenkapudija.best.hr.api.BestHrApi;
 import com.svenkapudija.best.hr.models.Event;
-import com.svenkapudija.best.hr.models.Person;
+import com.svenkapudija.best.hr.models.Member;
 import com.svenkapudija.best.hr.utils.DateUtils;
 import com.svenkapudija.best.hr.utils.Preferences;
 
@@ -35,7 +35,7 @@ public class BoardMembersActivity extends RootActivity {
 	private PersonAdapter listviewAdapter;
 	private ArrayList<PersonRow> rows = new ArrayList<PersonRow>();
 	private ListView listview;
-	private ArrayList<Person> members = new ArrayList<Person>();
+	private ArrayList<Member> members = new ArrayList<Member>();
 	
 	private void getUIElements() {
 		listview = (ListView) findViewById(R.id.listview);
@@ -78,7 +78,7 @@ public class BoardMembersActivity extends RootActivity {
 			BestHrApi api = new BestHrApi(BoardMembersActivity.this);
 			members = api.getBoardMembers();
 				if(!members.isEmpty()) {
-					for (Person member : members) {
+					for (Member member : members) {
 						member.setDatabase(dbWriteable);
 						if(!member.exists())
 							member.insertOrUpdate();
@@ -99,13 +99,13 @@ public class BoardMembersActivity extends RootActivity {
 	
 	private void iterateThroughMembers() {
 		rows.add(new PersonRow("BEST seminari"));
-		for (Person member : members) {
+		for (Member member : members) {
 			if(member.getType().equals("vivaldi"))
 				rows.add(new PersonRow(member.getName(), member.getRole(), member.getEmail(),member.getPhone()));
 		}
 		
 		rows.add(new PersonRow("Èlanovi uprave"));
-		for (Person member : members) {
+		for (Member member : members) {
 			if(member.getType().equals("board"))
 				rows.add(new PersonRow(member.getName(), member.getRole(), member.getEmail(),member.getPhone()));
 		}
@@ -125,7 +125,7 @@ public class BoardMembersActivity extends RootActivity {
 		listviewAdapter = new PersonAdapter(this, rows);
 		listview.setAdapter(listviewAdapter);
 		
-        members = Person.readAll(dbWriteable);
+        members = Member.readAll(dbWriteable);
 		if(!members.isEmpty()) {
 			iterateThroughMembers();
 		} else {

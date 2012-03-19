@@ -16,6 +16,7 @@ import android.graphics.Bitmap;
 import android.text.format.DateFormat;
 import android.util.Log;
 
+import com.svenkapudija.best.hr.database.DatabaseHelper;
 import com.svenkapudija.best.hr.files.ImageHelper;
 import com.svenkapudija.best.hr.utils.Preferences;
 import com.svenkapudija.best.hr.utils.TypeCaster;
@@ -56,18 +57,12 @@ public class News implements DatabaseInterface {
 	public News(SQLiteDatabase database) {
 		this.database = database; 
 	}
-	
-	/**
-	 * Checks if news with it's ID is present in database.
-	 * Database must not be null.
-	 * 
-	 * @return <code>TRUE</code> if news is found, <code>FALSE</code> otherwise
-	 */
+
 	public boolean exists() {
 		if(this.database == null)
 			return false;
 		
-		Cursor result = this.database.rawQuery("SELECT id FROM best_news WHERE id = " + this.getId(), null);
+		Cursor result = this.database.rawQuery("SELECT id FROM " + DatabaseHelper.NEWS_TABLE_NAME + " WHERE id = " + this.getId(), null);
 		if (result.getCount() > 0) {
 			result.close();
 			return true;
@@ -76,18 +71,12 @@ public class News implements DatabaseInterface {
 		}
 	}
 	
-	/**
-	 * Retrieves object parameters from database if exists.
-	 * Database must not be null.
-	 * 
-	 * @return <code>TRUE</code> if news is found and retrieved, <code>FALSE</code> otherwise
-	 */
 	public boolean read() {
 		if(this.database == null)
 			return false;
 		
 		try {
-			Cursor result = this.database.rawQuery("SELECT title, author, imageLink, published, link, intro, body FROM best_news WHERE id = " + this.getId(), null);
+			Cursor result = this.database.rawQuery("SELECT title, author, imageLink, published, link, intro, body FROM " + DatabaseHelper.NEWS_TABLE_NAME + " WHERE id = " + this.getId(), null);
 			if (result.getCount() > 0) {
 				result.moveToFirst();
 				
@@ -121,7 +110,7 @@ public class News implements DatabaseInterface {
 	 */
 	public static News getLastNews(SQLiteDatabase database) {
 		try {
-			Cursor result = database.rawQuery("SELECT id, title, author, imageLink, published, link, intro, body FROM best_news ORDER by DATE desc LIMIT 1", null);
+			Cursor result = database.rawQuery("SELECT id, title, author, imageLink, published, link, intro, body FROM " + DatabaseHelper.NEWS_TABLE_NAME + " ORDER by DATE desc LIMIT 1", null);
 			if (result.getCount() > 0) {
 				result.moveToFirst();
 				
@@ -159,7 +148,7 @@ public class News implements DatabaseInterface {
 	public static ArrayList<News> readAll(SQLiteDatabase database) {
 		ArrayList<News> newsList = new ArrayList<News>();
 		
-		Cursor result = database.rawQuery("SELECT id, title, author, imageLink, published, link, intro, body FROM best_news ORDER by DATE desc", null);
+		Cursor result = database.rawQuery("SELECT id, title, author, imageLink, published, link, intro, body FROM " + DatabaseHelper.NEWS_TABLE_NAME + " ORDER by DATE desc", null);
 		while(result.moveToNext()) {
 			News news = new News(database);
 			news.setId(result.getInt(0));
@@ -197,7 +186,7 @@ public class News implements DatabaseInterface {
 	public static ArrayList<News> readAll(SQLiteDatabase database, int startingPosition, int n) {
 		ArrayList<News> newsList = new ArrayList<News>();
 		
-		Cursor result = database.rawQuery("SELECT id, title, author, imageLink, published, link, intro, body FROM best_news ORDER by DATE desc LIMIT " + startingPosition + "," + n, null);
+		Cursor result = database.rawQuery("SELECT id, title, author, imageLink, published, link, intro, body FROM " + DatabaseHelper.NEWS_TABLE_NAME + " ORDER by DATE desc LIMIT " + startingPosition + "," + n, null);
 		while(result.moveToNext()) {
 			News news = new News(database);
 			news.setId(result.getInt(0));
@@ -243,16 +232,13 @@ public class News implements DatabaseInterface {
 		return count;
 	}
 	
-	/**
-	 * Insert object in database if does not exists (based on ID), else update the values.
-	 */
 	public boolean insertOrUpdate() {
 		if(this.database == null)
 			return false;
 		
 		try {
 			Log.d(Preferences.DEBUG_TAG, "database " + this.database);
-			this.database.execSQL("INSERT OR REPLACE INTO best_news (id, title, author, imageLink, published, date, link, intro, body) VALUES" +
+			this.database.execSQL("INSERT OR REPLACE INTO " + DatabaseHelper.NEWS_TABLE_NAME + " (id, title, author, imageLink, published, date, link, intro, body) VALUES" +
 					"(" +
 					this.getId() + ",'" +
 					URLEncoder.encode(this.getTitle(), "utf-8") + "','" +
@@ -276,9 +262,6 @@ public class News implements DatabaseInterface {
 		}
 	}
 	
-	/**
-	 * Delete news from database by it's <code>id</code>.
-	 */
 	public boolean delete() {
 		if(this.database == null)
 			return false;

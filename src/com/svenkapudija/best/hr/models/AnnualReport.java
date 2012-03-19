@@ -13,6 +13,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 
+import com.svenkapudija.best.hr.database.DatabaseHelper;
 import com.svenkapudija.best.hr.files.ImageHelper;
 import com.svenkapudija.best.hr.utils.Preferences;
 import com.svenkapudija.best.hr.utils.TypeCaster;
@@ -39,7 +40,7 @@ public class AnnualReport implements DatabaseInterface {
 	}
 	
 	public boolean exists() {
-		Cursor result = this.database.rawQuery("SELECT year FROM best_annual_reports WHERE year = " + this.getYear(), null);
+		Cursor result = this.database.rawQuery("SELECT year FROM " + DatabaseHelper.ANNUAL_REPORTS_TABLE_NAME + " WHERE year = " + this.getYear(), null);
 		if (result.getCount() > 0) {
 			result.close();
 			return true;
@@ -49,7 +50,7 @@ public class AnnualReport implements DatabaseInterface {
 	}
 	
 	public boolean read() {
-		Cursor result = this.database.rawQuery("SELECT thumbnailLink, link FROM best_annual_reports WHERE year = " + this.getYear(), null);
+		Cursor result = this.database.rawQuery("SELECT thumbnailLink, link FROM " + DatabaseHelper.ANNUAL_REPORTS_TABLE_NAME + " WHERE year = " + this.getYear(), null);
 		if (result.getCount() > 0) {
 			result.moveToFirst();
 			
@@ -73,7 +74,7 @@ public class AnnualReport implements DatabaseInterface {
 	public static ArrayList<AnnualReport> readAll(SQLiteDatabase database) {
 		ArrayList<AnnualReport> reports = new ArrayList<AnnualReport>();
 		
-		Cursor result = database.rawQuery("SELECT year, thumbnailLink, link FROM best_annual_reports ORDER by YEAR desc", null);
+		Cursor result = database.rawQuery("SELECT year, thumbnailLink, link FROM " + DatabaseHelper.ANNUAL_REPORTS_TABLE_NAME + " ORDER by YEAR desc", null);
 		while(result.moveToNext()) {
 			AnnualReport report = new AnnualReport(database);
 			report.setYear(result.getInt(0));
@@ -97,7 +98,7 @@ public class AnnualReport implements DatabaseInterface {
 	
 	public boolean insertOrUpdate() {
 		try {
-			this.database.execSQL("INSERT OR REPLACE INTO best_annual_reports (year, thumbnailLink, link) VALUES" +
+			this.database.execSQL("INSERT OR REPLACE INTO " + DatabaseHelper.ANNUAL_REPORTS_TABLE_NAME + " (year, thumbnailLink, link) VALUES" +
 					"(" +
 					this.getYear() + ",'" +
 					URLEncoder.encode(this.getThumbnailLink(), "utf-8") + "','" +
@@ -116,7 +117,7 @@ public class AnnualReport implements DatabaseInterface {
 	
 	public boolean delete() {
 		try {
-			this.database.execSQL("DELETE FROM best_annual_reports WHERE year = " + this.getYear());
+			this.database.execSQL("DELETE FROM " + DatabaseHelper.ANNUAL_REPORTS_TABLE_NAME + " WHERE year = " + this.getYear());
 			return true;
 		} catch (SQLException e) {
 			return false;

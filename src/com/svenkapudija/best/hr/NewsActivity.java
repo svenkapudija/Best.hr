@@ -8,8 +8,11 @@ import java.util.regex.Pattern;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -23,6 +26,7 @@ import com.svenkapudija.best.hr.adapters.EndlessAdapter;
 import com.svenkapudija.best.hr.adapters.NewsAdapter;
 import com.svenkapudija.best.hr.api.BestHrApi;
 import com.svenkapudija.best.hr.models.News;
+import com.svenkapudija.best.hr.utils.Preferences;
 
 public class NewsActivity extends RootActivity {
 	
@@ -47,7 +51,9 @@ public class NewsActivity extends RootActivity {
         getUIElements();
         setupActionBar();
         
-	    listview.setAdapter(new NewsAdapterEndless(rows));
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        int newsChunk = prefs.getInt("news_chunk", 5);
+	    listview.setAdapter(new NewsAdapterEndless(rows, newsChunk+1));
 		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
@@ -93,7 +99,7 @@ public class NewsActivity extends RootActivity {
         /** Starting position for news listing (<code>0</code> - newest one) */
         private int startCount = 0;
         /** How big chunks to display and download */
-        private int step = 6;
+        private int newsChunk = 5;
         
         private ArrayList<News> newsList = new ArrayList<News>();
         private ArrayList<News> apiNews = null;
@@ -101,8 +107,10 @@ public class NewsActivity extends RootActivity {
         private boolean initialCheck = false;
         private BestHrApi api = null;
         
-        NewsAdapterEndless(List<News> items) {
+        NewsAdapterEndless(List<News> items, int newsChunk) {
           super(new NewsAdapter(NewsActivity.this, items));
+          
+          this.newsChunk = newsChunk;
           
           rotate=new RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF,
                                       0.5f, Animation.RELATIVE_TO_SELF,
@@ -142,14 +150,14 @@ public class NewsActivity extends RootActivity {
             
         	// If I have less news in DB then on API and if (starting position+step) is larger then the news count, perform update
         	// (I am running out of news for display)
-        	if(download && newsCount < (startCount+step+1)) {
+        	if(download && newsCount < (startCount+newsChunk+1)) {
         		// Get news list
         		if(apiNews == null)
         			apiNews = api.getNews();
         		
         		// Receive next step+1 news which are not in DB yet
         		if(!apiNews.isEmpty()) {
-        			int counter = step+1;
+        			int counter = newsChunk+1;
         			for (int i = 0; i < counter && i < (apiNews.size()); i++) {
         				News news = apiNews.get(i);
         				news.setDatabase(dbWriteable);
@@ -169,12 +177,12 @@ public class NewsActivity extends RootActivity {
         	}
         	
         	// Retrieve next news chunk from DB
-        	ArrayList<News> tmp = News.readAll(dbWriteable, startCount, step);
+        	ArrayList<News> tmp = News.readAll(dbWriteable, startCount, newsChunk);
         	for(News news : tmp) {
         		newsList.add(news);
         	}
         	
-        	startCount += step;
+        	startCount += newsChunk;
         	
           return(getWrappedAdapter().getCount() < newsCount);
         }
@@ -187,10 +195,21 @@ public class NewsActivity extends RootActivity {
           if (getWrappedAdapter().getCount() < newsCount) {
             @SuppressWarnings("unchecked")
             ArrayAdapter<News> a = (ArrayAdapter<News>) getWrappedAdapter();
-            for (int i=(startCount-step);i<(startCount) && (i<newsList.size());i++) {
+            for (int i=(startCount-newsChunk);i<(startCount) && (i<newsList.size());i++) {
             	a.add(newsList.get(i));
             }
           }
         }
     }
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		
+		// Release bitmaps from memory
+		for(News news : rows) {
+			if(news.getImage() != null)
+				news.getImage().recycle();
+		}
+	}
 }
