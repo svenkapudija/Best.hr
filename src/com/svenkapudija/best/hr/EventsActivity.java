@@ -40,11 +40,11 @@ public class EventsActivity extends RootActivity {
 		// Refresh
 		actionBar.addAction(new Action() {
 			public void performAction(View view) {
-				new DownloadEvents().execute();
+				new DownloadEvents(true).execute();
 			}
 
 			public int getDrawable() {
-				return R.drawable.action_bar_news;
+				return R.drawable.actionbar_refresh_button;
 			}
 
 			public CharSequence getText() {
@@ -110,12 +110,22 @@ public class EventsActivity extends RootActivity {
 	 */
 	private class DownloadEvents extends AsyncTask<String, Integer, Integer> {
 		private ProgressDialog progressDialog;
+		private boolean clear = false;
+		private boolean nothingAdded = true;
+		
+		public DownloadEvents() {
+			
+		}
+		
+		public DownloadEvents(boolean clear) {
+			this.clear = clear;
+		}
 		
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
 		
-			progressDialog = ProgressDialog.show(EventsActivity.this, null, "Preuzimam...");
+			progressDialog = ProgressDialog.show(EventsActivity.this, null, "Ažuriranje u tijeku...");
 		}
 	
 		@Override
@@ -123,11 +133,14 @@ public class EventsActivity extends RootActivity {
 			BestHrApi api = new BestHrApi(EventsActivity.this);
 	        events = api.getEvents();
 	        if(!events.isEmpty()) {
+	        	if(clear) events.clear();
+	        	
 				for (Event event : events) {
 					Log.d(Preferences.DEBUG_TAG, "Events: " + event.toString());
 					event.setDatabase(EventsActivity.this.dbWriteable);
 					if(!event.exists()) {
 						event.insertOrUpdate();
+						nothingAdded = false;
 					}
 				}
 			}
@@ -141,6 +154,9 @@ public class EventsActivity extends RootActivity {
 			
 			iterateThroughEvents();
 			progressDialog.cancel();
+			
+			if(nothingAdded)
+				showToast("Veæ imate najnovije podatke.");
 		}
 	}
 }

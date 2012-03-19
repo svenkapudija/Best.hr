@@ -36,11 +36,11 @@ public class AnnualReportsActivity extends RootActivity {
 		actionBar = (ActionBar) findViewById(R.id.actionbar);
 		actionBar.addAction(new Action() {
 			public void performAction(View view) {
-				
+				new DownloadReports(true).execute();
 			}
 
 			public int getDrawable() {
-				return R.drawable.action_bar_news;
+				return R.drawable.actionbar_refresh_button;
 			}
 
 			public CharSequence getText() {
@@ -49,51 +49,6 @@ public class AnnualReportsActivity extends RootActivity {
 		});
 		
 		actionBar.setHome(R.drawable.action_bar_logotype);
-	}
-	
-	private class DownloadReports extends AsyncTask<String, Integer, Integer> {
-		private ProgressDialog progressDialog;
-		
-		public DownloadReports() {
-		}
-		
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-		
-			progressDialog = ProgressDialog.show(AnnualReportsActivity.this, null, "Preuzimam...");
-		}
-	
-		@Override
-		protected Integer doInBackground(String... params) {
-			BestHrApi api = new BestHrApi(AnnualReportsActivity.this);
-			reports = api.getAnnualReports();
-				if(!reports.isEmpty()) {
-					for (AnnualReport report : reports) {
-						report.setDatabase(dbWriteable);
-						if(!report.exists())
-							report.insertOrUpdate();
-					}
-				}
-			
-			return null;
-		}
-		
-		@Override
-		protected void onPostExecute(Integer result) {
-			super.onPostExecute(result);
-			
-			iterateThroughReports();
-			progressDialog.cancel();
-		}
-	}
-	
-	private void iterateThroughReports() {
-		for (AnnualReport report : reports) {
-			rows.add(report);
-		}
-		
-		listviewAdapter.notifyDataSetChanged();
 	}
 	
     /** Called when the activity is first created. */
@@ -124,4 +79,63 @@ public class AnnualReportsActivity extends RootActivity {
 			}
 		});
     }
+    
+    private void iterateThroughReports() {
+		for (AnnualReport report : reports) {
+			rows.add(report);
+		}
+		
+		listviewAdapter.notifyDataSetChanged();
+	}
+    
+    private class DownloadReports extends AsyncTask<String, Integer, Integer> {
+		private ProgressDialog progressDialog;
+		private boolean clear = false;
+		private boolean nothingAdded = true;
+		
+		public DownloadReports() {
+			
+		}
+		
+		public DownloadReports(boolean clear) {
+			this.clear = clear;
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		
+			progressDialog = ProgressDialog.show(AnnualReportsActivity.this, null, "Ažuriranje u tijeku...");
+		}
+	
+		@Override
+		protected Integer doInBackground(String... params) {
+			BestHrApi api = new BestHrApi(AnnualReportsActivity.this);
+			reports = api.getAnnualReports();
+				if(!reports.isEmpty()) {
+					if(clear) rows.clear();
+					
+					for (AnnualReport report : reports) {
+						report.setDatabase(dbWriteable);
+						if(!report.exists()) {
+							report.insertOrUpdate();
+							nothingAdded = false;
+						}
+					}
+				}
+			
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Integer result) {
+			super.onPostExecute(result);
+			
+			iterateThroughReports();
+			progressDialog.cancel();
+			
+			if(nothingAdded)
+				showToast("Veæ imate najnovije podatke.");
+		}
+	}
 }

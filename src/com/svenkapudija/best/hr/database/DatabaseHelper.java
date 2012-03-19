@@ -12,8 +12,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public static final String NEWS_TABLE_NAME = "best_news";
 	public static final String ANNUAL_REPORTS_TABLE_NAME = "best_annual_reports";
 	public static final String EVENTS_TABLE_NAME = "best_events";
-	public static final String EVENTS_CATEGORIES_TABLE_NAME = "best_events";
-	public static final String EVENTS_CATEGORIES_MAPPING_TABLE_NAME = "best_events";
+	public static final String EVENTS_CATEGORIES_TABLE_NAME = "best_events_categories";
+	public static final String EVENTS_CATEGORIES_MAPPING_TABLE_NAME = "best_events_categories_mapping";
 	public static final String MEMBERS_TABLE_NAME = "best_members";
 	
     public DatabaseHelper(Context context) {

@@ -1,21 +1,12 @@
 package com.svenkapudija.best.hr;
 
-import java.util.ArrayList;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
-import com.svenkapudija.best.hr.api.BestHrApi;
-import com.svenkapudija.best.hr.models.AnnualReport;
-import com.svenkapudija.best.hr.models.Event;
-import com.svenkapudija.best.hr.models.News;
-import com.svenkapudija.best.hr.models.Member;
-import com.svenkapudija.best.hr.utils.Preferences;
 
 public class MainActivity extends RootActivity {
 	
@@ -42,7 +33,7 @@ public class MainActivity extends RootActivity {
 			}
 
 			public int getDrawable() {
-				return R.drawable.action_bar_news;
+				return R.drawable.actionbar_options_button;
 			}
 
 			public CharSequence getText() {
@@ -89,7 +80,7 @@ public class MainActivity extends RootActivity {
         members.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(MainActivity.this, BoardMembersActivity.class);
+				Intent i = new Intent(MainActivity.this, MembersActivity.class);
 				startActivityForResult(i, 200);
 			}
 		});
