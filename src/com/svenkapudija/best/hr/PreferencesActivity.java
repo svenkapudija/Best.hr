@@ -1,12 +1,12 @@
 package com.svenkapudija.best.hr;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 
 public class PreferencesActivity extends PreferenceActivity {
 	
@@ -16,17 +16,16 @@ public class PreferencesActivity extends PreferenceActivity {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
 		
-        /*
-		final CheckBoxPreference drawRoutes = (CheckBoxPreference) findPreference("draw_routes");
-		drawRoutes.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+		final CheckBoxPreference showPastEvents = (CheckBoxPreference) findPreference("show_past_events");
+		showPastEvents.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
-				SharedPreferences customSharedPreference = getSharedPreferences("bestPreferences", Activity.MODE_PRIVATE);
+				SharedPreferences customSharedPreference = PreferenceManager.getDefaultSharedPreferences(PreferencesActivity.this);
 				SharedPreferences.Editor editor = customSharedPreference.edit();
 				
-				if (drawRoutes.isChecked()) {
-					editor.putBoolean("draw_routes", true);
+				if (showPastEvents.isChecked()) {
+					editor.putBoolean("show_past_events", true);
 				} else {
-					editor.putBoolean("draw_routes", false);
+					editor.putBoolean("show_past_events", false);
 				}
 				
 				editor.commit();
@@ -34,6 +33,5 @@ public class PreferencesActivity extends PreferenceActivity {
 				return true;
 			}
 		});
-		*/
     }
 }

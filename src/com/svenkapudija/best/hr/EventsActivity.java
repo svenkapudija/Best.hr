@@ -5,8 +5,10 @@ import java.util.Calendar;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -43,7 +45,7 @@ public class EventsActivity extends RootActivity {
 			}
 
 			public int getDrawable() {
-				return R.drawable.actionbar_refresh_button;
+				return R.drawable.actionbar_refresh;
 			}
 
 			public CharSequence getText() {
@@ -51,7 +53,7 @@ public class EventsActivity extends RootActivity {
 			}
 		});
 		
-		actionBar.setHome(R.drawable.action_bar_logotype);
+		actionBar.setHome(R.drawable.actionbar_logotype);
 	}
 	
 	
@@ -93,9 +95,13 @@ public class EventsActivity extends RootActivity {
 	 * Display refreshed data.
 	 */
 	private void iterateThroughEvents() {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean showPastEvents = prefs.getBoolean("show_past_events", false);
+        
 		int month = 0;
 		for (Event event : events) {
 			Calendar c = Calendar.getInstance();
+			if(!showPastEvents && (c.getTime().getTime() > event.getEndDate().getTime())) continue;
 			c.setTime(event.getStartDate());
 			if(c.get(Calendar.MONTH) != month) {
 				month = c.get(Calendar.MONTH);

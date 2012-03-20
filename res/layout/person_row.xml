@@ -42,8 +42,8 @@
             android:layout_height="fill_parent"
             android:layout_toRightOf="@+id/separator_right"
             android:background="@drawable/row_button"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
             android:src="@drawable/contact_row_email" />
 
         <ImageView
@@ -72,8 +72,8 @@
             android:layout_height="fill_parent"
             android:layout_toRightOf="@+id/separator2_right"
             android:background="@drawable/row_button"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
             android:src="@drawable/contact_row_phone" />
 
         <ImageView

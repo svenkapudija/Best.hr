@@ -2,7 +2,6 @@ package com.svenkapudija.best.hr;
 
 import java.util.Date;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Html;
@@ -43,15 +42,13 @@ public class SingleNewsActivity extends RootActivity {
 		// Sharing
 		actionBar.addAction(new Action() {
 			public void performAction(View view) {
-				Intent intent = new Intent(android.content.Intent.ACTION_SEND);
-				intent.setType("text/plain");
-	            intent.putExtra(android.content.Intent.EXTRA_SUBJECT, news.getTitle() + " - " + BestHrApi.BASE_URL + news.getLink());
-	            intent.putExtra(android.content.Intent.EXTRA_TEXT, Utils.removeHtmlTags(news.getIntro()) + "\n" + Utils.removeHtmlTags(news.getBody()));
-	            startActivity(intent);
+				String subject = news.getTitle() + " - " + BestHrApi.BASE_URL + news.getLink();
+				String body = Utils.removeHtmlTags(news.getIntro()) + "\n" + Utils.removeHtmlTags(news.getBody());
+				Utils.share(SingleNewsActivity.this, subject, body);
 			}
 
 			public int getDrawable() {
-				return R.drawable.action_bar_news;
+				return R.drawable.actionbar_share;
 			}
 
 			public CharSequence getText() {
@@ -59,7 +56,7 @@ public class SingleNewsActivity extends RootActivity {
 			}
 		});
 		
-		actionBar.setHome(R.drawable.action_bar_logotype);
+		actionBar.setHome(R.drawable.actionbar_logotype);
 	}
 	
     /** Called when the activity is first created. */

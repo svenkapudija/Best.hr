@@ -45,7 +45,7 @@ public class NewsAdapter extends ArrayAdapter<News> {
         
     	title.setText(item.getAuthor());
     	date.setText(DateFormat.format("dd.MM.yyyy.", item.getPublished()));
-    	intro.setText(Html.fromHtml(Utils.removeHtmlTags(item.getIntro())));
+    	intro.setText(Html.fromHtml(Utils.removeHtmlTagsExceptParagraphList(item.getIntro())));
     	if(item.getImage() != null) {
     		thumb.setVisibility(View.VISIBLE);
     		thumb.setImageBitmap(item.getImage());

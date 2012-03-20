@@ -5,13 +5,13 @@
         android:state_focused="false"
         android:state_selected="false"
         android:state_pressed="false"
-        android:drawable="@drawable/google_maps_thumb"
+        android:drawable="@drawable/actionbar_share_normal"
         />
     <item
         android:state_focused="false"
         android:state_selected="true"
         android:state_pressed="false"
-        android:drawable="@drawable/google_maps_thumb_hover"
+        android:drawable="@drawable/actionbar_share_hover"
         />
 
     <!-- Focused states -->
@@ -19,18 +19,18 @@
         android:state_focused="true"
         android:state_selected="false"
         android:state_pressed="false"
-        android:drawable="@drawable/google_maps_thumb_hover"
+        android:drawable="@drawable/actionbar_share_hover"
         />
     <item
         android:state_focused="true"
         android:state_selected="true"
         android:state_pressed="false"
-        android:drawable="@drawable/google_maps_thumb_hover"
+        android:drawable="@drawable/actionbar_share_hover"
         />
 
     <!-- Pressed -->
     <item
         android:state_pressed="true"
-        android:drawable="@drawable/google_maps_thumb_hover"
+        android:drawable="@drawable/actionbar_share_hover"
         />
 </selector>

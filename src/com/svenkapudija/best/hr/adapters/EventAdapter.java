@@ -22,7 +22,6 @@ public class EventAdapter extends ArrayAdapter<EventRow> {
 	private List<EventRow> items;
 	private Date currentTime;
 	private LayoutInflater inflater;
-	private boolean showPastEvents = true; // Not possible to change at this time
 	
 	public EventAdapter(Context context, List<EventRow> items, Date currentTime) {
 		super(context, 0, items);
@@ -59,18 +58,18 @@ public class EventAdapter extends ArrayAdapter<EventRow> {
         	TextView date = (TextView) row.findViewById(R.id.date);
         	TextView location = (TextView) row.findViewById(R.id.location);
         	
-        	if(showPastEvents) {
-        		// Strike-through if event is in the past
-            	if(event.getEndDate().getTime() < this.currentTime.getTime()) {
-            		name.setPaintFlags(name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            		date.setPaintFlags(name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            		location.setPaintFlags(name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            	} else {
-            		name.setPaintFlags(name.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
-            		date.setPaintFlags(name.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
-            		location.setPaintFlags(name.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
-            	}
-        	}
+        	/*
+			// Strike-through if event is in the past
+            if(event.getEndDate().getTime() < this.currentTime.getTime()) {
+            	name.setPaintFlags(name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            	date.setPaintFlags(name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            	location.setPaintFlags(name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            } else {
+            	name.setPaintFlags(name.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+            	date.setPaintFlags(name.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+            	location.setPaintFlags(name.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+            }
+        	*/
         	
         	name.setText(event.getName());
             date.setText(event.getStartDateFormatted() + " - " + event.getEndDateFormatted());

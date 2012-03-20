@@ -10,14 +10,11 @@
 				android:max="19"
 			/>
 		</PreferenceCategory>
-		
-		 <!--
 		<PreferenceCategory android:title="Seminari">
 			 <CheckBoxPreference
                         android:title="Prikaži prošle seminare"
                         android:defaultValue="true"
-                        android:summary="Prikaži prošle seminare ili ih precrtaj"
+                        android:summary="Prikaži već održane seminare"
                         android:key="show_past_events" />
 		</PreferenceCategory>
-        -->
 </PreferenceScreen>

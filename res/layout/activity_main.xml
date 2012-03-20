@@ -16,19 +16,18 @@
     android:id="@+id/icons"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_below="@+id/stripe"
-    android:padding="35dp" >
+    android:layout_below="@+id/stripe" android:paddingLeft="35dp" android:paddingRight="35dp" android:paddingTop="25dp">
 
     <RelativeLayout
         android:id="@+id/left_column"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <ImageButton
             android:id="@+id/news"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:background="@drawable/row_button" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/main_news_icon" />
 
         <TextView
             android:id="@+id/newsText"
@@ -38,15 +37,15 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:text="Novosti"
-            android:textColor="@drawable/text_blue_white_focused" />
+            android:textColor="@color/white" android:background="@drawable/shape" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingTop="3dp" android:paddingBottom="3dp" android:textStyle="bold"/>
 
         <ImageButton
             android:id="@+id/reports"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/newsText"
             android:layout_marginTop="10dp"
-            android:background="@drawable/row_button" />
+            android:background="@drawable/main_reports_icon" />
 
         <TextView
             android:id="@+id/reportsText"
@@ -55,15 +54,15 @@
             android:layout_below="@+id/reports"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="Godišnji izvještaji"
-            android:textColor="@drawable/text_blue_white_focused" />
+            android:text="Izvještaji"
+            android:textColor="@color/white" android:background="@drawable/shape" android:paddingBottom="3dp" android:paddingRight="10dp" android:paddingLeft="10dp" android:paddingTop="3dp" android:textStyle="bold"/>
 
         <ImageButton
             android:id="@+id/contact"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/row_button" android:layout_below="@+id/reportsText"/>
+            android:background="@drawable/main_contact_icon" android:layout_below="@+id/reportsText"/>
 
         <TextView
             android:id="@+id/contactText"
@@ -71,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="Kontakt"
-            android:textColor="@drawable/text_blue_white_focused" android:layout_below="@+id/contact" android:layout_centerHorizontal="true"/>
+            android:textColor="@color/white" android:layout_below="@+id/contact" android:layout_centerHorizontal="true" android:background="@drawable/shape" android:textStyle="bold" android:paddingBottom="3dp" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingTop="3dp"/>
 
     </RelativeLayout>
 
@@ -80,13 +79,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/first_row" >
+        android:layout_below="@+id/first_row">
 
         <ImageButton
             android:id="@+id/events"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:background="@drawable/row_button" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/main_events_icon" />
 
         <TextView
             android:id="@+id/eventsText"
@@ -96,15 +95,15 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:text="Seminari"
-            android:textColor="@drawable/text_blue_white_focused" />
+            android:textColor="@color/white" android:background="@drawable/shape" android:textStyle="bold" android:paddingBottom="3dp" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingTop="3dp"/>
 
         <ImageButton
             android:id="@+id/members"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/eventsText"
             android:layout_marginTop="10dp"
-            android:background="@drawable/row_button" />
+            android:background="@drawable/main_members_icon" />
 
         <TextView
             android:id="@+id/membersText"
@@ -114,7 +113,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:text="Članovi"
-            android:textColor="@drawable/text_blue_white_focused" />
+            android:textColor="@color/white" android:background="@drawable/shape" android:textStyle="bold" android:paddingBottom="3dp" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingTop="3dp"/>
     </RelativeLayout>
 </RelativeLayout>
 

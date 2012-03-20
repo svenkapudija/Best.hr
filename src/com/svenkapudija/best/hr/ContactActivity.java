@@ -51,7 +51,7 @@ public class ContactActivity extends MapActivity {
 
 	public void setupActionBar() {
 		actionBar = (ActionBar) findViewById(R.id.actionbar);
-		actionBar.setHome(R.drawable.action_bar_logotype);
+		actionBar.setHome(R.drawable.actionbar_logotype);
 	}
 	
     /** Called when the activity is first created. */

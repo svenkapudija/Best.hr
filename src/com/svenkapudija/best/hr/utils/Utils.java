@@ -1,15 +1,22 @@
 package com.svenkapudija.best.hr.utils;
 
-import com.google.android.maps.GeoPoint;
-
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.widget.Toast;
 
+import com.google.android.maps.GeoPoint;
+
 public class Utils {
 	
+	public static void share(Context context, String subject, String body) {
+		Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+		intent.setType("text/plain");
+        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, body);
+        context.startActivity(Intent.createChooser(intent, "Podijeli..."));
+	}
 	
 	public static void sendEmail(Context context, String to) {
 		Intent i = new Intent(Intent.ACTION_SEND);
@@ -42,8 +49,18 @@ public class Utils {
 	 * @param text
 	 * @return String without HTML tags.
 	 */
-	public static String removeHtmlTags(String text) {
+	public static String removeHtmlTagsExceptParagraphList(String text) {
 		return text.replaceAll("(?i)<(?!(/?(li|p)))[^>]*>", "");
+	}
+	
+	/**
+	 * Removes all HTML tags.
+	 * 
+	 * @param text
+	 * @return String without HTML tags.
+	 */
+	public static String removeHtmlTags(String text) {
+		return text.replaceAll("(?i)<[^>]*>", "");
 	}
 	
 	public static GeoPoint getGeoPoint(double lat, double lng) {

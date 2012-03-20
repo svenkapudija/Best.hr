@@ -35,7 +35,7 @@ public class MembersActivity extends RootActivity {
 			}
 
 			public int getDrawable() {
-				return R.drawable.actionbar_refresh_button;
+				return R.drawable.actionbar_refresh;
 			}
 
 			public CharSequence getText() {
@@ -43,7 +43,7 @@ public class MembersActivity extends RootActivity {
 			}
 		});
 		
-		actionBar.setHome(R.drawable.action_bar_logotype);
+		actionBar.setHome(R.drawable.actionbar_logotype);
 	}
 	
     /** Called when the activity is first created. */
