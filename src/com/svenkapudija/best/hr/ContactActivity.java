@@ -10,30 +10,21 @@ import android.widget.ListView;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
-import com.google.android.maps.Projection;
+import com.localytics.android.LocalyticsSession;
 import com.markupartist.android.widget.ActionBar;
 import com.svenkapudija.best.hr.adapters.PersonAdapter;
 import com.svenkapudija.best.hr.adapters.PersonRow;
 import com.svenkapudija.best.hr.overlays.IconOverlay;
+import com.svenkapudija.best.hr.utils.LocalyticsPreferences;
 import com.svenkapudija.best.hr.utils.Preferences;
 
 public class ContactActivity extends MapActivity {
 	
-	/**
-	 * debug keystore
-	 * 0WFINWstSxr9wrI1gE6KQEscospoGv5MU1NN1HQ
-	 * 92:18:C9:CA:E9:01:C7:77:7B:43:1E:F5:01:6D:C2:2D
-	 * 
-	 * sven keystore
-	 * 1C:DD:85:36:75:F4:8E:78:05:03:BC:9A:6F:51:8D:C0
-	 * 0WFINWstSxr-4C-IOhMtJYJG_41taoYqCWKJ2oA
-	 * 
-	 */
+	protected LocalyticsSession localyticsSession;
 	
 	// UI elements / MapView
 	private MapView mapView;
 	private MapController mapController;
-	private Projection projection;
 	private IconOverlay bestOverlay;
 	protected ActionBar actionBar;
 	
@@ -44,7 +35,6 @@ public class ContactActivity extends MapActivity {
 	private void getUIElements() {
 		mapView = (MapView) findViewById(R.id.mapview);
 		mapController = mapView.getController();
-		projection = mapView.getProjection();
 		
 		listview = (ListView) findViewById(R.id.listview);
 	}
@@ -60,6 +50,10 @@ public class ContactActivity extends MapActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
         
+        this.localyticsSession = new LocalyticsSession(this.getApplicationContext(), LocalyticsPreferences.LOCALYTICS_APP_KEY);
+		this.localyticsSession.open();
+		this.localyticsSession.upload();
+		
         getUIElements();
         setupActionBar();
         
@@ -70,13 +64,13 @@ public class ContactActivity extends MapActivity {
 		mapView.getOverlays().add(bestOverlay);
 		mapController.setZoom(16);
         
-        rows.add(new PersonRow("BEST Zagreb", "ured", Preferences.BEST_HR_EMAIL, Preferences.BEST_HR_PHONE));
-		rows.add(new PersonRow(Preferences.BEST_HR_OIB, "OIB"));
-		rows.add(new PersonRow(Preferences.BEST_HR_MB, "matièni broj"));
-		rows.add(new PersonRow(Preferences.BEST_HR_ZR, "žiro raèun"));
-		rows.add(new PersonRow(Preferences.BEST_HR_WEBSITE, "web-stranica"));
+        rows.add(new PersonRow("BEST Zagreb", getString(R.string.office), Preferences.BEST_HR_EMAIL, Preferences.BEST_HR_PHONE));
+		rows.add(new PersonRow(Preferences.BEST_HR_OIB, getString(R.string.oib)));
+		rows.add(new PersonRow(Preferences.BEST_HR_MB, getString(R.string.maticni_broj)));
+		rows.add(new PersonRow(Preferences.BEST_HR_ZR, getString(R.string.ziro_racun)));
+		rows.add(new PersonRow(Preferences.BEST_HR_WEBSITE, getString(R.string.website)));
 		
-		listviewAdapter = new PersonAdapter(this, rows);
+		listviewAdapter = new PersonAdapter(this, localyticsSession, rows);
 		listview.setAdapter(listviewAdapter);
 		
 		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -96,5 +90,20 @@ public class ContactActivity extends MapActivity {
 	@Override
 	protected boolean isRouteDisplayed() {
 		return false;
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		localyticsSession.open();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		
+		this.localyticsSession.close();
+        this.localyticsSession.upload();
 	}
 }

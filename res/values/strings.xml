@@ -1,5 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Best.hr</string>
-    
+	<string name="app_name">Best.hr</string>
+
+	<string name="no_internet_connection_message">Veza na internet nije dostupna, želite li je uključiti?</string>
+	<string name="updating">Ažuriranje u tijeku...</string>
+	<string name="loading">Učitavam...</string>
+	<string name="share">Podijeli...</string>
+	<string name="send_email">Pošalji email...</string>
+	<string name="yes">Da</string>
+	<string name="no">Ne</string>
+	<string name="subject">Naslov</string>
+	<string name="message">Poruka</string>
+	<string name="send_email_error">Greška pri pokretanju aplikacije za email.</string>
+	<string name="call_error">Greška pri pokretanju aplikacije za poziv.</string>
+	<string name="already_have_newest_data">Već imate najnovije podatke.</string>
+
+	<string name="best_seminars">BEST seminari</string>
+	<string name="board_members">Članovi uprave</string>
+
+	<string name="office">ured</string>
+	<string name="maticni_broj">matični broj</string>
+	<string name="ziro_racun">žiro račun</string>
+	<string name="website">web-stranica</string>
+	<string name="oib">OIB</string>
+
+	<string name="info_body">BEST Zagreb je volonterska i neprofitna studentska udruga koja studentima Sveučilišta u Zagrebu pruža mogućnost dodatnog stručnog obrazovanja, kontakta s budućim poslodavcima, rada u međunarodnim timovima, upoznavanje i razumijevanje europskih kultura te razvijanje tolerancije i usavršavanje organizacijskih vještina.</string>
+	<string name="info_author"><![CDATA[Aplikacija je izrađena kao projekt za <b>BEST Code Challenge 2.0</b> natjecanje.<br />Autor: Sven Kapuđija (www.svenkapudija.com).]]></string>
+	<string name="info_best_hr_mobile_app">BEST.hr mobilna aplikacija</string>
+	
+	<string name="main_news">Novosti</string>
+	<string name="main_events">Seminari</string>
+	<string name="main_reports">Izvještaji</string>
+	<string name="main_members">Članovi</string>
+	<string name="main_contact">Kontakt</string>
+
+	<string name="choose_report_to_download">Odaberi PDF za preuzimanje</string>
 </resources>

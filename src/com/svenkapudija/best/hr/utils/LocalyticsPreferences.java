@@ -1,30 +1,30 @@
 package com.svenkapudija.best.hr.utils;
 
 public class LocalyticsPreferences {
-	public final static String LOCALYTICS_APP_KEY ="9fcd6a554c247c48be312c7-2e818986-f26d-11e0-8c2b-007bc6310ec9";
+	public final static String LOCALYTICS_APP_KEY ="8510543c44dfd805eab8a34-1558ab7e-72ea-11e1-20e1-00a68a4c01fc";
 	
-	public final static String HOME_ACTIVITY_DATE_BUTTON = "date_button";
-	public final static String HOME_ACTIVITY_TIME_BUTTON = "time_button";
-	public final static String HOME_ACTIVITY_GO_BUTTON = "go_button";
-	public final static String HOME_ACTIVITY_LAST_SEARCHES = "last_searches";
-	public final static String HOME_ACTIVITY_LAST_SEARCHES_LONG_CLICK = "last_searches_long_click";
-	public final static String HOME_ACTIVITY_MENU_UPDATE = "menu_update";
-	public final static String HOME_ACTIVITY_MENU_BUY_TICKET = "menu_buy_ticket";
-	public final static String HOME_ACTIVITY_MENU_BUY_TICKET_YES = "menu_buy_ticket_yes";
-	public final static String HOME_ACTIVITY_MENU_BUY_TICKET_NO = "menu_buy_ticket_no";
-	public final static String MAP_ACTIVITY_MENU_SEARCH_ADDRESS = "menu_search_address";
-	public final static String MAP_ACTIVITY_MENU_LAYAR = "menu_layar";
+	public final static String HOME_ACTIVITY_ACTIONBAR_INFO = "home_activity_actionbar_info";
+	public final static String HOME_ACTIVITY_ACTIONBAR_OPTIONS = "home_activity_actionbar_options";
 	
-	public final static String MAP_ACTIVITY_SEARCH = "search";
-	public final static String MAP_ACTIVITY_PROCESSING_ADDRESS_SEARCH = "processing_address_search";
+	public final static String HOME_ACTIVITY_NEWS = "home_activity_main_news";
+	public final static String HOME_ACTIVITY_EVENTS = "home_activity_main_events";
+	public final static String HOME_ACTIVITY_REPORTS = "home_activity_main_reports";
+	public final static String HOME_ACTIVITY_MEMBERS = "home_activity_main_members";
+	public final static String HOME_ACTIVITY_CONTACT = "home_activity_main_contact";
 
-	public final static String MAP_ACTIVITY_START_BUTTON = "start_button";
-	public final static String MAP_ACTIVITY_END_BUTTON = "end_button";
-	public final static String MAP_ACTIVITY_GO_BUTTON = "go_button";
+	public final static String NEWS_ACTIVITY_RUN_YOUTUBE_VIDEO = "news_activity_run_youtube_video";
+	public final static String NEWS_ACTIVITY_CLICK_SINGLE_NEWS = "news_activity_click_single_news";
+	public final static String SINGLE_NEWS_ACTIVITY_SHARE = "single_news_activity_share";
+
+	public final static String EVENTS_ACTIVITY_REFRESH = "events_activity_refresh";
+	public final static String EVENTS_ACTIVITY_CLICK_SINGLE_EVENT = "events_activity_click_single_event";
 	
-	public final static String ACTION_BAR_MAP = "actionbar_map";
-	public final static String ACTION_BAR_TIMETABLE = "actionbar_timetable";
-	public final static String ACTION_BAR_LOGOTYPE = "actionbar_logotype";
-	public final static String TIMETABLE_SHOW_ON_MAP = "timetable_show_on_map";
-	public final static String TIMETABLE_SWITCH_DIRECTIONS = "timetable_switch_directions";
+	public final static String SINGLE_EVENT_ACTIVITY_LINK = "single_event_activity_link";
+	
+	public final static String REPORTS_ACTIVITY_REFRESH = "reports_activity_refresh";
+	public final static String REPORTS_ACTIVITY_CLICK_SINGLE_REPORT = "reports_activity_click_single_report";
+	
+	public final static String MEMBERS_ACTIVITY_REFRESH = "members_activity_refresh";
+	public final static String CONTACT_BY_PHONE = "contact_by_phone";
+	public final static String CONTACT_BY_EMAIL = "contact_by_email";
 }

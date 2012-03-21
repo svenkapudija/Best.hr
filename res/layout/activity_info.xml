@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:background="@drawable/background_pattern_repeat" xmlns:android="http://schemas.android.com/apk/res/android">
+<com.markupartist.android.widget.ActionBar
+		android:id="@+id/actionbar" android:layout_width="fill_parent"
+		android:layout_height="@dimen/actionbar_height" android:background="@drawable/gradient_actionbar">
+	</com.markupartist.android.widget.ActionBar>
+
+<ImageView
+    android:id="@+id/stripe"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/stripe" android:layout_below="@+id/actionbar"/>
+
+<RelativeLayout
+    android:id="@+id/data"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" android:layout_below="@+id/stripe" android:background="@drawable/gradient_row" android:paddingLeft="15dp" android:paddingRight="15dp" android:paddingTop="15dp">
+
+    <ImageView
+        android:id="@+id/logotype"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/best_logotype" android:paddingBottom="10dp" android:paddingTop="10dp"/>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BEST.hr" android:textColor="@color/best_blue" android:textSize="17dp" android:textStyle="bold" android:layout_below="@+id/logotype"/>
+
+    <TextView
+        android:id="@+id/body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/title"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/best_blue" android:text="@string/info_body"/>
+
+    <TextView
+        android:id="@+id/author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/best_blue" android:layout_below="@+id/body"/>
+
+    <ImageView
+        android:id="@+id/divider"
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:src="@drawable/list_divider" android:layout_below="@+id/author" android:layout_marginTop="15dp"/>
+
+</RelativeLayout>
+
+
+</RelativeLayout>

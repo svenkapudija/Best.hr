@@ -15,6 +15,7 @@ import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
 import com.svenkapudija.best.hr.api.BestHrApi;
 import com.svenkapudija.best.hr.models.News;
+import com.svenkapudija.best.hr.utils.LocalyticsPreferences;
 import com.svenkapudija.best.hr.utils.Utils;
 
 public class SingleNewsActivity extends RootActivity {
@@ -42,6 +43,7 @@ public class SingleNewsActivity extends RootActivity {
 		// Sharing
 		actionBar.addAction(new Action() {
 			public void performAction(View view) {
+				localyticsSession.tagEvent(LocalyticsPreferences.SINGLE_NEWS_ACTIVITY_SHARE);
 				String subject = news.getTitle() + " - " + BestHrApi.BASE_URL + news.getLink();
 				String body = Utils.removeHtmlTags(news.getIntro()) + "\n" + Utils.removeHtmlTags(news.getBody());
 				Utils.share(SingleNewsActivity.this, subject, body);

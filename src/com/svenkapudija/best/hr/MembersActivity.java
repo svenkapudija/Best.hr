@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.markupartist.android.widget.ActionBar;
@@ -14,7 +13,10 @@ import com.markupartist.android.widget.ActionBar.Action;
 import com.svenkapudija.best.hr.adapters.PersonAdapter;
 import com.svenkapudija.best.hr.adapters.PersonRow;
 import com.svenkapudija.best.hr.api.BestHrApi;
+import com.svenkapudija.best.hr.internet.SimpleHttpClient;
 import com.svenkapudija.best.hr.models.Member;
+import com.svenkapudija.best.hr.utils.LocalyticsPreferences;
+import com.svenkapudija.best.hr.utils.Utils;
 
 public class MembersActivity extends RootActivity {
 	
@@ -31,7 +33,12 @@ public class MembersActivity extends RootActivity {
 		actionBar = (ActionBar) findViewById(R.id.actionbar);
 		actionBar.addAction(new Action() {
 			public void performAction(View view) {
-				new DownloadMembers(true).execute();
+				if(!SimpleHttpClient.haveConnection(MembersActivity.this)) {
+					Utils.noInternetConnectionDialog(MembersActivity.this, getString(R.string.no_internet_connection_message));
+				} else {
+					localyticsSession.tagEvent(LocalyticsPreferences.MEMBERS_ACTIVITY_REFRESH);
+					new DownloadMembers(true).execute();
+				}
 			}
 
 			public int getDrawable() {
@@ -55,7 +62,7 @@ public class MembersActivity extends RootActivity {
         getUIElements();
         setupActionBar();
 
-		listviewAdapter = new PersonAdapter(this, rows);
+		listviewAdapter = new PersonAdapter(this, localyticsSession, rows);
 		listview.setAdapter(listviewAdapter);
 		
         members = Member.readAll(dbWriteable);
@@ -64,23 +71,16 @@ public class MembersActivity extends RootActivity {
 		} else {
 			new DownloadMembers().execute();
 		}
-		
-		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-				
-			}
-		});
     }
     
     private void iterateThroughMembers() {
-		rows.add(new PersonRow("BEST seminari"));
+		rows.add(new PersonRow(getString(R.string.best_seminars)));
 		for (Member member : members) {
 			if(member.getType().equals("vivaldi"))
 				rows.add(new PersonRow(member.getName(), member.getRole(), member.getEmail(),member.getPhone()));
 		}
 		
-		rows.add(new PersonRow("Èlanovi uprave"));
+		rows.add(new PersonRow(getString(R.string.board_members)));
 		for (Member member : members) {
 			if(member.getType().equals("board"))
 				rows.add(new PersonRow(member.getName(), member.getRole(), member.getEmail(),member.getPhone()));
@@ -105,7 +105,7 @@ public class MembersActivity extends RootActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 		
-			progressDialog = ProgressDialog.show(MembersActivity.this, null, "Ažuriranje u tijeku...");
+			progressDialog = ProgressDialog.show(MembersActivity.this, null, getString(R.string.updating));
 		}
 	
 		@Override
@@ -135,7 +135,7 @@ public class MembersActivity extends RootActivity {
 			progressDialog.cancel();
 			
 			if(nothingAdded)
-				showToast("Veæ imate najnovije podatke.");
+				showToast(getString(R.string.already_have_newest_data));
 		}
 	}
 }

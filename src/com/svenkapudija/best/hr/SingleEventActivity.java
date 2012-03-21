@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -12,13 +11,16 @@ import android.widget.TextView;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
+import com.localytics.android.LocalyticsSession;
 import com.markupartist.android.widget.ActionBar;
 import com.svenkapudija.best.hr.database.DatabaseHelper;
 import com.svenkapudija.best.hr.models.Event;
 import com.svenkapudija.best.hr.overlays.IconOverlay;
-import com.svenkapudija.best.hr.utils.Preferences;
+import com.svenkapudija.best.hr.utils.LocalyticsPreferences;
 
 public class SingleEventActivity extends MapActivity {
+	
+	protected LocalyticsSession localyticsSession;
 	
 	private Event event = new Event();
 	
@@ -59,6 +61,10 @@ public class SingleEventActivity extends MapActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_event);
         
+        this.localyticsSession = new LocalyticsSession(this.getApplicationContext(), LocalyticsPreferences.LOCALYTICS_APP_KEY);
+		this.localyticsSession.open();
+		this.localyticsSession.upload();
+        
         getUIElements();
         setupActionBar();
         
@@ -79,6 +85,7 @@ public class SingleEventActivity extends MapActivity {
         link.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				localyticsSession.tagEvent(LocalyticsPreferences.SINGLE_EVENT_ACTIVITY_LINK);
 				Intent browse = new Intent(Intent.ACTION_VIEW , Uri.parse(event.getUrl()));
 			    startActivity(browse);
 			}
@@ -102,5 +109,20 @@ public class SingleEventActivity extends MapActivity {
 		super.onDestroy();
 		
 		helper.close();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		localyticsSession.open();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		
+		this.localyticsSession.close();
+        this.localyticsSession.upload();
 	}
 }

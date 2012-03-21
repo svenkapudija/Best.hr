@@ -7,19 +7,18 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ListView;
 
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
 import com.svenkapudija.best.hr.adapters.AnnualReportAdapter;
 import com.svenkapudija.best.hr.api.BestHrApi;
+import com.svenkapudija.best.hr.internet.SimpleHttpClient;
 import com.svenkapudija.best.hr.models.AnnualReport;
-import com.svenkapudija.best.hr.models.Event;
-import com.svenkapudija.best.hr.utils.Preferences;
+import com.svenkapudija.best.hr.utils.LocalyticsPreferences;
+import com.svenkapudija.best.hr.utils.Utils;
 
 public class AnnualReportsActivity extends RootActivity {
 	
@@ -36,7 +35,12 @@ public class AnnualReportsActivity extends RootActivity {
 		actionBar = (ActionBar) findViewById(R.id.actionbar);
 		actionBar.addAction(new Action() {
 			public void performAction(View view) {
-				new DownloadReports(true).execute();
+				if(!SimpleHttpClient.haveConnection(AnnualReportsActivity.this)) {
+					Utils.noInternetConnectionDialog(AnnualReportsActivity.this, getString(R.string.no_internet_connection_message));
+				} else {
+					localyticsSession.tagEvent(LocalyticsPreferences.REPORTS_ACTIVITY_REFRESH);
+					new DownloadReports(true).execute();
+				}
 			}
 
 			public int getDrawable() {
@@ -73,6 +77,7 @@ public class AnnualReportsActivity extends RootActivity {
 		gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+				localyticsSession.tagEvent(LocalyticsPreferences.REPORTS_ACTIVITY_CLICK_SINGLE_REPORT);
 				AnnualReport report = rows.get(position);
 				Intent browse = new Intent(Intent.ACTION_VIEW , Uri.parse(report.getLink()));
 			    startActivity(browse);
@@ -105,7 +110,7 @@ public class AnnualReportsActivity extends RootActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 		
-			progressDialog = ProgressDialog.show(AnnualReportsActivity.this, null, "Ažuriranje u tijeku...");
+			progressDialog = ProgressDialog.show(AnnualReportsActivity.this, null, getString(R.string.updating));
 		}
 	
 		@Override
@@ -135,7 +140,7 @@ public class AnnualReportsActivity extends RootActivity {
 			progressDialog.cancel();
 			
 			if(nothingAdded)
-				showToast("Veæ imate najnovije podatke.");
+				showToast(getString(R.string.already_have_newest_data));
 		}
 	}
 }

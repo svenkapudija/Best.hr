@@ -12,7 +12,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -26,7 +25,7 @@ import com.svenkapudija.best.hr.adapters.EndlessAdapter;
 import com.svenkapudija.best.hr.adapters.NewsAdapter;
 import com.svenkapudija.best.hr.api.BestHrApi;
 import com.svenkapudija.best.hr.models.News;
-import com.svenkapudija.best.hr.utils.Preferences;
+import com.svenkapudija.best.hr.utils.LocalyticsPreferences;
 
 public class NewsActivity extends RootActivity {
 	
@@ -72,9 +71,11 @@ public class NewsActivity extends RootActivity {
 						        public void onClick(DialogInterface dialog, int item) {
 						            if(item == 0) {
 						            	// Run YouTube video
+						            	localyticsSession.tagEvent(LocalyticsPreferences.NEWS_ACTIVITY_RUN_YOUTUBE_VIDEO);
 						            	startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(matcher.group())));
 						            } else {
 						            	// Display news
+						            	localyticsSession.tagEvent(LocalyticsPreferences.NEWS_ACTIVITY_CLICK_SINGLE_NEWS);
 						            	Intent i = new Intent(NewsActivity.this, SingleNewsActivity.class);
 										i.putExtra("news_id", news.getId());
 										startActivity(i);
@@ -84,6 +85,7 @@ public class NewsActivity extends RootActivity {
 					}
 				} else {
 					// Display news
+					localyticsSession.tagEvent(LocalyticsPreferences.NEWS_ACTIVITY_CLICK_SINGLE_NEWS);
 					Intent i = new Intent(NewsActivity.this, SingleNewsActivity.class);
 					i.putExtra("news_id", news.getId());
 					startActivity(i);

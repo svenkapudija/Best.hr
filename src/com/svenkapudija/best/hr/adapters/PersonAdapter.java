@@ -11,17 +11,21 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.localytics.android.LocalyticsSession;
 import com.svenkapudija.best.hr.R;
+import com.svenkapudija.best.hr.utils.LocalyticsPreferences;
 import com.svenkapudija.best.hr.utils.Utils;
 
 public class PersonAdapter extends ArrayAdapter<PersonRow> {
 
+	private LocalyticsSession localyticsSession;
 	private Context context;
 	private List<PersonRow> items;
 	
-	public PersonAdapter(Context context, List<PersonRow> items) {
+	public PersonAdapter(Context context, LocalyticsSession localyticsSession, List<PersonRow> items) {
 		super(context, 0, items);
 		
+		this.localyticsSession = localyticsSession;
 		this.context = context;
 		this.items = items;
 	}
@@ -54,6 +58,7 @@ public class PersonAdapter extends ArrayAdapter<PersonRow> {
             	phoneButton.setOnClickListener(new View.OnClickListener() {
     				@Override
     				public void onClick(View v) {
+    					localyticsSession.tagEvent(LocalyticsPreferences.CONTACT_BY_PHONE);
     					Utils.call(context, item.getPhone());
     				}
     			});
@@ -71,6 +76,7 @@ public class PersonAdapter extends ArrayAdapter<PersonRow> {
             	emailButton.setOnClickListener(new View.OnClickListener() {
     				@Override
     				public void onClick(View v) {
+    					localyticsSession.tagEvent(LocalyticsPreferences.CONTACT_BY_EMAIL);
     					Utils.sendEmail(context, item.getEmail());
     				}
     			});

@@ -16,7 +16,7 @@
     android:id="@+id/icons"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_below="@+id/stripe" android:paddingLeft="35dp" android:paddingRight="35dp" android:paddingTop="25dp">
+    android:layout_below="@+id/stripe" android:paddingLeft="50dp" android:paddingRight="50dp" android:paddingTop="40dp">
 
     <RelativeLayout
         android:id="@+id/left_column"
@@ -35,9 +35,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/news"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:text="Novosti"
-            android:textColor="@color/white" android:background="@drawable/shape" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingTop="3dp" android:paddingBottom="3dp" android:textStyle="bold"/>
+            android:text="@string/main_news"
+            android:textColor="@color/white" android:background="@drawable/shape" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingBottom="3dp" android:textStyle="bold" android:paddingTop="3dp"/>
 
         <ImageButton
             android:id="@+id/reports"
@@ -53,8 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/reports"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:text="Izvještaji"
+            android:text="@string/main_reports"
             android:textColor="@color/white" android:background="@drawable/shape" android:paddingBottom="3dp" android:paddingRight="10dp" android:paddingLeft="10dp" android:paddingTop="3dp" android:textStyle="bold"/>
 
         <ImageButton
@@ -68,8 +66,7 @@
             android:id="@+id/contactText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Kontakt"
+            android:text="@string/main_contact"
             android:textColor="@color/white" android:layout_below="@+id/contact" android:layout_centerHorizontal="true" android:background="@drawable/shape" android:textStyle="bold" android:paddingBottom="3dp" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingTop="3dp"/>
 
     </RelativeLayout>
@@ -93,8 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/events"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:text="Seminari"
+            android:text="@string/main_events"
             android:textColor="@color/white" android:background="@drawable/shape" android:textStyle="bold" android:paddingBottom="3dp" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingTop="3dp"/>
 
         <ImageButton
@@ -111,8 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/members"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:text="Članovi"
+            android:text="@string/main_members"
             android:textColor="@color/white" android:background="@drawable/shape" android:textStyle="bold" android:paddingBottom="3dp" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingTop="3dp"/>
     </RelativeLayout>
 </RelativeLayout>

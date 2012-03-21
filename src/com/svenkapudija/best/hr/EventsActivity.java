@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -19,9 +18,11 @@ import com.markupartist.android.widget.ActionBar.Action;
 import com.svenkapudija.best.hr.adapters.EventAdapter;
 import com.svenkapudija.best.hr.adapters.EventRow;
 import com.svenkapudija.best.hr.api.BestHrApi;
+import com.svenkapudija.best.hr.internet.SimpleHttpClient;
 import com.svenkapudija.best.hr.models.Event;
 import com.svenkapudija.best.hr.utils.DateUtils;
-import com.svenkapudija.best.hr.utils.Preferences;
+import com.svenkapudija.best.hr.utils.LocalyticsPreferences;
+import com.svenkapudija.best.hr.utils.Utils;
 
 public class EventsActivity extends RootActivity {
 	
@@ -41,7 +42,12 @@ public class EventsActivity extends RootActivity {
 		// Refresh
 		actionBar.addAction(new Action() {
 			public void performAction(View view) {
-				new DownloadEvents(true).execute();
+				if(!SimpleHttpClient.haveConnection(EventsActivity.this)) {
+					Utils.noInternetConnectionDialog(EventsActivity.this, getString(R.string.no_internet_connection_message));
+				} else {
+					localyticsSession.tagEvent(LocalyticsPreferences.EVENTS_ACTIVITY_REFRESH);
+					new DownloadEvents(true).execute();
+				}
 			}
 
 			public int getDrawable() {
@@ -82,8 +88,8 @@ public class EventsActivity extends RootActivity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 				EventRow eventRow = listData.get(position);
 				if(!eventRow.isHeader()) {
+					localyticsSession.tagEvent(LocalyticsPreferences.EVENTS_ACTIVITY_CLICK_SINGLE_EVENT);
 					Intent i = new Intent(EventsActivity.this, SingleEventActivity.class);
-					Log.d(Preferences.DEBUG_TAG, "event: " + eventRow.getEvent().toString());
 					i.putExtra("event_id", eventRow.getEvent().getId());
 				    startActivity(i);
 				}
@@ -132,7 +138,7 @@ public class EventsActivity extends RootActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 		
-			progressDialog = ProgressDialog.show(EventsActivity.this, null, "Ažuriranje u tijeku...");
+			progressDialog = ProgressDialog.show(EventsActivity.this, null, getString(R.string.updating));
 		}
 	
 		@Override
@@ -143,7 +149,6 @@ public class EventsActivity extends RootActivity {
 	        	if(clear) events.clear();
 	        	
 				for (Event event : events) {
-					Log.d(Preferences.DEBUG_TAG, "Events: " + event.toString());
 					event.setDatabase(EventsActivity.this.dbWriteable);
 					if(!event.exists()) {
 						event.insertOrUpdate();
@@ -163,7 +168,7 @@ public class EventsActivity extends RootActivity {
 			progressDialog.cancel();
 			
 			if(nothingAdded)
-				showToast("Veæ imate najnovije podatke.");
+				showToast(getString(R.string.already_have_newest_data));
 		}
 	}
 }

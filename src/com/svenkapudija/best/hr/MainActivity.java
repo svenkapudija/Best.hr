@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
+import com.svenkapudija.best.hr.utils.LocalyticsPreferences;
 
 public class MainActivity extends RootActivity {
 	
@@ -28,6 +29,22 @@ public class MainActivity extends RootActivity {
 		actionBar = (ActionBar) findViewById(R.id.actionbar);
 		actionBar.addAction(new Action() {
 			public void performAction(View view) {
+				localyticsSession.tagEvent(LocalyticsPreferences.HOME_ACTIVITY_ACTIONBAR_INFO);
+				Intent i = new Intent(MainActivity.this, InfoActivity.class);
+				startActivityForResult(i, 200);
+			}
+
+			public int getDrawable() {
+				return R.drawable.actionbar_info;
+			}
+
+			public CharSequence getText() {
+				return "";
+			}
+		});
+		actionBar.addAction(new Action() {
+			public void performAction(View view) {
+				localyticsSession.tagEvent(LocalyticsPreferences.HOME_ACTIVITY_ACTIONBAR_OPTIONS);
 				Intent i = new Intent(MainActivity.this, PreferencesActivity.class);
 				startActivityForResult(i, 200);
 			}
@@ -56,6 +73,7 @@ public class MainActivity extends RootActivity {
         news.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				localyticsSession.tagEvent(LocalyticsPreferences.HOME_ACTIVITY_NEWS);
 				Intent i = new Intent(MainActivity.this, NewsActivity.class);
 				startActivityForResult(i, 200);
 			}
@@ -64,6 +82,7 @@ public class MainActivity extends RootActivity {
         events.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				localyticsSession.tagEvent(LocalyticsPreferences.HOME_ACTIVITY_EVENTS);
 				Intent i = new Intent(MainActivity.this, EventsActivity.class);
 				startActivityForResult(i, 200);
 			}
@@ -72,6 +91,7 @@ public class MainActivity extends RootActivity {
         reports.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				localyticsSession.tagEvent(LocalyticsPreferences.HOME_ACTIVITY_REPORTS);
 				Intent i = new Intent(MainActivity.this, AnnualReportsActivity.class);
 				startActivityForResult(i, 200);
 			}
@@ -80,6 +100,7 @@ public class MainActivity extends RootActivity {
         members.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				localyticsSession.tagEvent(LocalyticsPreferences.HOME_ACTIVITY_MEMBERS);
 				Intent i = new Intent(MainActivity.this, MembersActivity.class);
 				startActivityForResult(i, 200);
 			}
@@ -88,6 +109,7 @@ public class MainActivity extends RootActivity {
         contact.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				localyticsSession.tagEvent(LocalyticsPreferences.HOME_ACTIVITY_CONTACT);
 				Intent i = new Intent(MainActivity.this, ContactActivity.class);
 				startActivityForResult(i, 200);
 			}

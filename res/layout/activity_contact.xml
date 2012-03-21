@@ -21,7 +21,7 @@
 
     <com.google.android.maps.MapView
 			android:layout_width="fill_parent" android:layout_height="200dp"
-			android:apiKey="0WFINWstSxr9wrI1gE6KQEscospoGv5MU1NN1HQ"
+			android:apiKey="0WFINWstSxr-4C-IOhMtJYJG_41taoYqCWKJ2oA"
 			android:clickable="true" android:id="@+id/mapview" android:layout_below="@+id/stripe"></com.google.android.maps.MapView>
 
     <RelativeLayout

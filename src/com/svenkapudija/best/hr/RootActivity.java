@@ -3,15 +3,12 @@ package com.svenkapudija.best.hr;
 import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.maps.MapActivity;
 import com.localytics.android.LocalyticsSession;
 import com.markupartist.android.widget.ActionBar;
 import com.svenkapudija.best.hr.database.DatabaseHelper;
 import com.svenkapudija.best.hr.utils.LocalyticsPreferences;
-import com.svenkapudija.best.hr.utils.Preferences;
 
 public class RootActivity extends Activity {
 
