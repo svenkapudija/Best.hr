@@ -3,6 +3,7 @@
 	<string name="app_name">Best.hr</string>
 
 	<string name="no_internet_connection_message">Veza na internet nije dostupna, želite li je uključiti?</string>
+	<string name="no_internet_connection_message_data">Nije moguće preuzeti podatke, želite li uključiti internet vezu?</string>
 	<string name="updating">Ažuriranje u tijeku...</string>
 	<string name="loading">Učitavam...</string>
 	<string name="share">Podijeli...</string>

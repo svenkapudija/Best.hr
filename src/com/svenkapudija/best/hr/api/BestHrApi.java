@@ -1,5 +1,6 @@
 package com.svenkapudija.best.hr.api;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -88,7 +89,6 @@ public class BestHrApi {
 		
 		return counter;
 	}
-	
 	
 	/**
 	 * Retrieves only last news.

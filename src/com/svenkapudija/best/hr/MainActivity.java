@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
+import com.svenkapudija.best.hr.models.Event;
 import com.svenkapudija.best.hr.utils.LocalyticsPreferences;
 
 public class MainActivity extends RootActivity {
@@ -76,6 +77,13 @@ public class MainActivity extends RootActivity {
 				localyticsSession.tagEvent(LocalyticsPreferences.HOME_ACTIVITY_NEWS);
 				Intent i = new Intent(MainActivity.this, NewsActivity.class);
 				startActivityForResult(i, 200);
+				
+				/*
+				// If user didn't download any news and doesn't have internet connection, popup a dialog
+		        if(News.getCount(dbWriteable) == 0 && !SimpleHttpClient.haveConnection(MainActivity.this)) {
+		        	Utils.noInternetConnectionDialog(MainActivity.this, getString(R.string.no_internet_connection_message_data));
+				}
+				*/
 			}
 		});
         

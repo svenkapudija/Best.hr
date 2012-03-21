@@ -18,7 +18,6 @@ public class Utils {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setCancelable(true);
 		builder.setMessage(message);
-		//builder.setTitle();
 		builder.setPositiveButton(context.getString(R.string.yes), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				context.startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));

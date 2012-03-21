@@ -1,5 +1,6 @@
 package com.svenkapudija.best.hr;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -12,6 +13,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -24,8 +26,10 @@ import com.markupartist.android.widget.ActionBar;
 import com.svenkapudija.best.hr.adapters.EndlessAdapter;
 import com.svenkapudija.best.hr.adapters.NewsAdapter;
 import com.svenkapudija.best.hr.api.BestHrApi;
+import com.svenkapudija.best.hr.internet.SimpleHttpClient;
 import com.svenkapudija.best.hr.models.News;
 import com.svenkapudija.best.hr.utils.LocalyticsPreferences;
+import com.svenkapudija.best.hr.utils.Utils;
 
 public class NewsActivity extends RootActivity {
 	
@@ -107,6 +111,7 @@ public class NewsActivity extends RootActivity {
         private ArrayList<News> apiNews = null;
         private boolean download = false;
         private boolean initialCheck = false;
+        private boolean noInternetAndNews = false;
         private BestHrApi api = null;
         
         NewsAdapterEndless(List<News> items, int newsChunk) {
@@ -146,7 +151,7 @@ public class NewsActivity extends RootActivity {
         	// Perform the initial check, are all news downloaded?
         	if(!initialCheck) {
         		newsCount = News.getCount(dbWriteable);
-                if(api.getNewsCount() > newsCount) download = true;
+        		if(api.getNewsCount() > newsCount) download = true;
         		initialCheck = true;
         	}
             
@@ -194,13 +199,13 @@ public class NewsActivity extends RootActivity {
          */
         @Override
         protected void appendCachedData() {
-          if (getWrappedAdapter().getCount() < newsCount) {
-            @SuppressWarnings("unchecked")
-            ArrayAdapter<News> a = (ArrayAdapter<News>) getWrappedAdapter();
-            for (int i=(startCount-newsChunk);i<(startCount) && (i<newsList.size());i++) {
-            	a.add(newsList.get(i));
-            }
-          }
+        	if (getWrappedAdapter().getCount() < newsCount) {
+                @SuppressWarnings("unchecked")
+                ArrayAdapter<News> a = (ArrayAdapter<News>) getWrappedAdapter();
+                for (int i=(startCount-newsChunk);i<(startCount) && (i<newsList.size());i++) {
+                	a.add(newsList.get(i));
+                }
+              }
         }
     }
 
