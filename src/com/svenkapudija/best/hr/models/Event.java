@@ -63,6 +63,25 @@ public class Event implements DatabaseInterface {
 		}
 	}
 	
+	/**
+	 * Returns number of Event objects in database.
+	 * 
+	 * @param database {@link SQLiteDatabase}
+	 * @return number of Event objects
+	 */
+	public static int getCount(SQLiteDatabase database) {
+		int count = 0;
+		
+		Cursor result = database.rawQuery("SELECT COUNT(*) FROM " + DatabaseHelper.EVENTS_TABLE_NAME, null);
+		if (result.getCount() > 0) {
+			result.moveToFirst();
+			count = result.getInt(0);
+		}
+		result.close();
+		
+		return count;
+	}
+	
 	public boolean read() {
 		// Add categories
 		Cursor categoryIdCursor = this.database.rawQuery("SELECT category_id FROM " + DatabaseHelper.EVENTS_CATEGORIES_MAPPING_TABLE_NAME + " WHERE event_id = '" + this.getId() + "'", null);

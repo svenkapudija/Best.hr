@@ -90,6 +90,13 @@ public class Utils {
 		return text.replaceAll("(?i)<[^>]*>", "");
 	}
 	
+	/**
+	 * Creates GeoPoint class with provided latitude and longitude.
+	 * 
+	 * @param lat Latitude of specific location.
+	 * @param lng Longitude of specific location.
+	 * @return GeoPoint object with provided <code>lat</code> and <code>lng</code>
+	 */
 	public static GeoPoint getGeoPoint(double lat, double lng) {
 		return new GeoPoint((int) (lat*1E6), (int) (lng*1E6));
 	}

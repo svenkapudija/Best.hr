@@ -222,7 +222,7 @@ public class News implements DatabaseInterface {
 	public static int getCount(SQLiteDatabase database) {
 		int count = 0;
 		
-		Cursor result = database.rawQuery("SELECT COUNT(*) FROM best_news", null);
+		Cursor result = database.rawQuery("SELECT COUNT(*) FROM " + DatabaseHelper.NEWS_TABLE_NAME, null);
 		if (result.getCount() > 0) {
 			result.moveToFirst();
 			count = result.getInt(0);

@@ -38,6 +38,25 @@ public class Member implements DatabaseInterface {
 		this.database = database;
 	}
 	
+	/**
+	 * Returns number of Member objects in database.
+	 * 
+	 * @param database {@link SQLiteDatabase}
+	 * @return number of Member objects
+	 */
+	public static int getCount(SQLiteDatabase database) {
+		int count = 0;
+		
+		Cursor result = database.rawQuery("SELECT COUNT(*) FROM " + DatabaseHelper.MEMBERS_TABLE_NAME, null);
+		if (result.getCount() > 0) {
+			result.moveToFirst();
+			count = result.getInt(0);
+		}
+		result.close();
+		
+		return count;
+	}
+	
 	public boolean exists() {
 		if(this.database == null)
 			return false;

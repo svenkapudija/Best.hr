@@ -39,6 +39,25 @@ public class AnnualReport implements DatabaseInterface {
 		this.database = database; 
 	}
 	
+	/**
+	 * Returns number of AnnualReport objects in database.
+	 * 
+	 * @param database {@link SQLiteDatabase}
+	 * @return number of AnnualReport objects
+	 */
+	public static int getCount(SQLiteDatabase database) {
+		int count = 0;
+		
+		Cursor result = database.rawQuery("SELECT COUNT(*) FROM " + DatabaseHelper.ANNUAL_REPORTS_TABLE_NAME, null);
+		if (result.getCount() > 0) {
+			result.moveToFirst();
+			count = result.getInt(0);
+		}
+		result.close();
+		
+		return count;
+	}
+	
 	public boolean exists() {
 		Cursor result = this.database.rawQuery("SELECT year FROM " + DatabaseHelper.ANNUAL_REPORTS_TABLE_NAME + " WHERE year = " + this.getYear(), null);
 		if (result.getCount() > 0) {

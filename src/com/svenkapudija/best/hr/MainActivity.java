@@ -7,9 +7,20 @@ import android.widget.ImageButton;
 
 import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
+import com.svenkapudija.best.hr.internet.SimpleHttpClient;
+import com.svenkapudija.best.hr.models.AnnualReport;
 import com.svenkapudija.best.hr.models.Event;
+import com.svenkapudija.best.hr.models.Member;
+import com.svenkapudija.best.hr.models.News;
 import com.svenkapudija.best.hr.utils.LocalyticsPreferences;
+import com.svenkapudija.best.hr.utils.Utils;
 
+/**
+ * Application made for BEST Code Challenge 2.0 by BEST.hr 
+ * 
+ * @author Sven Kapuðija
+ *
+ */
 public class MainActivity extends RootActivity {
 	
 	private ImageButton news;
@@ -75,15 +86,13 @@ public class MainActivity extends RootActivity {
 			@Override
 			public void onClick(View v) {
 				localyticsSession.tagEvent(LocalyticsPreferences.HOME_ACTIVITY_NEWS);
-				Intent i = new Intent(MainActivity.this, NewsActivity.class);
-				startActivityForResult(i, 200);
-				
-				/*
 				// If user didn't download any news and doesn't have internet connection, popup a dialog
 		        if(News.getCount(dbWriteable) == 0 && !SimpleHttpClient.haveConnection(MainActivity.this)) {
 		        	Utils.noInternetConnectionDialog(MainActivity.this, getString(R.string.no_internet_connection_message_data));
+				} else {
+					Intent i = new Intent(MainActivity.this, NewsActivity.class);
+					startActivityForResult(i, 200);
 				}
-				*/
 			}
 		});
         
@@ -91,8 +100,13 @@ public class MainActivity extends RootActivity {
 			@Override
 			public void onClick(View v) {
 				localyticsSession.tagEvent(LocalyticsPreferences.HOME_ACTIVITY_EVENTS);
-				Intent i = new Intent(MainActivity.this, EventsActivity.class);
-				startActivityForResult(i, 200);
+				
+				if(Event.getCount(dbWriteable) == 0 && !SimpleHttpClient.haveConnection(MainActivity.this)) {
+		        	Utils.noInternetConnectionDialog(MainActivity.this, getString(R.string.no_internet_connection_message_data));
+				} else {
+					Intent i = new Intent(MainActivity.this, EventsActivity.class);
+					startActivityForResult(i, 200);
+				}
 			}
 		});
         
@@ -100,8 +114,13 @@ public class MainActivity extends RootActivity {
 			@Override
 			public void onClick(View v) {
 				localyticsSession.tagEvent(LocalyticsPreferences.HOME_ACTIVITY_REPORTS);
-				Intent i = new Intent(MainActivity.this, AnnualReportsActivity.class);
-				startActivityForResult(i, 200);
+				
+				if(AnnualReport.getCount(dbWriteable) == 0 && !SimpleHttpClient.haveConnection(MainActivity.this)) {
+		        	Utils.noInternetConnectionDialog(MainActivity.this, getString(R.string.no_internet_connection_message_data));
+				} else {
+					Intent i = new Intent(MainActivity.this, AnnualReportsActivity.class);
+					startActivityForResult(i, 200);
+				}
 			}
 		});
         
@@ -109,8 +128,13 @@ public class MainActivity extends RootActivity {
 			@Override
 			public void onClick(View v) {
 				localyticsSession.tagEvent(LocalyticsPreferences.HOME_ACTIVITY_MEMBERS);
-				Intent i = new Intent(MainActivity.this, MembersActivity.class);
-				startActivityForResult(i, 200);
+				
+				if(Member.getCount(dbWriteable) == 0 && !SimpleHttpClient.haveConnection(MainActivity.this)) {
+		        	Utils.noInternetConnectionDialog(MainActivity.this, getString(R.string.no_internet_connection_message_data));
+				} else {
+					Intent i = new Intent(MainActivity.this, MembersActivity.class);
+					startActivityForResult(i, 200);
+				}
 			}
 		});
         

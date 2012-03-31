@@ -5,7 +5,6 @@
  */
 package com.svenkapudija.best.hr.utils;
 
-import android.R;
 import android.content.Context;
 import android.graphics.Color;
 import android.preference.DialogPreference;

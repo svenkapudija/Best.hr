@@ -25,6 +25,9 @@ import com.google.android.maps.OverlayItem;
 import com.readystatesoftware.mapviewballoons.BalloonItemizedOverlay;
 import com.svenkapudija.best.hr.utils.Utils;
 
+/**
+ *	General class for displaying icons on the map.
+ */
 public class IconOverlay extends BalloonItemizedOverlay<OverlayItem> {
 
 	private ArrayList<OverlayItem> m_overlays = new ArrayList<OverlayItem>();
