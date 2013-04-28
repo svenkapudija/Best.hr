@@ -1,12 +1,13 @@
 package com.svenkapudija.best.hr;
 
+import com.markupartist.android.widget.ActionBar;
+
 import android.content.Intent;
+import android.drm.DrmStore.Action;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
-import com.markupartist.android.widget.ActionBar;
-import com.markupartist.android.widget.ActionBar.Action;
 import com.svenkapudija.best.hr.internet.SimpleHttpClient;
 import com.svenkapudija.best.hr.models.AnnualReport;
 import com.svenkapudija.best.hr.models.Event;
@@ -38,7 +39,7 @@ public class MainActivity extends RootActivity {
 	}
 
 	public void setupActionBar() {
-		actionBar = (ActionBar) findViewById(R.id.actionbar);
+		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
 		actionBar.addAction(new Action() {
 			public void performAction(View view) {
 				localyticsSession.tagEvent(LocalyticsPreferences.HOME_ACTIVITY_ACTIONBAR_INFO);
