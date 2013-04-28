@@ -1,14 +1,12 @@
 Project made for **Best Code Challenge 2.0** (student competition in programming at [Faculty of Electrical Engineering and Computing @ Zagreb, Croatia](http://www.fer.unizg.hr/en)) according to competitions
-specifications in a few days. The goal was to made the 'Mobile version for website Best.hr' - I have chosen an Android version.
+specifications in a few days. The goal was to made the `Mobile version for website Best.hr` [Best.hr](http://www.best.hr) - I have chosen an Android version.
 
 > **UPDATE:** I won **1st place**.
 
 About
 --------
 
-###This project takes leverage of...
-CWAC-AdapterWrapper, EndlessAdapter, Localytics, GoogleMaps API...
-
+This project takes leverage of CWAC-AdapterWrapper, EndlessAdapter, Localytics, GoogleMaps API...
 It's basically simple app which connects to remote API via REST, retrieves and display data. Nothing too fancy.
 
 Developed by
