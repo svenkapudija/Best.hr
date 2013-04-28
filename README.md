@@ -1,3 +1,5 @@
+![Best.hr Android Cover](http://i.imgur.com/6wR6qTr.png)
+
 Project made for **Best Code Challenge 2.0** (student competition in programming at [Faculty of Electrical Engineering and Computing @ Zagreb, Croatia](http://www.fer.unizg.hr/en)) according to competitions
 specifications in a few days. The goal was to made the `Mobile version for website Best.hr` [Best.hr](http://www.best.hr) - I have chosen an Android version.
 
