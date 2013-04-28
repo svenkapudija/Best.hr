@@ -9,6 +9,8 @@ About
 This project takes leverage of CWAC-AdapterWrapper, EndlessAdapter, Localytics, GoogleMaps API...
 It's basically simple app which connects to remote API via REST, retrieves and display data.
 
+Design is also made by myself.
+
 Screenshots
 --------
 
